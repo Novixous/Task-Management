@@ -9,6 +9,7 @@ public class Account {
     private String fullName;
     private String phone;
     private String email;
+    private String address;
     private boolean deactivated;
     private Long roleId;
     private Long groupId;
@@ -16,7 +17,8 @@ public class Account {
     public Account() {
     }
 
-    public Account(Long accountId, String username, String password, String firstName, String lastName, String fullName, String phone, String email, boolean deactivated, Long roleId, Long groupId) {
+
+    public Account(Long accountId, String username, String password, String firstName, String lastName, String fullName, String phone, String email, String address, boolean deactivated, Long roleId, Long groupId) {
         this.accountId = accountId;
         this.username = username;
         this.password = password;
@@ -25,24 +27,9 @@ public class Account {
         this.fullName = fullName;
         this.phone = phone;
         this.email = email;
+        this.address = address;
         this.deactivated = deactivated;
         this.roleId = roleId;
-        this.groupId = groupId;
-    }
-
-    public boolean isDeactivated() {
-        return deactivated;
-    }
-
-    public void setDeactivated(boolean deactivated) {
-        this.deactivated = deactivated;
-    }
-
-    public Long getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Long groupId) {
         this.groupId = groupId;
     }
 
@@ -110,11 +97,35 @@ public class Account {
         this.email = email;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public boolean isDeactivated() {
+        return deactivated;
+    }
+
+    public void setDeactivated(boolean deactivated) {
+        this.deactivated = deactivated;
+    }
+
     public Long getRoleId() {
         return roleId;
     }
 
     public void setRoleId(Long roleId) {
         this.roleId = roleId;
+    }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
     }
 }

@@ -2,6 +2,7 @@ package com.task.management.server.taskmanagementserver.mapper;
 
 import com.task.management.server.taskmanagementserver.model.InitialValue;
 import com.task.management.server.taskmanagementserver.model.Task;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -37,6 +38,5 @@ public interface TaskMapper {
             "group_id as groupId " +
             "FROM task WHERE ${fieldName} = #{value}")
     List<Task> getTasksByIdField(@Param("fieldName") String fieldName, @Param("value") Long value);
-
 
 }

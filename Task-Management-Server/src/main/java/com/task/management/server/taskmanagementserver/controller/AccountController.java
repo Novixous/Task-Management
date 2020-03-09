@@ -6,6 +6,8 @@ import com.task.management.server.taskmanagementserver.util.CheckUtil;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class AccountController {
     final
@@ -16,16 +18,27 @@ public class AccountController {
     }
 
     /**
-     * get account by field name and field value
+     * get account by id
      *
-     * @param parameter
-     * @param parameterValue
+     * @param id
      * @return
      */
     @GetMapping("/account")
-    public Account getAccountByParameter(@RequestParam("parameter") String parameter,
-                                         @RequestParam("parameterValue") String parameterValue) {
-        return accountMapper.getAccountByParameter(parameter, parameterValue);
+    public Account getAccountByParameter(@RequestParam("id") Long id) {
+        return accountMapper.getAccountById(id);
+    }
+
+    /**
+     * getAccounts by field name and field value
+     *
+     * @param fieldName
+     * @param fieldValue
+     * @return
+     */
+    @GetMapping("/accounts")
+    public List<Account> getAccountsByField(@RequestParam("fieldName") String fieldName,
+                                            @RequestParam("fieldValue") Long fieldValue) {
+        return accountMapper.getAccountsByField(fieldName, fieldValue);
     }
 
     /**
