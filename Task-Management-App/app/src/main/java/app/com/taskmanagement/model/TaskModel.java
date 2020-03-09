@@ -46,11 +46,10 @@ public class TaskModel {
     }
 
     //Update result
-    public TaskModel(Long taskId, Long oldTaskId, String taskName, String resolution,
+    public TaskModel(Long taskId, String taskName, String resolution,
                      String imgResolutionUrl, String result, Instant startTime,
                      Instant endTime, Long status) {
         this.taskId = taskId;
-        this.oldTaskId = oldTaskId;
         this.taskName = taskName;
         this.resolution = resolution;
         this.imgResolutionUrl = imgResolutionUrl;
@@ -60,10 +59,9 @@ public class TaskModel {
         this.status = status;
     }
     //Review
-    public TaskModel(Long taskId, Long oldTaskId, String taskName, String managerComment,
+    public TaskModel(Long taskId, String taskName, String managerComment,
                      Long mark, Long reviewerId, Instant reviewTime, Long confirmId) {
         this.taskId = taskId;
-        this.oldTaskId = oldTaskId;
         this.taskName = taskName;
         this.managerComment = managerComment;
         this.mark = mark;
