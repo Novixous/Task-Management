@@ -35,14 +35,14 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-        selectItem(1, "My Task");
+        selectItem(2, "My Task");
 
         navigationView = (NavigationView) findViewById(R.id.nv);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int order = item.getOrder();
                 String title = item.getTitle().toString();
+                int order = getOrderFromMenu(title);
                 selectItem(order, title);
                 return true;
             }
@@ -99,6 +99,19 @@ public class MainActivity extends AppCompatActivity {
     public void setTitle(CharSequence title) {
         mTitle = title;
         getSupportActionBar().setTitle(mTitle);
+    }
+
+    public int getOrderFromMenu(String title) {
+        switch (title) {
+            case "My Account":
+                return 0;
+            case "My Task":
+                return 1;
+            case "Settings":
+                return 2;
+            default:
+                return -1;
+        }
     }
 
 }
