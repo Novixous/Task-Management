@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-        selectItem(2, "My Task");
+        selectItem(1, "My Task");
 
         navigationView = (NavigationView) findViewById(R.id.nv);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
