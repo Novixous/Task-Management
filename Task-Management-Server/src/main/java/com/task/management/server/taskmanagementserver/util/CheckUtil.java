@@ -8,6 +8,7 @@ public class CheckUtil {
         try {
             Field[] fields = object.getClass().getDeclaredFields();
             for (Field field : fields) {
+                field.setAccessible(true);
                 if (field.get(object) != null) result = true;
                 break;
             }
