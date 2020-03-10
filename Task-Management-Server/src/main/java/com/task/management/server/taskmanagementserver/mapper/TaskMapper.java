@@ -35,8 +35,37 @@ public interface TaskMapper {
             "confirm_id as confirmId, " +
             "approve_id as approvedId, " +
             "status_id as statusId, " +
-            "group_id as groupId " +
+            "group_id as groupId, " +
+            "edited_by as editedBy, " +
+            "edited_at as editedAt " +
             "FROM task WHERE ${fieldName} = #{value}")
     List<Task> getTasksByIdField(@Param("fieldName") String fieldName, @Param("value") Long value);
+
+    @Select("SELECT id_task as taskId, " +
+            "id_old_task as oldTaskId, " +
+            "task_name as taskName, " +
+            "create_date as createdTime, " +
+            "deadline as deadline, " +
+            "account_create as accountCreated, " +
+            "assignee as assignee, " +
+            "description as description, " +
+            "resolution as resolution, " +
+            "img_solution as imgResolutionUrl, " +
+            "result as result, " +
+            "start_date as startTime, " +
+            "end_date as endDate, " +
+            "comment_manager as managerComment, " +
+            "mark as mark, " +
+            "reviewer as reviewerId, " +
+            "review_date as reviewTime, " +
+            "confirm_id as confirmId, " +
+            "approve_id as approvedId, " +
+            "status_id as statusId, " +
+            "group_id as groupId " +
+            "edited_by as editedBy, " +
+            "edited_at as editedAt " +
+            "FROM task WHERE ${fieldName} = #{value} AND status_id = #{approveStatus}")
+    List<Task> getTasksByIdFieldAndStatus(@Param("fieldName") String fieldName, @Param("value") Long value,
+                                          @Param("approveStatus") Long approveStatus);
 
 }
