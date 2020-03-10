@@ -1,14 +1,16 @@
 package app.com.taskmanagement.model;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 
 public class TaskModel {
+    public static final int SHOW_FORM_CREATE = 0;
+    public int type;
     private Long taskId;
     private Long oldTaskId;
     private String taskName;
     private Instant createdTime;
     private Instant deadline;
+    private Instant timeDeadline;
     private Long accountCreated;
     private Long assignee;
     private String description;
@@ -29,45 +31,42 @@ public class TaskModel {
     public TaskModel() {
     }
     //Create&Update New Task and Show Task
-    public TaskModel(Long taskId, Long oldTaskId, String taskName, Instant createdTime,
+
+
+    public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime,
                      Instant deadline, Long accountCreated, Long assignee, String description,
-                     Long approvedId, Long status, Long groupId) {
+                     Instant timeDeadline, Long groupId) {
+        this.type = type;
         this.taskId = taskId;
         this.oldTaskId = oldTaskId;
         this.taskName = taskName;
         this.createdTime = createdTime;
         this.deadline = deadline;
+        this.timeDeadline = timeDeadline;
         this.accountCreated = accountCreated;
         this.assignee = assignee;
         this.description = description;
-        this.approvedId = approvedId;
-        this.status = status;
         this.groupId = groupId;
     }
 
-    //Update result
-    public TaskModel(Long taskId, String taskName, String resolution,
-                     String imgResolutionUrl, String result, Instant startTime,
-                     Instant endTime, Long status) {
-        this.taskId = taskId;
-        this.taskName = taskName;
-        this.resolution = resolution;
-        this.imgResolutionUrl = imgResolutionUrl;
-        this.result = result;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.status = status;
+    public Instant getTimeDeadline() {
+        return timeDeadline;
     }
-    //Review
-    public TaskModel(Long taskId, String taskName, String managerComment,
-                     Long mark, Long reviewerId, Instant reviewTime, Long confirmId) {
-        this.taskId = taskId;
-        this.taskName = taskName;
-        this.managerComment = managerComment;
-        this.mark = mark;
-        this.reviewerId = reviewerId;
-        this.reviewTime = reviewTime;
-        this.confirmId = confirmId;
+
+    public void setTimeDeadline(Instant timeDeadline) {
+        this.timeDeadline = timeDeadline;
+    }
+
+    public static int getShowFormCreate() {
+        return SHOW_FORM_CREATE;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public Long getTaskId() {
