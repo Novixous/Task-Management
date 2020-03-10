@@ -245,7 +245,7 @@
             android:id="@+id/showDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lines="3"
+            android:minLines="1"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
             android:text="Description"
@@ -261,15 +261,15 @@
 
     <Button
         android:id="@+id/btnCreateNewTask"
-        android:layout_margin="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/show_formCreate"
+        android:layout_margin="10dp"
         android:layout_weight="0"
-        android:onClick="clickToCreateNewTask"
-        android:textColor="@color/white"
-        android:textStyle="bold"
         android:background="@drawable/background_button"
+        android:onClick="clickToCreateNewTask"
         android:text="Create new task"
-        android:layout_below="@+id/show_formCreate"/>
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 
 </RelativeLayout>

@@ -269,7 +269,7 @@
             android:id="@+id/showDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lines="3"
+            android:minLines="1"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
             android:text="Description"
@@ -299,7 +299,6 @@
                     android:id="@+id/txtDateStart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight=""
                     android:text="Start date: "
                     android:textSize="16dp"
                     android:textStyle="bold" />
@@ -358,7 +357,7 @@
             android:id="@+id/showResolution"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lines="3"
+            android:minLines="1"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
             android:text="Resolution"
@@ -418,7 +417,7 @@
             android:id="@+id/showResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lines="3"
+            android:minLines="1"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
             android:text="Result"
@@ -441,7 +440,6 @@
                 android:id="@+id/txtReviewer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight=""
                 android:text="Reviewer: "
                 android:textSize="16dp"
                 android:textStyle="bold" />
@@ -479,7 +477,6 @@
                     android:id="@+id/txtMark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight=""
                     android:text="Mark: "
                     android:textSize="16dp"
                     android:textStyle="bold" />
@@ -538,7 +535,7 @@
             android:id="@+id/showReview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lines="3"
+            android:minLines="1"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
             android:text="Review"
@@ -558,6 +555,15 @@
         android:layout_weight="0"
         android:orientation="vertical">
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/background_button"
+            android:text="Update"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -568,32 +574,23 @@
                 android:id="@+id/btnApprove"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
                 android:layout_margin="10dp"
-                android:textStyle="bold"
-                android:textColor="@color/white"
+                android:layout_weight="0.5"
                 android:background="@drawable/button_approve"
-                android:text="Approve" />
+                android:text="Approve"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btnDisApprove"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:background="@drawable/button_disapprove"
                 android:layout_weight="0.5"
-                android:text="Disapprove" />
+                android:background="@drawable/button_disapprove"
+                android:text="Disapprove"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
         </LinearLayout>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:background="@drawable/background_button"
-            android:text="Update" />
     </LinearLayout>
 </RelativeLayout>

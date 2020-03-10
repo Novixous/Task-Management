@@ -28,9 +28,9 @@ public class MyTaskFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_my_task, container, false);
         tabLayout = rootView.findViewById(R.id.tabLayout);
-        tabLayout.addTab(tabLayout.newTab().setText("Have To Do"));
+        tabLayout.addTab(tabLayout.newTab().setText("Todo"));
         tabLayout.addTab(tabLayout.newTab().setText("Finished"));
-        tabLayout.addTab(tabLayout.newTab().setText("Wait Approve"));
+        tabLayout.addTab(tabLayout.newTab().setText("Pending"));
         return rootView;
     }
 }
