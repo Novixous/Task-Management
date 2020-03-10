@@ -43,20 +43,30 @@ public class TaskAdapter extends RecyclerView.Adapter {
         }
     }
 
-    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public int getItemViewType(int position) {
+
+        switch (dataSet.get(position).type) {
+            case 0:
+                return TaskModel.SHOW_FORM_CREATE;
+        }
+        return  0;
+    }
+
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         switch (viewType) {
             case TaskModel.SHOW_FORM_CREATE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_form_create_task, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_my_task_tab, parent, false);
                 return new CreateTaskHolder(view);
         }
         return null;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         final TaskModel object = dataSet.get(position);
         if (object != null) {

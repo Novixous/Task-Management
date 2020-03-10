@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
 
@@ -43,6 +44,9 @@ public class CreateNewTaskFragment extends Fragment {
 
         TaskAdapter taskAdapter = new TaskAdapter(gridViewModelArrayList, this.getActivity().getApplicationContext());
         recyclerView = rootView.findViewById(R.id.viewRecycler);
+        StaggeredGridLayoutManager lm =
+                new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(lm);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(taskAdapter);
         return rootView;

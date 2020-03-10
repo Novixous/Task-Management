@@ -6,5 +6,5 @@ import java.util.List;
 
 public class TaskList {
     @SerializedName("data")
-    public List<Task> taskList;
+    public List<TaskModel> taskList;
 }

@@ -13,7 +13,7 @@ import app.com.taskmanagement.MyTaskTabFragment;
 public class TaskPageAdapter extends FragmentStatePagerAdapter {
     private String[] tabTitles = new String[]{
             "Pending",
-            "Unfinished",
+            "Todo",
             "Finished"
     };
 
@@ -25,9 +25,10 @@ public class TaskPageAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int i) {
         Fragment fragment = new MyTaskTabFragment(tabTitles[i]);
         Bundle args = new Bundle();
-        // Our object is just an integer :-P
+        // Our object is just an integer 😛
         args.putInt(MyTaskTabFragment.ARG_OBJECT, i + 1);
         fragment.setArguments(args);
+
         return fragment;
     }
 

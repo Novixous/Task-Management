@@ -1,17 +1,15 @@
 package app.com.taskmanagement;
 
-import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.NetworkError;
 import com.android.volley.RequestQueue;
@@ -21,9 +19,8 @@ import com.android.volley.VolleyError;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import app.com.taskmanagement.model.Task;
 import app.com.taskmanagement.model.TaskList;
-import app.com.taskmanagement.model.UserList;
+import app.com.taskmanagement.model.TaskModel;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.SingletonRequestQueue;
 
@@ -35,7 +32,7 @@ public class MyTaskTabFragment extends Fragment {
     public static final String ARG_OBJECT = "object";
     public static final String BASE_URL = "http://123.20.89.86:8080";
     public String tabTitle;
-    public ArrayList<Task> taskList = new ArrayList<>();
+    public ArrayList<TaskModel> taskList = new ArrayList<>();
 
     public MyTaskTabFragment(String tabTitle) {
         this.tabTitle = tabTitle;
@@ -54,12 +51,12 @@ public class MyTaskTabFragment extends Fragment {
         ((TextView) view.findViewById(R.id.text1))
                 .setText(Integer.toString(args.getInt(ARG_OBJECT)));
         switch (tabTitle) {
-            case "Pending":
-                getTaskList("assignee", Long.valueOf(1));
-                break;
-            case "Unfinished":
+            case "Todo":
                 break;
             case "Finished":
+                break;
+            case "Pending":
+                getTaskList("assignee", Long.valueOf(1));
                 break;
         }
     }
@@ -83,7 +80,8 @@ public class MyTaskTabFragment extends Fragment {
                 if (error instanceof NetworkError) {
                     Toast.makeText(getActivity().getApplicationContext(), "No network available", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getActivity().getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                    if (getContext() != null)
+                        Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show();
                 }
             }
         });
