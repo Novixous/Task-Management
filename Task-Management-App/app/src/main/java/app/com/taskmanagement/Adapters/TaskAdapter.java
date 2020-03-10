@@ -27,8 +27,7 @@ public class TaskAdapter extends RecyclerView.Adapter {
     }
 
     public static class CreateTaskHolder extends RecyclerView.ViewHolder {
-        TextView
-                showTaskName,
+        TextView showTaskName,
                 showDescription;
         Spinner showIdOld, showDateline, showTime, showAssignee;
 
@@ -43,14 +42,28 @@ public class TaskAdapter extends RecyclerView.Adapter {
         }
     }
 
+    public static class ShowCardTask extends RecyclerView.ViewHolder {
+        TextView showTaskName, showAssignee, showStatus, showDateline;
+
+        public ShowCardTask(@NonNull View itemView) {
+            super(itemView);
+            this.showTaskName = (TextView) itemView.findViewById(R.id.showTaskName);
+            this.showAssignee = (TextView) itemView.findViewById(R.id.showAssignee);
+            this.showStatus = (TextView) itemView.findViewById(R.id.showStatus);
+            this.showDateline = (TextView) itemView.findViewById(R.id.showDeadline);
+        }
+    }
+
     @Override
     public int getItemViewType(int position) {
 
         switch (dataSet.get(position).type) {
             case 0:
                 return TaskModel.SHOW_FORM_CREATE;
+            case 1:
+                return TaskModel.SHOW_CARD_TASK;
         }
-        return  0;
+        return 0;
     }
 
 
@@ -59,8 +72,11 @@ public class TaskAdapter extends RecyclerView.Adapter {
         View view;
         switch (viewType) {
             case TaskModel.SHOW_FORM_CREATE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_my_task_tab, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_form_create_task, parent, false);
                 return new CreateTaskHolder(view);
+            case TaskModel.SHOW_CARD_TASK:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_card_task, parent, false);
+                return new ShowCardTask(view);
         }
         return null;
     }
@@ -78,6 +94,12 @@ public class TaskAdapter extends RecyclerView.Adapter {
                     ((CreateTaskHolder) holder).showTime.setTag(object.getTimeDeadline());
                     ((CreateTaskHolder) holder).showAssignee.setTag(object.getAssignee());
                     ((CreateTaskHolder) holder).showDescription.setText(object.getDescription());
+                    break;
+                case TaskModel.SHOW_CARD_TASK:
+                    ((ShowCardTask)holder).showTaskName.setText(object.getTaskName());
+                    ((ShowCardTask)holder).showAssignee.setText(Integer.parseInt(object.getAssignee()+""));
+                    ((ShowCardTask)holder).showStatus.setText(Integer.parseInt(object.getStatus()+""));
+                    ((ShowCardTask)holder).showDateline.setText(Integer.parseInt(object.getDeadline()+""));
                     break;
             }
         }

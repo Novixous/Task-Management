@@ -4,6 +4,7 @@ import java.time.Instant;
 
 public class TaskModel {
     public static final int SHOW_FORM_CREATE = 0;
+    public static final int SHOW_CARD_TASK = 1;
     public int type;
     private Long taskId;
     private Long oldTaskId;
@@ -32,9 +33,7 @@ public class TaskModel {
 
     public TaskModel() {
     }
-    //Create&Update New Task and Show Task
-
-
+    //Create New Task
     public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime,
                      Instant deadline, Long accountCreated, Long assignee, String description,
                      Instant timeDeadline, Long groupId) {
@@ -48,6 +47,17 @@ public class TaskModel {
         this.accountCreated = accountCreated;
         this.assignee = assignee;
         this.description = description;
+        this.groupId = groupId;
+    }
+    //Show Card Task
+    public TaskModel(int type, Long taskId, String taskName, Instant deadline, Long assignee, Long approvedId, Long status, Long groupId) {
+        this.type = type;
+        this.taskId = taskId;
+        this.taskName = taskName;
+        this.deadline = deadline;
+        this.assignee = assignee;
+        this.approvedId = approvedId;
+        this.status = status;
         this.groupId = groupId;
     }
 
