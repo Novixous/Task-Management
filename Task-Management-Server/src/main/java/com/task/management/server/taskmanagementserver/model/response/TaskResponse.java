@@ -1,36 +1,35 @@
-package com.task.management.server.taskmanagementserver.model;
+package com.task.management.server.taskmanagementserver.model.response;
 
-import java.time.Instant;
 
-public class Task {
+public class TaskResponse {
     private Long taskId;
     private Long oldTaskId;
     private String taskName;
-    private Instant createdTime;
-    private Instant deadline;
+    private String createdTime;
+    private String deadline;
     private Long accountCreated;
     private Long assignee;
     private String description;
     private String resolution;
     private String imgResolutionUrl;
     private String result;
-    private Instant startTime;
-    private Instant endTime;
+    private String startTime;
+    private String endTime;
     private String managerComment;
     private Long mark;
     private Long reviewerId;
-    private Instant reviewTime;
+    private String reviewTime;
     private Long confirmId;
     private Long approvedId;
     private Long status;
     private Long groupId;
     private Long editedBy;
-    private Instant editedAt;
+    private String editedAt;
 
-    public Task() {
+    public TaskResponse() {
     }
 
-    public Task(Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline, Long accountCreated, Long assignee, String description, String resolution, String imgResolutionUrl, String result, Instant startTime, Instant endTime, String managerComment, Long mark, Long reviewerId, Instant reviewTime, Long confirmId, Long approvedId, Long status, Long groupId, Long editedBy, Instant editedAt) {
+    public TaskResponse(Long taskId, Long oldTaskId, String taskName, String createdTime, String deadline, Long accountCreated, Long assignee, String description, String resolution, String imgResolutionUrl, String result, String startTime, String endTime, String managerComment, Long mark, Long reviewerId, String reviewTime, Long confirmId, Long approvedId, Long status, Long groupId, Long editedBy, String editedAt) {
         this.taskId = taskId;
         this.oldTaskId = oldTaskId;
         this.taskName = taskName;
@@ -80,19 +79,19 @@ public class Task {
         this.taskName = taskName;
     }
 
-    public Instant getCreatedTime() {
+    public String getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(Instant createdTime) {
+    public void setCreatedTime(String createdTime) {
         this.createdTime = createdTime;
     }
 
-    public Instant getDeadline() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Instant deadline) {
+    public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
 
@@ -144,19 +143,19 @@ public class Task {
         this.result = result;
     }
 
-    public Instant getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Instant startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public Instant getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Instant endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
@@ -184,11 +183,11 @@ public class Task {
         this.reviewerId = reviewerId;
     }
 
-    public Instant getReviewTime() {
+    public String getReviewTime() {
         return reviewTime;
     }
 
-    public void setReviewTime(Instant reviewTime) {
+    public void setReviewTime(String reviewTime) {
         this.reviewTime = reviewTime;
     }
 
@@ -232,11 +231,11 @@ public class Task {
         this.editedBy = editedBy;
     }
 
-    public Instant getEditedAt() {
+    public String getEditedAt() {
         return editedAt;
     }
 
-    public void setEditedAt(Instant editedAt) {
+    public void setEditedAt(String editedAt) {
         this.editedAt = editedAt;
     }
 }

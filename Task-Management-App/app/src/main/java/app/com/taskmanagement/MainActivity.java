@@ -2,8 +2,10 @@ package app.com.taskmanagement;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -35,14 +37,14 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-        selectItem(1, "My Task");
+        selectItem(0, "My Task");
 
         navigationView = (NavigationView) findViewById(R.id.nv);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int order = item.getOrder();
                 String title = item.getTitle().toString();
+                int order = getOrderFromMenu(title);
                 selectItem(order, title);
                 return true;
             }
@@ -55,12 +57,15 @@ public class MainActivity extends AppCompatActivity {
 
         switch (position) {
             case 0:
-                currentFragment = new MyAccountFragment();
-                break;
-            case 1:
                 currentFragment = new MyTaskFragment();
                 break;
+            case 1:
+                currentFragment = new CreateNewTaskFragment();
+                break;
             case 2:
+                currentFragment = new MyAccountFragment();
+                break;
+            case 3:
                 currentFragment = new SettingsFragment();
                 break;
 
@@ -101,4 +106,40 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(mTitle);
     }
 
+    public int getOrderFromMenu(String title) {
+        switch (title) {
+            case "My Task":
+                return 0;
+            case "Create New Task":
+                return 1;
+            case "My Account":
+                return 2;
+            case "Settings":
+                return 3;
+            default:
+                return -1;
+        }
+    }
+
+    public static class FormCreateTaskFragment extends Fragment {
+
+
+        public FormCreateTaskFragment() {
+            // Required empty public constructor
+        }
+
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            // Inflate the layout for this fragment
+            return inflater.inflate(R.layout.fragment_form_create_task, container, false);
+        }
+    }
 }

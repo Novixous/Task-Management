@@ -1,13 +1,16 @@
-package com.task.management.server.taskmanagementserver.model;
+package app.com.taskmanagement.model;
 
 import java.time.Instant;
 
-public class Task {
+public class TaskModel {
+    public static final int SHOW_FORM_CREATE = 0;
+    public int type;
     private Long taskId;
     private Long oldTaskId;
     private String taskName;
     private Instant createdTime;
     private Instant deadline;
+    private Instant timeDeadline;
     private Long accountCreated;
     private Long assignee;
     private String description;
@@ -24,36 +27,46 @@ public class Task {
     private Long approvedId;
     private Long status;
     private Long groupId;
-    private Long editedBy;
-    private Instant editedAt;
 
-    public Task() {
+    public TaskModel() {
     }
+    //Create&Update New Task and Show Task
 
-    public Task(Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline, Long accountCreated, Long assignee, String description, String resolution, String imgResolutionUrl, String result, Instant startTime, Instant endTime, String managerComment, Long mark, Long reviewerId, Instant reviewTime, Long confirmId, Long approvedId, Long status, Long groupId, Long editedBy, Instant editedAt) {
+
+    public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime,
+                     Instant deadline, Long accountCreated, Long assignee, String description,
+                     Instant timeDeadline, Long groupId) {
+        this.type = type;
         this.taskId = taskId;
         this.oldTaskId = oldTaskId;
         this.taskName = taskName;
         this.createdTime = createdTime;
         this.deadline = deadline;
+        this.timeDeadline = timeDeadline;
         this.accountCreated = accountCreated;
         this.assignee = assignee;
         this.description = description;
-        this.resolution = resolution;
-        this.imgResolutionUrl = imgResolutionUrl;
-        this.result = result;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.managerComment = managerComment;
-        this.mark = mark;
-        this.reviewerId = reviewerId;
-        this.reviewTime = reviewTime;
-        this.confirmId = confirmId;
-        this.approvedId = approvedId;
-        this.status = status;
         this.groupId = groupId;
-        this.editedBy = editedBy;
-        this.editedAt = editedAt;
+    }
+
+    public Instant getTimeDeadline() {
+        return timeDeadline;
+    }
+
+    public void setTimeDeadline(Instant timeDeadline) {
+        this.timeDeadline = timeDeadline;
+    }
+
+    public static int getShowFormCreate() {
+        return SHOW_FORM_CREATE;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public Long getTaskId() {
@@ -222,21 +235,5 @@ public class Task {
 
     public void setGroupId(Long groupId) {
         this.groupId = groupId;
-    }
-
-    public Long getEditedBy() {
-        return editedBy;
-    }
-
-    public void setEditedBy(Long editedBy) {
-        this.editedBy = editedBy;
-    }
-
-    public Instant getEditedAt() {
-        return editedAt;
-    }
-
-    public void setEditedAt(Instant editedAt) {
-        this.editedAt = editedAt;
     }
 }

@@ -1,4 +1,4 @@
-package com.task.management.server.taskmanagementserver.model;
+package app.com.taskmanagement.model;
 
 import java.time.Instant;
 
