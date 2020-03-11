@@ -126,6 +126,11 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, currentFragment).addToBackStack(null).commit();
     }
 
+    public void clickToShowDetailTask(View view) {
+        currentFragment = new ShowTaskFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, currentFragment).addToBackStack(null).commit();
+    }
+
     public static class FormCreateTaskFragment extends Fragment {
 
 

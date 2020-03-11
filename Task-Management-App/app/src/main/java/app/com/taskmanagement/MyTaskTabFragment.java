@@ -4,21 +4,25 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.android.volley.NetworkError;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import app.com.taskmanagement.Adapters.TaskAdapter;
 import app.com.taskmanagement.model.TaskList;
 import app.com.taskmanagement.model.TaskModel;
 import app.com.taskmanagement.util.GsonRequest;
@@ -33,6 +37,8 @@ public class MyTaskTabFragment extends Fragment {
     public static final String BASE_URL = "http://123.20.89.86:8080";
     public String tabTitle;
     public ArrayList<TaskModel> taskList = new ArrayList<>();
+    ArrayList<TaskModel> gridViewModelArrayList;
+    private RecyclerView recyclerView;
 
     public MyTaskTabFragment(String tabTitle) {
         this.tabTitle = tabTitle;
@@ -48,14 +54,47 @@ public class MyTaskTabFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Bundle args = getArguments();
-        ((TextView) view.findViewById(R.id.text1))
-                .setText(Integer.toString(args.getInt(ARG_OBJECT)));
+//        ((TextView) view.findViewById(R.id.text1))
+//                .setText(Integer.toString(args.getInt(ARG_OBJECT)));
+        TaskModel gridViewModel;
+        TaskAdapter taskAdapter;
+        StaggeredGridLayoutManager lm;
         switch (tabTitle) {
             case "Todo":
+                gridViewModelArrayList = new ArrayList();
+                gridViewModel = null;
+                gridViewModel = new TaskModel(TaskModel.SHOW_CARD_TASK, null, "Doing", Instant.now(), 1L, null, 1L, null);
+                gridViewModelArrayList.add(gridViewModel);
+                taskAdapter = new TaskAdapter(gridViewModelArrayList, this.getActivity().getApplicationContext());
+                recyclerView = view.findViewById(R.id.tabShowCard);
+                lm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(lm);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(taskAdapter);
                 break;
             case "Finished":
+                gridViewModelArrayList = new ArrayList();
+                gridViewModel = null;
+                gridViewModel = new TaskModel(TaskModel.SHOW_CARD_TASK, null, "Doneeeee", Instant.now(), 1L, null, 1L, null);
+                gridViewModelArrayList.add(gridViewModel);
+                taskAdapter = new TaskAdapter(gridViewModelArrayList, this.getActivity().getApplicationContext());
+                recyclerView = view.findViewById(R.id.tabShowCard);
+                lm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(lm);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(taskAdapter);
                 break;
             case "Pending":
+                gridViewModelArrayList = new ArrayList();
+                gridViewModel = null;
+                gridViewModel = new TaskModel(TaskModel.SHOW_CARD_TASK, null, "Waig", Instant.now(), 1L, null, 1L, null);
+                gridViewModelArrayList.add(gridViewModel);
+                taskAdapter = new TaskAdapter(gridViewModelArrayList, this.getActivity().getApplicationContext());
+                recyclerView = view.findViewById(R.id.tabShowCard);
+                lm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(lm);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(taskAdapter);
                 getTaskList("assignee", Long.valueOf(1));
                 break;
         }

@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import java.util.List;
-
 import app.com.taskmanagement.MyTaskTabFragment;
 
 public class TaskPageAdapter extends FragmentStatePagerAdapter {
