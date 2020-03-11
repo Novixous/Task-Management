@@ -29,6 +29,7 @@ import java.util.Map;
 
 import app.com.taskmanagement.model.request.LoginRequest;
 import app.com.taskmanagement.model.response.LoginResponse;
+import app.com.taskmanagement.util.DialogUtil;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.SingletonRequestQueue;
 
@@ -90,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(LoginActivity.this, "Unable to get connection from server!!", Toast.LENGTH_SHORT).show();
-                showDialogExit();
+                DialogUtil.showDialogExit(LoginActivity.this);
             }
         });
 
@@ -98,18 +99,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void showDialogExit() {
-
-        new AlertDialog.Builder(this)
-                .setMessage("No connection from server. Do you want to exit?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        finish();
-                    }
-                }).create().show();
-    }
 
     public void clickToLogin(View view) {
         String username, password;
