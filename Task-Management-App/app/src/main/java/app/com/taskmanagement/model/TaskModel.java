@@ -27,6 +27,8 @@ public class TaskModel {
     private Long approvedId;
     private Long status;
     private Long groupId;
+    private Long editedBy;
+    private Instant editedAt;
 
     public TaskModel() {
     }
