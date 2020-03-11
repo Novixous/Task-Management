@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import java.time.Instant;
 import java.util.ArrayList;
 
 import app.com.taskmanagement.Adapters.TaskAdapter;
@@ -39,7 +40,7 @@ public class CreateNewTaskFragment extends Fragment {
         gridViewModelArrayList = new ArrayList();
 
         TaskModel gridViewModel = null;
-        gridViewModel = new TaskModel(TaskModel.SHOW_FORM_CREATE, null, null, "", null, null, null, null, "", null, null);
+        gridViewModel = new TaskModel(TaskModel.SHOW_FORM_CREATE,null,null,"",Instant.now(),Instant.now(),null,null,"",null,null,null);
         gridViewModelArrayList.add(gridViewModel);
 
         TaskAdapter taskAdapter = new TaskAdapter(gridViewModelArrayList, this.getActivity().getApplicationContext());

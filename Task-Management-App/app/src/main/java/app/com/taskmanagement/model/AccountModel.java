@@ -1,11 +1,14 @@
 package app.com.taskmanagement.model;
 
 public class AccountModel {
+    public static final int SHOW_PROFILE = 0;
+    public static final int CHANGE_PASSWORD = 1;
+    public int type;
     private Long accountId;
     private String username;
+    private String firstname;
+    private String lastname;
     private String password;
-    private String firstName;
-    private String lastName;
     private String fullName;
     private String phone;
     private String email;
@@ -14,12 +17,13 @@ public class AccountModel {
     private Long roleId;
     private Long groupId;
 
-    public AccountModel(Long accountId, String username, String password, String firstName, String lastName, String fullName, String phone, String email, String address, boolean deactivated, Long roleId, Long groupId) {
+    public AccountModel(int type, Long accountId, String username, String firstname, String lastname, String password, String fullName, String phone, String email, String address, boolean deactivated, Long roleId, Long groupId) {
+        this.type = type;
         this.accountId = accountId;
         this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.fullName = fullName;
         this.phone = phone;
         this.email = email;
@@ -27,6 +31,30 @@ public class AccountModel {
         this.deactivated = deactivated;
         this.roleId = roleId;
         this.groupId = groupId;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Long getAccountId() {
@@ -53,22 +81,6 @@ public class AccountModel {
         this.password = password;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getFullName() {
         return fullName;
     }
@@ -91,14 +103,6 @@ public class AccountModel {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public boolean isDeactivated() {

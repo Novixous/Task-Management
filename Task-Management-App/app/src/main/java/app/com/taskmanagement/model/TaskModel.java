@@ -33,20 +33,20 @@ public class TaskModel {
 
     public TaskModel() {
     }
-    //Create New Task
-    public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime,
-                     Instant deadline, Long accountCreated, Long assignee, String description,
-                     Instant timeDeadline, Long groupId) {
+
+    //Create
+    public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline, Long accountCreated, Long assignee, String description, Long approvedId, Long status, Long groupId) {
         this.type = type;
         this.taskId = taskId;
         this.oldTaskId = oldTaskId;
         this.taskName = taskName;
         this.createdTime = createdTime;
         this.deadline = deadline;
-        this.timeDeadline = timeDeadline;
         this.accountCreated = accountCreated;
         this.assignee = assignee;
         this.description = description;
+        this.approvedId = approvedId;
+        this.status = status;
         this.groupId = groupId;
     }
     //Show Card Task
@@ -247,5 +247,21 @@ public class TaskModel {
 
     public void setGroupId(Long groupId) {
         this.groupId = groupId;
+    }
+
+    public Long getEditedBy() {
+        return editedBy;
+    }
+
+    public void setEditedBy(Long editedBy) {
+        this.editedBy = editedBy;
+    }
+
+    public Instant getEditedAt() {
+        return editedAt;
+    }
+
+    public void setEditedAt(Instant editedAt) {
+        this.editedAt = editedAt;
     }
 }
