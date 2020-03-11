@@ -59,7 +59,7 @@ public class TaskAdapter extends RecyclerView.Adapter {
         View view;
         switch (viewType) {
             case TaskModel.SHOW_FORM_CREATE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_my_task_tab, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_task, parent, false);
                 return new CreateTaskHolder(view);
         }
         return null;
