@@ -40,7 +40,8 @@ public class MyAccountFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_recycler, container, false);
         gridViewModelArrayList = new ArrayList();
         AccountModel gridViewModel = null;
-        gridViewModel = new AccountModel(AccountModel.SHOW_PROFILE,null,"","","","",false,null,null);
+        gridViewModel = new AccountModel(AccountModel.SHOW_PROFILE,null,"","","","",
+                "","","","",false,null,null);
         gridViewModelArrayList.add(gridViewModel);
 
         AccountAdapter accountAdapter = new AccountAdapter(gridViewModelArrayList, this.getActivity().getApplicationContext());
