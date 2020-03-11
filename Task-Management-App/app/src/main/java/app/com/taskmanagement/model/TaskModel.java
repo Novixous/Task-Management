@@ -33,11 +33,9 @@ public class TaskModel {
     public TaskModel() {
     }
     //Create&Update New Task and Show Task
-
-
     public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime,
                      Instant deadline, Long accountCreated, Long assignee, String description,
-                     Instant timeDeadline, Long groupId) {
+                     Instant timeDeadline, Long groupId,Long editedBy,Instant editedAt) {
         this.type = type;
         this.taskId = taskId;
         this.oldTaskId = oldTaskId;

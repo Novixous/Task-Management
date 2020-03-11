@@ -69,10 +69,38 @@
 
                 <TextView
                     android:id="@+id/txtFullname"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:text="Cao Thanh Thư"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/grey" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Username:"
+                    android:textColor="@color/darkBlue"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/txtUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:text="ThuCT"
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
@@ -98,7 +126,7 @@
                     android:textSize="13sp" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:text="Click to change password"
@@ -124,40 +152,12 @@
                     android:textColor="@color/darkBlue"
                     android:textSize="13sp" />
 
-                <TextView
+                <Spinner
                     android:id="@+id/txtRole"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:text="Manager"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/grey" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Group Name:"
-                    android:textColor="@color/darkBlue"
-                    android:textSize="13sp" />
-
-                <TextView
-                    android:id="@+id/txtGroupName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="Task Manage Group"
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
@@ -182,7 +182,7 @@
 
                 <TextView
                     android:id="@+id/txtEmail"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:text="ThuCT@gmail.com"
@@ -210,38 +210,10 @@
 
                 <TextView
                     android:id="@+id/txtPhone"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:text="0988-000-000"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/grey" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Address:"
-                    android:textColor="@color/darkBlue"
-                    android:textSize="13sp" />
-
-                <TextView
-                    android:id="@+id/txtAddress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="ABC, Wall"
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
@@ -264,9 +236,9 @@
                     android:textColor="@color/darkBlue"
                     android:textSize="13sp" />
 
-                <TextView
+                <Spinner
                     android:id="@+id/txtActive"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:text="Active"
@@ -281,21 +253,23 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
         android:layout_marginRight="30dp"
+        android:layout_marginBottom="5dp"
         android:layout_weight="0">
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save"
             android:background="@drawable/background_button"
-            android:textStyle="bold"
+            android:onClick="clickToSaveProfile"
+            android:text="Save"
             android:textColor="@color/white"
-            android:onClick="clickToSaveProfile"/>
+            android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>

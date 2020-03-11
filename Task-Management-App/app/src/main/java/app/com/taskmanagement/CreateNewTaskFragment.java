@@ -39,7 +39,7 @@ public class CreateNewTaskFragment extends Fragment {
         gridViewModelArrayList = new ArrayList();
 
         TaskModel gridViewModel = null;
-        gridViewModel = new TaskModel(TaskModel.SHOW_FORM_CREATE, null, null, "", null, null, null, null, "", null, null);
+//        gridViewModel = new TaskModel(TaskModel.SHOW_FORM_CREATE, null, null, "", null, null, null, null, "", null, null);
         gridViewModelArrayList.add(gridViewModel);
 
         TaskAdapter taskAdapter = new TaskAdapter(gridViewModelArrayList, this.getActivity().getApplicationContext());

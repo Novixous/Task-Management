@@ -1,27 +1,28 @@
 package app.com.taskmanagement.model;
 
 public class AccountModel {
+    public static final int SHOW_PROFILE = 0;
+    public static final int CHANGE_PASSWORD = 1;
+    public int type;
     private Long accountId;
     private String username;
     private String password;
     private String fullName;
     private String phone;
     private String email;
-    private String address;
     private boolean deactivated;
     private Long roleId;
     private Long groupId;
 
-    public AccountModel(Long accountId, String username, String password,
-                        String fullName, String phone, String email, String address,
+    public AccountModel(int type, Long accountId, String username,
+                        String fullName, String phone, String email,
                         boolean deactivated, Long roleId, Long groupId) {
+        this.type = type;
         this.accountId = accountId;
         this.username = username;
-        this.password = password;
         this.fullName = fullName;
         this.phone = phone;
         this.email = email;
-        this.address = address;
         this.deactivated = deactivated;
         this.roleId = roleId;
         this.groupId = groupId;
@@ -73,14 +74,6 @@ public class AccountModel {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public boolean isDeactivated() {
