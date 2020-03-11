@@ -15,10 +15,6 @@ import java.util.Locale;
 public class TimeUtil {
     public static List<TaskResponse> convertTaskToTaskResponse(List<Task> original) {
         List<TaskResponse> result = new ArrayList<>();
-//        DateTimeFormatter formatter =
-//                DateTimeFormatter.ofPattern("dd-MM-yyyy:HH:mm:ss")
-//                        .withLocale(Locale.US)
-//                        .withZone(ZoneId.of(timeonze));
         try {
             for (Task task : original) {
                 Field[] fields = task.getClass().getDeclaredFields();
@@ -39,6 +35,35 @@ public class TimeUtil {
                     }
                 }
                 result.add(response);
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } finally {
+            return result;
+        }
+    }
+
+    public static List<Task> convertTaskResponseToTask(List<TaskResponse> responses) {
+        List<Task> result = new ArrayList<>();
+        try {
+            for (TaskResponse taskResponse : responses) {
+                Field[] responseFields = taskResponse.getClass().getDeclaredFields();
+                Task originalTask = new Task();
+                for (int i = 0; i < responseFields.length; i++) {
+                    Field responseField = responseFields[i];
+                    responseField.setAccessible(true);
+                    Field[] originalTaskFields = originalTask.getClass().getDeclaredFields();
+                    Field originalTaskField = originalTaskFields[i];
+                    originalTaskField.setAccessible(true);
+                    if (responseField.get(taskResponse) != null) {
+                        if (originalTaskField.getType().isAssignableFrom(Instant.class)) {
+                            originalTaskField.set(originalTask, Instant.parse(responseField.get(taskResponse).toString()));
+                        } else {
+                            originalTaskField.set(originalTask, responseField.get(taskResponse));
+                        }
+                    }
+                }
+                result.add(originalTask);
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
