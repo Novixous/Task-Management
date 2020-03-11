@@ -34,6 +34,7 @@
             android:textSize="16dp" />
 
         <View
+            android:id="@+id/lineTaskname"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -99,6 +100,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/lineID"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -141,6 +143,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/lineDeadline"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -202,6 +205,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/lineStatus"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -233,6 +237,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/lineCreator"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -263,6 +268,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/lineAssignee"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -290,6 +296,7 @@
             android:textSize="16dp" />
 
         <View
+            android:id="@+id/lineDescription"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -352,6 +359,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/lineDate"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -374,6 +382,7 @@
                 android:textStyle="bold" />
 
             <ImageButton
+                android:id="@+id/btnImg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -386,6 +395,7 @@
             android:layout_height="wrap_content" />
 
         <View
+            android:id="@+id/linePhoto"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -412,6 +422,7 @@
             android:textSize="16dp" />
 
         <View
+            android:id="@+id/lineResult"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -442,6 +453,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/lineReviewer"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -472,6 +484,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/lineConfirm"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -534,6 +547,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/lineMark"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -560,6 +574,7 @@
             android:textSize="16dp" />
 
         <View
+            android:id="@+id/lineReview"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -572,6 +587,7 @@
         android:orientation="vertical">
 
         <Button
+            android:id="@+id/btnCreateTask"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -581,6 +597,7 @@
             android:textStyle="bold" />
 
         <Button
+            android:id="@+id/btnUpdateTask"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
