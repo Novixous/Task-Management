@@ -1,17 +1,33 @@
 package app.com.taskmanagement.model;
 
-public class AccountModel {
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
+public class AccountModel implements Serializable {
+    @SerializedName("accountId")
     private Long accountId;
+    @SerializedName("username")
     private String username;
+    @SerializedName("password")
     private String password;
+    @SerializedName("firstName")
     private String firstName;
+    @SerializedName("lastName")
     private String lastName;
+    @SerializedName("fullName")
     private String fullName;
+    @SerializedName("phone")
     private String phone;
+    @SerializedName("email")
     private String email;
+    @SerializedName("address")
     private String address;
+    @SerializedName("deactivated")
     private boolean deactivated;
+    @SerializedName("roleId")
     private Long roleId;
+    @SerializedName("groupId")
     private Long groupId;
 
     public AccountModel(Long accountId, String username, String password, String firstName, String lastName, String fullName, String phone, String email, String address, boolean deactivated, Long roleId, Long groupId) {
