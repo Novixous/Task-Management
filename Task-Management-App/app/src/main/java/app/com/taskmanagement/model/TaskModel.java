@@ -34,9 +34,7 @@ public class TaskModel {
     }
 
     //Create
-
-
-    public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline, Long accountCreated, Long assignee, String description, Long approvedId, Long status, Long groupId, Long editedBy, Instant editedAt) {
+    public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline, Long accountCreated, Long assignee, String description, Long approvedId, Long status, Long groupId) {
         this.type = type;
         this.taskId = taskId;
         this.oldTaskId = oldTaskId;
@@ -49,8 +47,6 @@ public class TaskModel {
         this.approvedId = approvedId;
         this.status = status;
         this.groupId = groupId;
-        this.editedBy = editedBy;
-        this.editedAt = editedAt;
     }
 
     public Instant getTimeDeadline() {

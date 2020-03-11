@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
-            return inflater.inflate(R.layout.fragment_form_create_task, container, false);
+            return inflater.inflate(R.layout.fragment_show_task, container, false);
         }
     }
 }
