@@ -4,17 +4,34 @@ public class AccountModel {
     public static final int SHOW_PROFILE = 0;
     public static final int CHANGE_PASSWORD = 1;
     public int type;
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
+public class AccountModel implements Serializable {
+    @SerializedName("accountId")
     private Long accountId;
+    @SerializedName("username")
     private String username;
-    private String firstname;
-    private String lastname;
+    @SerializedName("password")
     private String password;
+    @SerializedName("firstName")
+    private String firstName;
+    @SerializedName("lastName")
+    private String lastName;
+    @SerializedName("fullName")
     private String fullName;
+    @SerializedName("phone")
     private String phone;
+    @SerializedName("email")
     private String email;
+    @SerializedName("address")
     private String address;
+    @SerializedName("deactivated")
     private boolean deactivated;
+    @SerializedName("roleId")
     private Long roleId;
+    @SerializedName("groupId")
     private Long groupId;
 
     public AccountModel(int type, Long accountId, String username, String firstname, String lastname, String password, String fullName, String phone, String email, String address, boolean deactivated, Long roleId, Long groupId) {

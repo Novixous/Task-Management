@@ -1,5 +1,8 @@
 package app.com.taskmanagement;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -68,6 +71,14 @@ public class MainActivity extends AppCompatActivity {
             case 3:
                 currentFragment = new SettingsFragment();
                 break;
+            case 4:
+                SharedPreferences preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.remove("account");
+                editor.commit();
+                finish();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
 
             default:
                 break;
@@ -116,6 +127,8 @@ public class MainActivity extends AppCompatActivity {
                 return 2;
             case "Settings":
                 return 3;
+            case "Logout":
+                return 4;
             default:
                 return -1;
         }
