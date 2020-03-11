@@ -1,8 +1,10 @@
 package app.com.taskmanagement;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -60,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         HashMap<String, String> headers = new HashMap<>();
 //        headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
         headers.put("connection", "keep-alive");
-        headers.put("Content-Type","application/json");
+        headers.put("Content-Type", "application/json");
         LoginRequest loginRequest = new LoginRequest(username, password);
         Gson gson = new Gson();
         String body = gson.toJson(loginRequest);
@@ -87,12 +89,26 @@ public class LoginActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(LoginActivity.this, "No Network connection!!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Unable to get connection from server!!", Toast.LENGTH_SHORT).show();
+                showDialogExit();
             }
         });
 
         mRequestQueue.add(gsonRequest);
 
+    }
+
+    public void showDialogExit() {
+
+        new AlertDialog.Builder(this)
+                .setMessage("No connection from server. Do you want to exit?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        finish();
+                    }
+                }).create().show();
     }
 
     public void clickToLogin(View view) {

@@ -1,14 +1,17 @@
 package app.com.taskmanagement.model;
 
-public class AccountModel {
-    public static final int SHOW_PROFILE = 0;
-    public static final int CHANGE_PASSWORD = 1;
-    public int type;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+
+
+
 public class AccountModel implements Serializable {
+    public static final int SHOW_PROFILE = 0;
+    public static final int CHANGE_PASSWORD = 1;
+    public int type;
+
     @SerializedName("accountId")
     private Long accountId;
     @SerializedName("username")
@@ -38,8 +41,8 @@ public class AccountModel implements Serializable {
         this.type = type;
         this.accountId = accountId;
         this.username = username;
-        this.firstname = firstname;
-        this.lastname = lastname;
+        this.firstName = firstname;
+        this.lastName = lastname;
         this.password = password;
         this.fullName = fullName;
         this.phone = phone;
@@ -51,19 +54,19 @@ public class AccountModel implements Serializable {
     }
 
     public String getFirstname() {
-        return firstname;
+        return firstName;
     }
 
     public void setFirstname(String firstname) {
-        this.firstname = firstname;
+        this.firstName = firstname;
     }
 
     public String getLastname() {
-        return lastname;
+        return lastName;
     }
 
     public void setLastname(String lastname) {
-        this.lastname = lastname;
+        this.lastName = lastname;
     }
 
     public String getAddress() {
