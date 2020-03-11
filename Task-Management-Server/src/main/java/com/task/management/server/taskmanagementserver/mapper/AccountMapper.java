@@ -20,34 +20,40 @@ public interface AccountMapper {
             "email as email, " +
             "address as address, " +
             "role_id as roleId, " +
-            "group_idgroup as groupId, " +
+            "group_id as groupId, " +
             "deactivated as deactivated " +
             "FROM account where idaccount = #{id}")
-    Account getAccountById(@Param("parameterValue") Long id);
+    Account getAccountById(@Param("id") Long id);
 
-    @Select("SELECT idaccount as accountId, " +
-            "username as username, " +
-            "password as password, " +
-            "firstname as firstName, " +
-            "lastname as lastName, " +
-            "fullname as fullName, " +
-            "phone as phone, " +
-            "email as email, " +
-            "address as address, " +
-            "role_id as roleId, " +
-            "group_idgroup as groupId, " +
-            "deactivated as deactivated " +
-            "FROM account where ${fieldName} = #{fieldValue}")
+    @Select({
+            "<script>" +
+                    "SELECT idaccount as accountId, " +
+                    "username as username, " +
+                    "password as password, " +
+                    "firstname as firstName, " +
+                    "lastname as lastName, " +
+                    "fullname as fullName, " +
+                    "phone as phone, " +
+                    "email as email, " +
+                    "address as address, " +
+                    "role_id as roleId, " +
+                    "group_id as groupId, " +
+                    "deactivated as deactivated " +
+                    "FROM account " +
+                    "<if test='fieldName != null and fieldValue != null'>" +
+                    "where ${fieldName} = #{fieldValue}" +
+                    "</if>" +
+                    "</script>"})
     List<Account> getAccountsByField(@Param("fieldName") String fieldName, @Param("fieldValue") Long value);
 
 
-    @Insert("INSERT INTO account (username, password, firstname, lastname, phone, email, address, role_id, group_idgroup, deactivated)" +
+    @Insert("INSERT INTO account (username, password, firstname, lastname, fullname, phone, email, address, role_id, group_id, deactivated)" +
             "VALUES(" +
             "#{account.username}, " +
             "#{account.password}, " +
             "#{account.firstName}, " +
             "#{account.lastName}, " +
-//            "#{account.fullName}, " +
+            "#{account.fullName}, " +
             "#{account.phone}, " +
             "#{account.email}, " +
             "#{account.address}, " +
@@ -115,7 +121,7 @@ public interface AccountMapper {
                     "</if>" +
                     "</if>" +
                     "<if test='account.groupId != null'>" +
-                    "group_idgroup = #{account.groupId}" +
+                    "group_id = #{account.groupId}" +
                     "<if test='account.deactivated !=null'>" +
                     ", " +
                     "</if>" +

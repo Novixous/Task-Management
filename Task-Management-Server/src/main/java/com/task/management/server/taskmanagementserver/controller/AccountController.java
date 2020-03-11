@@ -36,8 +36,8 @@ public class AccountController {
      * @return
      */
     @GetMapping("/accounts")
-    public List<Account> getAccountsByField(@RequestParam("fieldName") String fieldName,
-                                            @RequestParam("fieldValue") Long fieldValue) {
+    public List<Account> getAccountsByField(@RequestParam(name = "fieldName", required = false) String fieldName,
+                                            @RequestParam(name = "fieldValue", required = false) Long fieldValue) {
         return accountMapper.getAccountsByField(fieldName, fieldValue);
     }
 
