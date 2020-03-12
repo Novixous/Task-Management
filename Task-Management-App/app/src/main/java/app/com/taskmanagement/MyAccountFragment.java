@@ -39,7 +39,7 @@ public class MyAccountFragment extends Fragment {
                 "","","","",false,null,null);
         gridViewModelArrayList.add(gridViewModel);
 
-        AccountAdapter accountAdapter = new AccountAdapter(gridViewModelArrayList, this.getActivity().getApplicationContext());
+        AccountAdapter accountAdapter = new AccountAdapter(gridViewModelArrayList, this.getActivity());
         recyclerView = rootView.findViewById(R.id.viewRecycler);
         StaggeredGridLayoutManager lm =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);

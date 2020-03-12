@@ -23,9 +23,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import app.com.taskmanagement.adapters.TaskAdapter;
-import app.com.taskmanagement.model.TaskList;
+import app.com.taskmanagement.model.response.TaskList;
 import app.com.taskmanagement.model.TaskModel;
+import app.com.taskmanagement.model.response.TaskResponse;
 import app.com.taskmanagement.util.GsonRequest;
+import app.com.taskmanagement.util.PreferenceUtil;
 import app.com.taskmanagement.util.SingletonRequestQueue;
 
 /**
@@ -34,9 +36,8 @@ import app.com.taskmanagement.util.SingletonRequestQueue;
 public class UserTaskTabFragment extends Fragment {
 
     public static final String ARG_OBJECT = "object";
-    public static final String BASE_URL = "http://123.20.89.86:8080";
     public String tabTitle;
-    public ArrayList<TaskModel> taskList = new ArrayList<>();
+    public ArrayList<TaskResponse> taskList = new ArrayList<>();
     ArrayList<TaskModel> gridViewModelArrayList;
     private RecyclerView recyclerView;
 
@@ -65,7 +66,7 @@ public class UserTaskTabFragment extends Fragment {
                 gridViewModel = null;
                 gridViewModel = new TaskModel(TaskModel.SHOW_CARD_TASK, null, "Doing", Instant.now(), 1L, null, 1L, null);
                 gridViewModelArrayList.add(gridViewModel);
-                taskAdapter = new TaskAdapter(gridViewModelArrayList, this.getActivity().getApplicationContext());
+                taskAdapter = new TaskAdapter(gridViewModelArrayList, this.getActivity());
                 recyclerView = view.findViewById(R.id.tabShowCard);
                 lm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(lm);
@@ -77,7 +78,7 @@ public class UserTaskTabFragment extends Fragment {
                 gridViewModel = null;
                 gridViewModel = new TaskModel(TaskModel.SHOW_CARD_TASK, null, "Doneeeee", Instant.now(), 1L, null, 1L, null);
                 gridViewModelArrayList.add(gridViewModel);
-                taskAdapter = new TaskAdapter(gridViewModelArrayList, this.getActivity().getApplicationContext());
+                taskAdapter = new TaskAdapter(gridViewModelArrayList, this.getActivity());
                 recyclerView = view.findViewById(R.id.tabShowCard);
                 lm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(lm);
@@ -89,13 +90,13 @@ public class UserTaskTabFragment extends Fragment {
                 gridViewModel = null;
                 gridViewModel = new TaskModel(TaskModel.SHOW_CARD_TASK, null, "Waig", Instant.now(), 1L, null, 1L, null);
                 gridViewModelArrayList.add(gridViewModel);
-                taskAdapter = new TaskAdapter(gridViewModelArrayList, this.getActivity().getApplicationContext());
+                taskAdapter = new TaskAdapter(gridViewModelArrayList, this.getActivity());
                 recyclerView = view.findViewById(R.id.tabShowCard);
                 lm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(lm);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(taskAdapter);
-                getTaskList("assignee", Long.valueOf(1));
+                getTaskList("assignee", PreferenceUtil.getAccountFromPreference(getActivity()).getAccountId());
                 break;
         }
     }
@@ -103,7 +104,7 @@ public class UserTaskTabFragment extends Fragment {
     private void getTaskList(String fieldName, Long value) {
         taskList.clear();
         RequestQueue mRequestQueue = SingletonRequestQueue.getInstance(getActivity().getApplicationContext()).getRequestQueue();
-        String url = String.format(BASE_URL + "/task/getTaskListByFieldId?fieldName=%s&value=%d", fieldName, value);
+        String url = String.format(getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=%s&value=%d", fieldName, value);
 
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");

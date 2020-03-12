@@ -123,22 +123,24 @@
                 android:textSize="16dp"
                 android:textStyle="bold" />
 
-            <Spinner
+            <Button
                 android:id="@+id/showDateDeadline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="0.5"
-                android:text="Deadline"
+                android:background="@color/white"
+                android:text="Get date"
                 android:textSize="16dp" />
 
-            <Spinner
+            <Button
                 android:id="@+id/showTimeDeadline"
                 android:layout_width="wrap_content"
+                android:background="@color/white"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="0.4"
-                android:text="Time"
+                android:text="Get time"
                 android:textSize="16dp" />
         </LinearLayout>
 

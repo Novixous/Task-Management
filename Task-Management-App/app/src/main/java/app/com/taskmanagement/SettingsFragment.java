@@ -22,6 +22,9 @@ import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,11 +78,11 @@ public class SettingsFragment extends Fragment {
                 Bitmap bitmapImage = null;
                 try {
                     bitmapImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), returnUri);
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                    byte[] byteArray = byteArrayOutputStream .toByteArray();
-
-                    String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+//                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//                    bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+//                    byte[] byteArray = byteArrayOutputStream .toByteArray();
+//
+//                    String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

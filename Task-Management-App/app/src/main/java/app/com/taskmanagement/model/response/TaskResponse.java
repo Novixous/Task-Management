@@ -1,18 +1,10 @@
-package app.com.taskmanagement.model;
+package app.com.taskmanagement.model.response;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.time.Instant;
 
-public class TaskModel implements Serializable {
-    public static final int SHOW_FORM_CREATE = 0;
-    public static final int SHOW_CARD_TASK = 1;
-    public static final int SHOW_UPDATE_TASK = 2;
-    public static final int SHOW_REVIEW_TASK = 3;
-    public static final int SHOW_TASK_TO_APPROVE = 4;
-    public int type;
-
+public class TaskResponse implements Serializable {
     @SerializedName("taskId")
     private Long taskId;
 
@@ -23,10 +15,10 @@ public class TaskModel implements Serializable {
     private String taskName;
 
     @SerializedName("createdTime")
-    private Instant createdTime;
+    private String createdTime;
 
     @SerializedName("deadline")
-    private Instant deadline;
+    private String deadline;
 
     @SerializedName("accountCreated")
     private Long accountCreated;
@@ -47,10 +39,10 @@ public class TaskModel implements Serializable {
     private String result;
 
     @SerializedName("startTime")
-    private Instant startTime;
+    private String startTime;
 
     @SerializedName("endTime")
-    private Instant endTime;
+    private String endTime;
 
     @SerializedName("managerComment")
     private String managerComment;
@@ -62,7 +54,7 @@ public class TaskModel implements Serializable {
     private Long reviewerId;
 
     @SerializedName("reviewTime")
-    private Instant reviewTime;
+    private String reviewTime;
 
     @SerializedName("confirmId")
     private Long confirmId;
@@ -80,35 +72,12 @@ public class TaskModel implements Serializable {
     private Long editedBy;
 
     @SerializedName("editedAt")
-    private Instant editedAt;
+    private String editedAt;
 
-    private String date;
-    private String time;
-
-    public TaskModel() {
+    public TaskResponse() {
     }
 
-    //Create
-    public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline, Long accountCreated, Long assignee, String description, Long approvedId, Long status, Long groupId, Long editedBy, Instant editedAt) {
-        this.type = type;
-        this.taskId = taskId;
-        this.oldTaskId = oldTaskId;
-        this.taskName = taskName;
-        this.createdTime = createdTime;
-        this.deadline = deadline;
-        this.accountCreated = accountCreated;
-        this.assignee = assignee;
-        this.description = description;
-        this.approvedId = approvedId;
-        this.status = status;
-        this.groupId = groupId;
-        this.editedBy = editedBy;
-        this.editedAt = editedAt;
-    }
-
-    //Update
-    public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline,  Long accountCreated, Long assignee, String description, String resolution, String imgResolutionUrl, String result, Instant startTime, Instant endTime, String managerComment, Long mark, Long reviewerId, Instant reviewTime, Long confirmId, Long approvedId, Long status, Long groupId, Long editedBy, Instant editedAt) {
-        this.type = type;
+    public TaskResponse(Long taskId, Long oldTaskId, String taskName, String createdTime, String deadline, Long accountCreated, Long assignee, String description, String resolution, String imgResolutionUrl, String result, String startTime, String endTime, String managerComment, Long mark, Long reviewerId, String reviewTime, Long confirmId, Long approvedId, Long status, Long groupId, Long editedBy, String editedAt) {
         this.taskId = taskId;
         this.oldTaskId = oldTaskId;
         this.taskName = taskName;
@@ -132,32 +101,6 @@ public class TaskModel implements Serializable {
         this.groupId = groupId;
         this.editedBy = editedBy;
         this.editedAt = editedAt;
-    }
-
-    //Show Card Task
-    public TaskModel(int type, Long taskId, String taskName, Instant deadline, Long assignee, Long approvedId, Long status, Long groupId) {
-        this.type = type;
-        this.taskId = taskId;
-        this.taskName = taskName;
-        this.deadline = deadline;
-        this.assignee = assignee;
-        this.approvedId = approvedId;
-        this.status = status;
-        this.groupId = groupId;
-    }
-
-
-
-    public static int getShowFormCreate() {
-        return SHOW_FORM_CREATE;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
     }
 
     public Long getTaskId() {
@@ -184,19 +127,19 @@ public class TaskModel implements Serializable {
         this.taskName = taskName;
     }
 
-    public Instant getCreatedTime() {
+    public String getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(Instant createdTime) {
+    public void setCreatedTime(String createdTime) {
         this.createdTime = createdTime;
     }
 
-    public Instant getDeadline() {
+    public String getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Instant deadline) {
+    public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
 
@@ -248,19 +191,19 @@ public class TaskModel implements Serializable {
         this.result = result;
     }
 
-    public Instant getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Instant startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public Instant getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Instant endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
@@ -288,11 +231,11 @@ public class TaskModel implements Serializable {
         this.reviewerId = reviewerId;
     }
 
-    public Instant getReviewTime() {
+    public String getReviewTime() {
         return reviewTime;
     }
 
-    public void setReviewTime(Instant reviewTime) {
+    public void setReviewTime(String reviewTime) {
         this.reviewTime = reviewTime;
     }
 
@@ -336,35 +279,11 @@ public class TaskModel implements Serializable {
         this.editedBy = editedBy;
     }
 
-    public Instant getEditedAt() {
+    public String getEditedAt() {
         return editedAt;
     }
 
-    public void setEditedAt(Instant editedAt) {
+    public void setEditedAt(String editedAt) {
         this.editedAt = editedAt;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-        if (this.time != null) {
-            String temp = this.date + "T" + this.time + ":00Z";
-            this.deadline = Instant.parse(temp);
-        }
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-        if (this.date != null) {
-            String temp = this.date + "T" + this.time + ":00Z";
-            this.deadline = Instant.parse(temp);
-        }
     }
 }
