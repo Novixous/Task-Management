@@ -1,11 +1,16 @@
 package app.com.taskmanagement;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -15,7 +20,25 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
+import java.util.HashMap;
+
+import app.com.taskmanagement.model.Approve;
+import app.com.taskmanagement.model.Confirm;
+import app.com.taskmanagement.model.Role;
+import app.com.taskmanagement.model.Status;
+import app.com.taskmanagement.model.response.InitialResponse;
+import app.com.taskmanagement.util.DialogUtil;
+import app.com.taskmanagement.util.GsonRequest;
+import app.com.taskmanagement.util.SingletonRequestQueue;
 
 public class MainActivity extends AppCompatActivity {
     Fragment currentFragment;
@@ -24,12 +47,17 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     Toolbar toolbar;
     private CharSequence mTitle;
+    HashMap<Long, String> confirmList = new HashMap<>();
+    HashMap<Long, String> approveList = new HashMap<>();
+    HashMap<Long, String> roleList = new HashMap<>();
+    HashMap<Long, String> statusList = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupToolbar();
+        customRequest();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.Open, R.string.Close);
@@ -68,6 +96,14 @@ public class MainActivity extends AppCompatActivity {
             case 3:
                 currentFragment = new SettingsFragment();
                 break;
+            case 4:
+                SharedPreferences preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.remove("account");
+                editor.commit();
+                finish();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
 
             default:
                 break;
@@ -116,6 +152,8 @@ public class MainActivity extends AppCompatActivity {
                 return 2;
             case "Settings":
                 return 3;
+            case "Logout":
+                return 4;
             default:
                 return -1;
         }
@@ -150,6 +188,44 @@ public class MainActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
             return inflater.inflate(R.layout.fragment_show_task, container, false);
+        }
+    }
+
+    private void customRequest() {
+        RequestQueue mRequestQueue = SingletonRequestQueue.getInstance(getApplicationContext()).getRequestQueue();
+        String url = String.format(getResources().getString(R.string.BASE_URL) + "/getInitialValue");
+
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+
+        GsonRequest<InitialResponse> gsonRequest = new GsonRequest<>(url, InitialResponse.class, headers, new Response.Listener<InitialResponse>() {
+            @Override
+            public void onResponse(InitialResponse response) {
+                publishInitialValues(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                DialogUtil.showDialogExit(MainActivity.this);
+            }
+        });
+
+        mRequestQueue.add(gsonRequest);
+
+    }
+
+    public void publishInitialValues(InitialResponse response) {
+        for (Confirm confirm : response.getConfirms()) {
+            confirmList.put(confirm.getId(), confirm.getName());
+        }
+        for (Role role : response.getRoles()) {
+            roleList.put(role.getId(), role.getName());
+        }
+        for (Status status : response.getStatuses()) {
+            statusList.put(status.getId(), status.getName());
+        }
+        for (Approve approve : response.getApproves()) {
+            approveList.put(approve.getId(), approve.getName());
         }
     }
 }

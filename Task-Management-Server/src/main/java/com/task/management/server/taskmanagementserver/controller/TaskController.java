@@ -1,10 +1,13 @@
 package com.task.management.server.taskmanagementserver.controller;
 
 import com.task.management.server.taskmanagementserver.mapper.TaskMapper;
+import com.task.management.server.taskmanagementserver.model.Task;
+import com.task.management.server.taskmanagementserver.model.request.TaskRequest;
 import com.task.management.server.taskmanagementserver.model.response.TaskResponse;
 import com.task.management.server.taskmanagementserver.util.TimeUtil;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,7 +31,16 @@ public class TaskController {
     }
 
     @PostMapping
-    public void createTask(@RequestBody TaskResponse taskResponse) {
-        return;
+    public int createTask(@RequestBody TaskRequest taskRequest) {
+        List<TaskResponse> taskResponses = taskRequest.getData();
+        List<Task> converted = TimeUtil.convertTaskResponseToTask(taskResponses);
+        return taskMapper.createTask(converted.get(0));
+    }
+
+    @PutMapping
+    public int updateTask(@RequestBody TaskRequest taskRequest) {
+        List<TaskResponse> taskResponses = taskRequest.getData();
+        List<Task> converted = TimeUtil.convertTaskResponseToTask(taskResponses);
+        return taskMapper.updateTask(converted.get(0));
     }
 }

@@ -1,5 +1,10 @@
 package app.com.taskmanagement;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,8 +12,16 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
+
+import android.provider.MediaStore;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -19,6 +32,7 @@ import app.com.taskmanagement.adapter.TaskPageAdapter;
  * A simple {@link Fragment} subclass.
  */
 public class MyTaskFragment extends Fragment {
+
     TabLayout tabLayout;
     ViewPager viewPager;
     TaskPageAdapter taskPageAdapter;
@@ -45,4 +59,6 @@ public class MyTaskFragment extends Fragment {
         viewPager.setAdapter(taskPageAdapter);
         tabLayout.setupWithViewPager(viewPager);
     }
+
+
 }

@@ -2,11 +2,11 @@ package com.task.management.server.taskmanagementserver.model;
 
 public class InitialValue {
     private int id;
-    private String name;
+    private String content;
 
-    public InitialValue(int id, String name) {
+    public InitialValue(int id, String content) {
         this.id = id;
-        this.name = name;
+        this.content = content;
     }
 
     public InitialValue() {
@@ -20,11 +20,11 @@ public class InitialValue {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getContent() {
+        return content;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setContent(String content) {
+        this.content = content;
     }
 }
