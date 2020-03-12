@@ -10,24 +10,19 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import java.time.Instant;
 import java.util.ArrayList;
 
-import app.com.taskmanagement.Adapters.TaskAdapter;
+import app.com.taskmanagement.adapters.TaskAdapter;
 import app.com.taskmanagement.model.TaskModel;
 
-
-public class CreateNewTaskFragment extends Fragment {
+public class UserUpdateTaskFragment extends Fragment {
     ArrayList<TaskModel> gridViewModelArrayList;
     private RecyclerView recyclerView;
-
-    public CreateNewTaskFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -38,8 +33,11 @@ public class CreateNewTaskFragment extends Fragment {
         gridViewModelArrayList = new ArrayList();
 
         TaskModel gridViewModel = null;
-        gridViewModel = new TaskModel(TaskModel.SHOW_FORM_CREATE,null,null,"",null,null,null,null,"",null,null,null);
-
+        gridViewModel = new TaskModel(TaskModel.SHOW_UPDATE_TASK, 1L, 1l,
+                "", Instant.now(), Instant.now(), Instant.now(), 1l,
+                1l, "", "", "", "", Instant.now(),
+                Instant.now(), "", 1l, 1l, Instant.now(), 1l,
+                1l, 1l, 1l, 1l, Instant.now());
         gridViewModelArrayList.add(gridViewModel);
 
         TaskAdapter taskAdapter = new TaskAdapter(gridViewModelArrayList, this.getActivity().getApplicationContext());
@@ -49,7 +47,7 @@ public class CreateNewTaskFragment extends Fragment {
         recyclerView.setLayoutManager(lm);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(taskAdapter);
-        return rootView;
 
+        return rootView;
     }
 }

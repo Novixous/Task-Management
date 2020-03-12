@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".ShowTaskFragment">
+    tools:context=".UserUpdateTaskFragment">
 
     <LinearLayout
         android:id="@+id/showForm"
@@ -64,7 +64,7 @@
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
-                <Spinner
+                <TextView
                     android:id="@+id/showIDTask"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -124,7 +124,7 @@
                 android:textStyle="bold" />
 
             <Spinner
-                android:id="@+id/showDeadline"
+                android:id="@+id/showDateDeadline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -133,7 +133,7 @@
                 android:textSize="16dp" />
 
             <Spinner
-                android:id="@+id/showTime"
+                android:id="@+id/showTimeDeadline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -227,7 +227,7 @@
                 android:textSize="16dp"
                 android:textStyle="bold" />
 
-            <Spinner
+            <TextView
                 android:id="@+id/showCreator"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -443,7 +443,7 @@
                 android:textSize="16dp"
                 android:textStyle="bold" />
 
-            <Spinner
+            <TextView
                 android:id="@+id/showReviewer"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -462,37 +462,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:orientation="horizontal">
-            <!--            txtConfirm-->
-            <TextView
-                android:id="@+id/txtConfirm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Confirm: "
-                android:textSize="16dp"
-                android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/showConfirm"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="Confirm"
-                android:textSize="16dp" />
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/lineConfirm"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="5dp"
-            android:background="@color/cardview_dark_background" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
@@ -503,23 +472,24 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:orientation="horizontal">
-                <!--            Mark-->
+                <!--            txtConfirm-->
                 <TextView
-                    android:id="@+id/txtMark"
+                    android:id="@+id/txtConfirm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mark: "
+                    android:text="Confirm: "
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
                 <Spinner
-                    android:id="@+id/showMark"
+                    android:id="@+id/showConfirm"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
-                    android:text="Mark"
+                    android:text="Confirm"
                     android:textSize="16dp" />
+
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -544,6 +514,35 @@
                     android:text="DateReview"
                     android:textSize="16dp" />
             </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/lineConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="5dp"
+            android:background="@color/cardview_dark_background" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <!--            Mark-->
+            <TextView
+                android:id="@+id/txtMark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mark: "
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <NumberPicker
+                android:id="@+id/showMark"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginLeft="3dp"
+                android:textSize="16dp" />
         </LinearLayout>
 
         <View

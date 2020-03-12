@@ -7,12 +7,10 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-public class CreateUpdateAccountFragment extends Fragment {
-
-    public CreateUpdateAccountFragment() {
+public class FragmentChangePassword extends Fragment {
+    public FragmentChangePassword() {
         // Required empty public constructor
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +20,6 @@ public class CreateUpdateAccountFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_create_update_account, container, false);
+        return inflater.inflate(R.layout.fragment_change_password, container, false);
     }
 }

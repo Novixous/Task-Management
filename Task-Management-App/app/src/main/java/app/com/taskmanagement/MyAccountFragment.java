@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
 
-import app.com.taskmanagement.Adapters.AccountAdapter;
+import app.com.taskmanagement.adapters.AccountAdapter;
 import app.com.taskmanagement.model.AccountModel;
 
 

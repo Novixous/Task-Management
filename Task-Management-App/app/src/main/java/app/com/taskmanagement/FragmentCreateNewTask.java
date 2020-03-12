@@ -12,16 +12,22 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
 
-import app.com.taskmanagement.Adapters.TaskAdapter;
+import app.com.taskmanagement.adapters.TaskAdapter;
 import app.com.taskmanagement.model.TaskModel;
 
-public class ShowTaskFragment extends Fragment {
+
+public class FragmentCreateNewTask extends Fragment {
     ArrayList<TaskModel> gridViewModelArrayList;
     private RecyclerView recyclerView;
+
+    public FragmentCreateNewTask() {
+        // Required empty public constructor
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -32,7 +38,8 @@ public class ShowTaskFragment extends Fragment {
         gridViewModelArrayList = new ArrayList();
 
         TaskModel gridViewModel = null;
-        gridViewModel = new TaskModel(TaskModel.SHOW_FORM_CREATE, null, null, "", null, null, null, null, "", null, null, null);
+        gridViewModel = new TaskModel(TaskModel.SHOW_FORM_CREATE, null, null, "", null, null, null, null, "", null, null, null, null, null);
+
         gridViewModelArrayList.add(gridViewModel);
 
         TaskAdapter taskAdapter = new TaskAdapter(gridViewModelArrayList, this.getActivity().getApplicationContext());
@@ -43,5 +50,6 @@ public class ShowTaskFragment extends Fragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(taskAdapter);
         return rootView;
+
     }
 }

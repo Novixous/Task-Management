@@ -5,6 +5,9 @@ import java.time.Instant;
 public class TaskModel {
     public static final int SHOW_FORM_CREATE = 0;
     public static final int SHOW_CARD_TASK = 1;
+    public static final int SHOW_UPDATE_TASK = 2;
+    public static final int SHOW_REVIEW_TASK = 3;
+    public static final int SHOW_TASK_TO_APPROVE = 4;
     public int type;
     private Long taskId;
     private Long oldTaskId;
@@ -35,7 +38,7 @@ public class TaskModel {
     }
 
     //Create
-    public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline, Long accountCreated, Long assignee, String description, Long approvedId, Long status, Long groupId) {
+    public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline, Long accountCreated, Long assignee, String description, Long approvedId, Long status, Long groupId, Long editedBy, Instant editedAt) {
         this.type = type;
         this.taskId = taskId;
         this.oldTaskId = oldTaskId;
@@ -48,7 +51,39 @@ public class TaskModel {
         this.approvedId = approvedId;
         this.status = status;
         this.groupId = groupId;
+        this.editedBy = editedBy;
+        this.editedAt = editedAt;
     }
+
+    //Update
+    public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline, Instant timeDeadline, Long accountCreated, Long assignee, String description, String resolution, String imgResolutionUrl, String result, Instant startTime, Instant endTime, String managerComment, Long mark, Long reviewerId, Instant reviewTime, Long confirmId, Long approvedId, Long status, Long groupId, Long editedBy, Instant editedAt) {
+        this.type = type;
+        this.taskId = taskId;
+        this.oldTaskId = oldTaskId;
+        this.taskName = taskName;
+        this.createdTime = createdTime;
+        this.deadline = deadline;
+        this.timeDeadline = timeDeadline;
+        this.accountCreated = accountCreated;
+        this.assignee = assignee;
+        this.description = description;
+        this.resolution = resolution;
+        this.imgResolutionUrl = imgResolutionUrl;
+        this.result = result;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.managerComment = managerComment;
+        this.mark = mark;
+        this.reviewerId = reviewerId;
+        this.reviewTime = reviewTime;
+        this.confirmId = confirmId;
+        this.approvedId = approvedId;
+        this.status = status;
+        this.groupId = groupId;
+        this.editedBy = editedBy;
+        this.editedAt = editedAt;
+    }
+
     //Show Card Task
     public TaskModel(int type, Long taskId, String taskName, Instant deadline, Long assignee, Long approvedId, Long status, Long groupId) {
         this.type = type;

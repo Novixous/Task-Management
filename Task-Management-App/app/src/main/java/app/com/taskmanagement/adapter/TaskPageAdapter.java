@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import app.com.taskmanagement.MyTaskTabFragment;
+import app.com.taskmanagement.UserTaskTabFragment;
 
 public class TaskPageAdapter extends FragmentStatePagerAdapter {
     private String[] tabTitles = new String[]{
@@ -21,10 +21,10 @@ public class TaskPageAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
-        Fragment fragment = new MyTaskTabFragment(tabTitles[i]);
+        Fragment fragment = new UserTaskTabFragment(tabTitles[i]);
         Bundle args = new Bundle();
         // Our object is just an integer 😛
-        args.putInt(MyTaskTabFragment.ARG_OBJECT, i + 1);
+        args.putInt(UserTaskTabFragment.ARG_OBJECT, i + 1);
         fragment.setArguments(args);
 
         return fragment;

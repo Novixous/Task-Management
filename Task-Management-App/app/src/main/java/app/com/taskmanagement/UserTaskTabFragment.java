@@ -22,7 +22,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import app.com.taskmanagement.Adapters.TaskAdapter;
+import app.com.taskmanagement.adapters.TaskAdapter;
 import app.com.taskmanagement.model.TaskList;
 import app.com.taskmanagement.model.TaskModel;
 import app.com.taskmanagement.util.GsonRequest;
@@ -31,7 +31,7 @@ import app.com.taskmanagement.util.SingletonRequestQueue;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyTaskTabFragment extends Fragment {
+public class UserTaskTabFragment extends Fragment {
 
     public static final String ARG_OBJECT = "object";
     public static final String BASE_URL = "http://123.20.89.86:8080";
@@ -40,7 +40,7 @@ public class MyTaskTabFragment extends Fragment {
     ArrayList<TaskModel> gridViewModelArrayList;
     private RecyclerView recyclerView;
 
-    public MyTaskTabFragment(String tabTitle) {
+    public UserTaskTabFragment(String tabTitle) {
         this.tabTitle = tabTitle;
     }
 

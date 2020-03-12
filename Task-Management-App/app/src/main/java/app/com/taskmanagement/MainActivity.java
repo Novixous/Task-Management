@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 currentFragment = new MyTaskFragment();
                 break;
             case 1:
-                currentFragment = new CreateNewTaskFragment();
+                currentFragment = new FragmentCreateNewTask();
                 break;
             case 2:
                 currentFragment = new MyAccountFragment();
@@ -122,12 +122,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clickToChangePwd(View view) {
-        currentFragment = new ChangePasswordFragment();
+        currentFragment = new FragmentChangePassword();
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, currentFragment).addToBackStack(null).commit();
     }
 
     public void clickToShowDetailTask(View view) {
-        currentFragment = new ShowTaskFragment();
+        currentFragment = new UserUpdateTaskFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, currentFragment).addToBackStack(null).commit();
     }
 

@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-public class ShowCardTaskFragment extends Fragment {
+public class UserCardTaskFragment extends Fragment {
 
-    public ShowCardTaskFragment() {
+    public UserCardTaskFragment() {
         // Required empty public constructor
     }
 
