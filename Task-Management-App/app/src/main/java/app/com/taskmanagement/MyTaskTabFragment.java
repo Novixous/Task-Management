@@ -30,7 +30,6 @@ import app.com.taskmanagement.util.SingletonRequestQueue;
 public class MyTaskTabFragment extends Fragment {
 
     public static final String ARG_OBJECT = "object";
-    public static final String BASE_URL = "http://123.20.89.86:8080";
     public String tabTitle;
     public ArrayList<TaskModel> taskList = new ArrayList<>();
 
@@ -64,7 +63,7 @@ public class MyTaskTabFragment extends Fragment {
     private void getTaskList(String fieldName, Long value) {
         taskList.clear();
         RequestQueue mRequestQueue = SingletonRequestQueue.getInstance(getActivity().getApplicationContext()).getRequestQueue();
-        String url = String.format(BASE_URL + "/task/getTaskListByFieldId?fieldName=%s&value=%d", fieldName, value);
+        String url = String.format(getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=%s&value=%d", fieldName, value);
 
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
