@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import app.com.taskmanagement.adapters.TaskAdapter;
-import app.com.taskmanagement.model.response.TaskList;
 import app.com.taskmanagement.model.TaskModel;
+import app.com.taskmanagement.model.response.TaskList;
 import app.com.taskmanagement.model.response.TaskResponse;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.PreferenceUtil;
@@ -96,7 +96,7 @@ public class UserTaskTabFragment extends Fragment {
                 recyclerView.setLayoutManager(lm);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(taskAdapter);
-                getTaskList("assignee", PreferenceUtil.getAccountFromPreference(getActivity()).getAccountId());
+                getTaskList("assignee", PreferenceUtil.getAccountFromSharedPreferences(getActivity()).getAccountId());
                 break;
         }
     }

@@ -21,7 +21,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/showtxtTaskName"
+                android:id="@+id/valuetxtTaskName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -38,7 +38,7 @@
                 android:background="@drawable/br_horizontal" />
 
             <TextView
-                android:id="@+id/showAssignee"
+                android:id="@+id/valuetxtAssignee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -59,7 +59,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/showStatus"
+                android:id="@+id/valuetxtStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -76,7 +76,7 @@
                 android:background="@drawable/br_horizontal" />
 
             <TextView
-                android:id="@+id/showtxtDeadline"
+                android:id="@+id/valuetxtDeadline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

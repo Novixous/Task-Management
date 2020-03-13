@@ -1,12 +1,10 @@
 package app.com.taskmanagement;
 
-import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,9 +14,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import app.com.taskmanagement.adapters.TaskAdapter;
 import app.com.taskmanagement.model.TaskModel;
@@ -27,9 +23,10 @@ import app.com.taskmanagement.model.TaskModel;
 public class FragmentCreateNewTask extends Fragment {
     ArrayList<TaskModel> gridViewModelArrayList;
     private RecyclerView recyclerView;
-    TextView showTaskName, showDescription;
-    private Button showDateDeadline;
-    private Button showTimeDeadline;
+    TextView valueTaskName, valueDescription;
+    private Button valueDateDeadline;
+    private Button valueTimeDeadline;
+    private Button btnCreateTask;
 
 
 
@@ -51,6 +48,13 @@ public class FragmentCreateNewTask extends Fragment {
         gridViewModelArrayList = new ArrayList();
 
         TaskModel gridViewModel = null;
+//        btnCreateTask = (Button)rootView.findViewById(R.id.btnCreateTask);
+//        btnCreateTask.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
         gridViewModel = new TaskModel(TaskModel.SHOW_FORM_CREATE, null, null, "", null, null, null, null, "", null, null, null, null, null);
 
         gridViewModelArrayList.add(gridViewModel);
@@ -62,15 +66,15 @@ public class FragmentCreateNewTask extends Fragment {
         recyclerView.setLayoutManager(lm);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(taskAdapter);
-
         return rootView;
-
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        showDateDeadline = view.findViewById(R.id.showDateDeadline);
-        showTimeDeadline = view.findViewById(R.id.showTimeDeadline);
+        valueDateDeadline = view.findViewById(R.id.valueDateDeadline);
+        valueTimeDeadline = view.findViewById(R.id.valueTimeDeadline);
     }
+
+
 }

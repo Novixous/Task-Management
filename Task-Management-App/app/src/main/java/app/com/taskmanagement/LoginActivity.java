@@ -1,31 +1,23 @@
 package app.com.taskmanagement;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import app.com.taskmanagement.model.request.LoginRequest;
 import app.com.taskmanagement.model.response.LoginResponse;
@@ -62,7 +54,6 @@ public class LoginActivity extends AppCompatActivity {
 
         HashMap<String, String> headers = new HashMap<>();
 //        headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-        headers.put("connection", "keep-alive");
         headers.put("Content-Type", "application/json");
         LoginRequest loginRequest = new LoginRequest(username, password);
         Gson gson = new Gson();
@@ -94,9 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                 DialogUtil.showDialogExit(LoginActivity.this);
             }
         });
-
         mRequestQueue.add(gsonRequest);
-
     }
 
 

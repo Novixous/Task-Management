@@ -1,11 +1,6 @@
 package app.com.taskmanagement.service;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.work.OneTimeWorkRequest;
@@ -21,13 +16,9 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 
-import app.com.taskmanagement.LoginActivity;
-import app.com.taskmanagement.MainActivity;
 import app.com.taskmanagement.R;
 import app.com.taskmanagement.model.MyWorker;
 import app.com.taskmanagement.model.request.TokenRequestModel;
-import app.com.taskmanagement.model.response.LoginResponse;
-import app.com.taskmanagement.util.DialogUtil;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.PreferenceUtil;
 import app.com.taskmanagement.util.SingletonRequestQueue;

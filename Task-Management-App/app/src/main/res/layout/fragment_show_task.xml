@@ -7,7 +7,7 @@
     tools:context=".UserUpdateTaskFragment">
 
     <LinearLayout
-        android:id="@+id/showForm"
+        android:id="@+id/valueForm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
@@ -25,7 +25,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/showTaskName"
+            android:id="@+id/valueTaskName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="3dp"
@@ -65,7 +65,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/showIDTask"
+                    android:id="@+id/valueIDTask"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -90,7 +90,7 @@
                     android:textStyle="bold" />
 
                 <Spinner
-                    android:id="@+id/showIDOldTask"
+                    android:id="@+id/valueIDOldTask"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -124,7 +124,7 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/showDateDeadline"
+                android:id="@+id/valueDateDeadline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -134,7 +134,7 @@
                 android:textSize="16dp" />
 
             <Button
-                android:id="@+id/showTimeDeadline"
+                android:id="@+id/valueTimeDeadline"
                 android:layout_width="wrap_content"
                 android:background="@color/white"
                 android:layout_height="wrap_content"
@@ -174,7 +174,7 @@
                     android:textStyle="bold" />
 
                 <Spinner
-                    android:id="@+id/showStatus"
+                    android:id="@+id/valueStatus"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
@@ -197,7 +197,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/showNote"
+                    android:id="@+id/valueNote"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -230,7 +230,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/showCreator"
+                android:id="@+id/valueCreator"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -261,7 +261,7 @@
                 android:textStyle="bold" />
 
             <Spinner
-                android:id="@+id/showAssignee"
+                android:id="@+id/valueAssignee"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -288,7 +288,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/showDescription"
+            android:id="@+id/valueDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minLines="5"
@@ -327,7 +327,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/showDateStart"
+                    android:id="@+id/valueDateStart"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
@@ -351,7 +351,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/showDateEnd"
+                    android:id="@+id/valueDateEnd"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
@@ -392,7 +392,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/showImgResolution"
+            android:id="@+id/valueImgResolution"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -414,7 +414,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/showResult"
+            android:id="@+id/valueResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minLines="5"
@@ -446,7 +446,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/showReviewer"
+                android:id="@+id/valueReviewer"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -484,7 +484,7 @@
                     android:textStyle="bold" />
 
                 <Spinner
-                    android:id="@+id/showConfirm"
+                    android:id="@+id/valueConfirm"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:text="Confirm"
@@ -509,7 +509,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/showDateReview"
+                    android:id="@+id/valueDateReview"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
@@ -540,7 +540,7 @@
                 android:textStyle="bold" />
 
             <NumberPicker
-                android:id="@+id/showMark"
+                android:id="@+id/valueMark"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_marginLeft="3dp"
@@ -565,7 +565,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/showReview"
+            android:id="@+id/valueReview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minLines="5"
@@ -594,6 +594,7 @@
             android:layout_margin="10dp"
             android:background="@drawable/background_button"
             android:text="Create"
+            android:onClick="clickToCreateTask"
             android:textColor="@color/white"
             android:textStyle="bold" />
 

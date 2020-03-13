@@ -1,6 +1,5 @@
 package app.com.taskmanagement;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -21,28 +18,20 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.google.gson.Gson;
 
-import java.text.DateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
 
 import app.com.taskmanagement.model.Approve;
 import app.com.taskmanagement.model.Confirm;
 import app.com.taskmanagement.model.Role;
 import app.com.taskmanagement.model.Status;
-import app.com.taskmanagement.model.request.TokenRequestModel;
 import app.com.taskmanagement.model.response.InitialResponse;
 import app.com.taskmanagement.util.DialogUtil;
 import app.com.taskmanagement.util.GsonRequest;
-import app.com.taskmanagement.util.PreferenceUtil;
 import app.com.taskmanagement.util.SingletonRequestQueue;
 
 public class MainActivity extends AppCompatActivity {
@@ -208,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
         String url = String.format(getResources().getString(R.string.BASE_URL) + "/getInitialValue");
 
         HashMap<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+//        headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
 
         GsonRequest<InitialResponse> gsonRequest = new GsonRequest<>(url, InitialResponse.class, headers, new Response.Listener<InitialResponse>() {
             @Override
