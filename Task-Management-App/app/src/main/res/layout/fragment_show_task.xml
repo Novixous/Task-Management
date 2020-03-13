@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".ShowTaskFragment">
+    tools:context=".UserUpdateTaskFragment">
 
     <LinearLayout
         android:id="@+id/showForm"
@@ -34,6 +34,7 @@
             android:textSize="16dp" />
 
         <View
+            android:id="@+id/lineTaskname"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -63,7 +64,7 @@
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
-                <Spinner
+                <TextView
                     android:id="@+id/showIDTask"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -99,6 +100,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/lineID"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -121,26 +123,29 @@
                 android:textSize="16dp"
                 android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/showDeadline"
+            <Button
+                android:id="@+id/showDateDeadline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="0.5"
-                android:text="Deadline"
+                android:background="@color/white"
+                android:text="Get date"
                 android:textSize="16dp" />
 
-            <Spinner
-                android:id="@+id/showTime"
+            <Button
+                android:id="@+id/showTimeDeadline"
                 android:layout_width="wrap_content"
+                android:background="@color/white"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="0.4"
-                android:text="Time"
+                android:text="Get time"
                 android:textSize="16dp" />
         </LinearLayout>
 
         <View
+            android:id="@+id/lineDeadline"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -202,6 +207,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/lineStatus"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -223,7 +229,7 @@
                 android:textSize="16dp"
                 android:textStyle="bold" />
 
-            <Spinner
+            <TextView
                 android:id="@+id/showCreator"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -233,6 +239,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/lineCreator"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -263,6 +270,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/lineAssignee"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -290,6 +298,7 @@
             android:textSize="16dp" />
 
         <View
+            android:id="@+id/lineDescription"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -352,6 +361,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/lineDate"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -374,6 +384,7 @@
                 android:textStyle="bold" />
 
             <ImageButton
+                android:id="@+id/btnImg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -386,6 +397,7 @@
             android:layout_height="wrap_content" />
 
         <View
+            android:id="@+id/linePhoto"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -412,6 +424,7 @@
             android:textSize="16dp" />
 
         <View
+            android:id="@+id/lineResult"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -432,7 +445,7 @@
                 android:textSize="16dp"
                 android:textStyle="bold" />
 
-            <Spinner
+            <TextView
                 android:id="@+id/showReviewer"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -442,36 +455,7 @@
         </LinearLayout>
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="5dp"
-            android:background="@color/cardview_dark_background" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:orientation="horizontal">
-            <!--            txtConfirm-->
-            <TextView
-                android:id="@+id/txtConfirm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Confirm: "
-                android:textSize="16dp"
-                android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/showConfirm"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="Confirm"
-                android:textSize="16dp" />
-
-        </LinearLayout>
-
-        <View
+            android:id="@+id/lineReviewer"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -490,23 +474,24 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:orientation="horizontal">
-                <!--            Mark-->
+                <!--            txtConfirm-->
                 <TextView
-                    android:id="@+id/txtMark"
+                    android:id="@+id/txtConfirm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mark: "
+                    android:text="Confirm: "
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
                 <Spinner
-                    android:id="@+id/showMark"
+                    android:id="@+id/showConfirm"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
-                    android:text="Mark"
+                    android:text="Confirm"
                     android:textSize="16dp" />
+
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -534,6 +519,36 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/lineConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="5dp"
+            android:background="@color/cardview_dark_background" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <!--            Mark-->
+            <TextView
+                android:id="@+id/txtMark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mark: "
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <NumberPicker
+                android:id="@+id/showMark"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginLeft="3dp"
+                android:textSize="16dp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/lineMark"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -560,6 +575,7 @@
             android:textSize="16dp" />
 
         <View
+            android:id="@+id/lineReview"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -572,6 +588,7 @@
         android:orientation="vertical">
 
         <Button
+            android:id="@+id/btnCreateTask"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -581,6 +598,7 @@
             android:textStyle="bold" />
 
         <Button
+            android:id="@+id/btnUpdateTask"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -607,13 +625,13 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/btnDisApprove"
+                android:id="@+id/btnDecline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="0.5"
-                android:background="@drawable/button_disapprove"
-                android:text="Disapprove"
+                android:background="@drawable/button_decline"
+                android:text="Decline"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
         </LinearLayout>

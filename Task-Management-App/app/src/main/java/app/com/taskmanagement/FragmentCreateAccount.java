@@ -1,16 +1,15 @@
 package app.com.taskmanagement;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class CreateUpdateAccountFragment extends Fragment {
+import androidx.fragment.app.Fragment;
 
-    public CreateUpdateAccountFragment() {
+public class FragmentCreateAccount extends Fragment {
+
+    public FragmentCreateAccount() {
         // Required empty public constructor
     }
 

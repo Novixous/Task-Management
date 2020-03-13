@@ -1,24 +1,19 @@
 package app.com.taskmanagement;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.google.android.material.tabs.TabLayout;
-
 import java.util.ArrayList;
 
-import app.com.taskmanagement.Adapters.AccountAdapter;
-import app.com.taskmanagement.Adapters.TaskAdapter;
+import app.com.taskmanagement.adapters.AccountAdapter;
 import app.com.taskmanagement.model.AccountModel;
-import app.com.taskmanagement.model.TaskModel;
 
 
 /**
@@ -44,7 +39,7 @@ public class MyAccountFragment extends Fragment {
                 "","","","",false,null,null);
         gridViewModelArrayList.add(gridViewModel);
 
-        AccountAdapter accountAdapter = new AccountAdapter(gridViewModelArrayList, this.getActivity().getApplicationContext());
+        AccountAdapter accountAdapter = new AccountAdapter(gridViewModelArrayList, this.getActivity());
         recyclerView = rootView.findViewById(R.id.viewRecycler);
         StaggeredGridLayoutManager lm =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);

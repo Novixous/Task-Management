@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,6 +37,7 @@ public class MyTaskFragment extends Fragment {
     ViewPager viewPager;
     TaskPageAdapter taskPageAdapter;
 
+
     public MyTaskFragment() {
         // Required empty public constructor
     }
@@ -46,7 +50,6 @@ public class MyTaskFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_my_task, container, false);
         tabLayout = rootView.findViewById(R.id.tabLayout);
         viewPager = rootView.findViewById(R.id.viewPager);
-
         return rootView;
     }
 
