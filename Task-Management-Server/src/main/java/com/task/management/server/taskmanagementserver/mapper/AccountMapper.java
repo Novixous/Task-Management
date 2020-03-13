@@ -12,6 +12,20 @@ public interface AccountMapper {
 
     @Select("SELECT idaccount as accountId, " +
             "username as username, " +
+            "firstname as firstName, " +
+            "lastname as lastName, " +
+            "fullname as fullName, " +
+            "phone as phone, " +
+            "email as email, " +
+            "address as address, " +
+            "role_id as roleId, " +
+            "group_id as groupId, " +
+            "deactivated as deactivated " +
+            "FROM account where username = #{username} and password = #{password}")
+    Account login(@Param("username") String username, @Param("password") String password);
+
+    @Select("SELECT idaccount as accountId, " +
+            "username as username, " +
             "password as password, " +
             "firstname as firstName, " +
             "lastname as lastName, " +
@@ -61,7 +75,7 @@ public interface AccountMapper {
             "#{account.groupId}," +
             "#{account.deactivated}" +
             ")")
-    int CreateAccount(@Param("account") Account account);
+    int createAccount(@Param("account") Account account);
 
     @Update({
             "<script>" +
@@ -131,6 +145,16 @@ public interface AccountMapper {
                     "</if>" +
                     "WHERE idaccount = #{account.accountId}" +
                     "</script>"})
-    int UpdateAccountById(@Param("account") Account account);
+    int updateAccountById(@Param("account") Account account);
+
+    @Insert("INSERT INTO token (deviceToken, accountId) VALUES (#{token}, #{accountId})")
+    int registerToken(@Param("accountId") Long accountId, @Param("token") String token);
+
+    @Delete("DELETE FROM token WHERE deviceToken = #{token} AND accountId = #{accountId}")
+    int deleteToken(@Param("accountId") Long accountId, @Param("token") String token);
+
+    @Select("SELECT deviceToken FROM token WHERE deviceToken = #{token} AND accountId = #{accountId}")
+    String getTokenByTokenAndAccountId(@Param("accountId") Long accountId, @Param("token") String token);
+
 
 }

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "502166010291",
+    "firebase_url": "https://task-management-663c1.firebaseio.com",
+    "project_id": "task-management-663c1",
+    "storage_bucket": "task-management-663c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502166010291:android:0ebda7a2512df3ee2033c6",
+        "android_client_info": {
+          "package_name": "app.com.taskmanagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "502166010291-hp7r11pb3flc7kmive8i9hk9v42adkba.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA__8Y91eSoabBu_9Se47Pr8zymAI-hc40"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "502166010291-hp7r11pb3flc7kmive8i9hk9v42adkba.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

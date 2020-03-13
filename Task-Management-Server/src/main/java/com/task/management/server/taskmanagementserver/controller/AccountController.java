@@ -2,10 +2,12 @@ package com.task.management.server.taskmanagementserver.controller;
 
 import com.task.management.server.taskmanagementserver.mapper.AccountMapper;
 import com.task.management.server.taskmanagementserver.model.Account;
+import com.task.management.server.taskmanagementserver.model.request.LoginRequest;
 import com.task.management.server.taskmanagementserver.util.CheckUtil;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -36,9 +38,11 @@ public class AccountController {
      * @return
      */
     @GetMapping("/accounts")
-    public List<Account> getAccountsByField(@RequestParam(name = "fieldName", required = false) String fieldName,
-                                            @RequestParam(name = "fieldValue", required = false) Long fieldValue) {
-        return accountMapper.getAccountsByField(fieldName, fieldValue);
+    public HashMap<String, List<Account>> getAccountsByField(@RequestParam(name = "fieldName", required = false) String fieldName,
+                                                             @RequestParam(name = "fieldValue", required = false) Long fieldValue) {
+        HashMap<String, List<Account>> result = new HashMap<>();
+        result.put("data", accountMapper.getAccountsByField(fieldName, fieldValue));
+        return result;
     }
 
     /**
@@ -50,7 +54,7 @@ public class AccountController {
     public void updateAccount(@RequestBody Account account) {
         if (account.getAccountId() != null) {
             if (CheckUtil.hasFieldNotNull(account, "accountId")) {
-                accountMapper.UpdateAccountById(account);
+                accountMapper.updateAccountById(account);
             }
         }
     }
@@ -62,7 +66,7 @@ public class AccountController {
      */
     @PostMapping("/account")
     public void createAccount(@RequestBody Account account) {
-        accountMapper.CreateAccount(account);
+        accountMapper.createAccount(account);
     }
 
     @Delete("/account")
@@ -70,6 +74,20 @@ public class AccountController {
         Account account = new Account();
         account.setAccountId(accountId);
         account.setDeactivated(true);
-        accountMapper.UpdateAccountById(account);
+        accountMapper.updateAccountById(account);
+    }
+
+    @PostMapping("/login")
+    public HashMap<String, Object> login(@RequestBody LoginRequest loginRequest) {
+        HashMap<String, Object> result = new HashMap<>();
+        Account account = accountMapper.login(loginRequest.getUsername(), loginRequest.getPassword());
+        if (account != null) {
+            result.put("errorMessage", null);
+            result.put("data", account);
+        } else {
+            result.put("errorMessage", "Incorrect username or password");
+            result.put("data", null);
+        }
+        return result;
     }
 }

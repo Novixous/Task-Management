@@ -11,6 +11,6 @@ import java.util.List;
 @Mapper
 @Component
 public interface InitMapper {
-    @Select("SELECT ${id} as id, content FROM ${table}")
+    @Select("SELECT ${id} as id, content as content, content FROM ${table}")
     List<InitialValue> getInitValues(@Param("table") String table, @Param("id") String id);
 }

@@ -1,40 +1,95 @@
 package app.com.taskmanagement.model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 import java.time.Instant;
 
-public class TaskModel {
+public class TaskModel implements Serializable {
     public static final int SHOW_FORM_CREATE = 0;
+    public static final int SHOW_CARD_TASK = 1;
+    public static final int SHOW_UPDATE_TASK = 2;
+    public static final int SHOW_REVIEW_TASK = 3;
+    public static final int SHOW_TASK_TO_APPROVE = 4;
     public int type;
+
+    @SerializedName("taskId")
     private Long taskId;
+
+    @SerializedName("oldTaskId")
     private Long oldTaskId;
+
+    @SerializedName("taskName")
     private String taskName;
+
+    @SerializedName("createdTime")
     private Instant createdTime;
+
+    @SerializedName("deadline")
     private Instant deadline;
-    private Instant timeDeadline;
+
+    @SerializedName("accountCreated")
     private Long accountCreated;
+
+    @SerializedName("assignee")
     private Long assignee;
+
+    @SerializedName("description")
     private String description;
+
+    @SerializedName("resolution")
     private String resolution;
+
+    @SerializedName("imgResolutionUrl")
     private String imgResolutionUrl;
+
+    @SerializedName("result")
     private String result;
+
+    @SerializedName("startTime")
     private Instant startTime;
+
+    @SerializedName("endTime")
     private Instant endTime;
+
+    @SerializedName("managerComment")
     private String managerComment;
+
+    @SerializedName("mark")
     private Long mark;
+
+    @SerializedName("reviewerId")
     private Long reviewerId;
+
+    @SerializedName("reviewTime")
     private Instant reviewTime;
+
+    @SerializedName("confirmId")
     private Long confirmId;
+
+    @SerializedName("approvedId")
     private Long approvedId;
+
+    @SerializedName("status")
     private Long status;
+
+    @SerializedName("groupId")
     private Long groupId;
+
+    @SerializedName("editedBy")
     private Long editedBy;
+
+    @SerializedName("editedAt")
     private Instant editedAt;
+
+    private String date;
+    private String time;
 
     public TaskModel() {
     }
 
     //Create
-    public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline, Long accountCreated, Long assignee, String description, Long approvedId, Long status, Long groupId) {
+    public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline, Long accountCreated, Long assignee, String description, Long approvedId, Long status, Long groupId, Long editedBy, Instant editedAt) {
         this.type = type;
         this.taskId = taskId;
         this.oldTaskId = oldTaskId;
@@ -47,15 +102,51 @@ public class TaskModel {
         this.approvedId = approvedId;
         this.status = status;
         this.groupId = groupId;
+        this.editedBy = editedBy;
+        this.editedAt = editedAt;
     }
 
-    public Instant getTimeDeadline() {
-        return timeDeadline;
+    //Update
+    public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline,  Long accountCreated, Long assignee, String description, String resolution, String imgResolutionUrl, String result, Instant startTime, Instant endTime, String managerComment, Long mark, Long reviewerId, Instant reviewTime, Long confirmId, Long approvedId, Long status, Long groupId, Long editedBy, Instant editedAt) {
+        this.type = type;
+        this.taskId = taskId;
+        this.oldTaskId = oldTaskId;
+        this.taskName = taskName;
+        this.createdTime = createdTime;
+        this.deadline = deadline;
+        this.accountCreated = accountCreated;
+        this.assignee = assignee;
+        this.description = description;
+        this.resolution = resolution;
+        this.imgResolutionUrl = imgResolutionUrl;
+        this.result = result;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.managerComment = managerComment;
+        this.mark = mark;
+        this.reviewerId = reviewerId;
+        this.reviewTime = reviewTime;
+        this.confirmId = confirmId;
+        this.approvedId = approvedId;
+        this.status = status;
+        this.groupId = groupId;
+        this.editedBy = editedBy;
+        this.editedAt = editedAt;
     }
 
-    public void setTimeDeadline(Instant timeDeadline) {
-        this.timeDeadline = timeDeadline;
+    //Show Card Task
+    public TaskModel(int type, Long taskId, String taskName, Instant deadline, Long assignee, Long approvedId, Long status, Long groupId) {
+        this.type = type;
+        this.taskId = taskId;
+        this.taskName = taskName;
+        this.deadline = deadline;
+        this.assignee = assignee;
+        this.approvedId = approvedId;
+        this.status = status;
+        this.groupId = groupId;
     }
+
+
 
     public static int getShowFormCreate() {
         return SHOW_FORM_CREATE;
@@ -251,5 +342,29 @@ public class TaskModel {
 
     public void setEditedAt(Instant editedAt) {
         this.editedAt = editedAt;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+        if (this.time != null) {
+            String temp = this.date + "T" + this.time + ":00Z";
+            this.deadline = Instant.parse(temp);
+        }
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+        if (this.date != null) {
+            String temp = this.date + "T" + this.time + ":00Z";
+            this.deadline = Instant.parse(temp);
+        }
     }
 }

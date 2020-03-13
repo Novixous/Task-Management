@@ -22,7 +22,9 @@ android {
     }
 
 }
-
+//FCM
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
@@ -42,4 +44,12 @@ dependencies {
 
 
     implementation 'com.google.android.material:material:1.1.0'
+
+    //FCM
+    // Add the Firebase SDK for Google Analytics
+    implementation 'com.google.firebase:firebase-analytics:17.2.3'
+
+    // Add the SDK for Firebase Cloud Messaging
+    implementation 'com.google.firebase:firebase-messaging:20.1.2'
+    implementation 'androidx.work:work-runtime:2.3.2'
 }

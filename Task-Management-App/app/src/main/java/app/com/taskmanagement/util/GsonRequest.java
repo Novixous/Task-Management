@@ -18,6 +18,7 @@ public class GsonRequest<T> extends Request<T> {
     private final Map<String, String> headers;
     private final Map<String, String> params;
     private final Response.Listener<T> listener;
+    private String body = "";
 
     public GsonRequest(String url, Class<T> myClass, Map<String, String> headers,
                        Response.Listener<T> listener, Response.ErrorListener errorListener) {
@@ -38,6 +39,17 @@ public class GsonRequest<T> extends Request<T> {
         this.listener = listener;
     }
 
+    public GsonRequest(int type, String url, Class<T> myClass, Map<String, String> headers,
+                       String body,
+                       Response.Listener<T> listener, Response.ErrorListener errorListener) {
+        super(type, url, errorListener);
+        this.myClass = myClass;
+        this.headers = headers;
+        this.body = body;
+        this.listener = listener;
+        this.params = null;
+    }
+
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
         return headers != null ? headers : super.getHeaders();
@@ -50,16 +62,25 @@ public class GsonRequest<T> extends Request<T> {
 
     @Override
     protected void deliverResponse(T response) {
-        if(null != listener){
+        if (null != listener) {
             listener.onResponse(response);
         }
     }
 
     @Override
+    public byte[] getBody() throws AuthFailureError {
+        byte[] body = new byte[0];
+        try {
+            body = this.body.getBytes("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return body;
+    }
+
+    @Override
     protected Response<T> parseNetworkResponse(NetworkResponse response) {
         try {
-
-
             String json = new String(
                     response.data, HttpHeaderParser.parseCharset(response.headers));
             return Response.success(

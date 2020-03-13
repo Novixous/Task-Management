@@ -4,40 +4,51 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".ShowTaskFragment">
+    tools:context=".UserUpdateTaskFragment">
 
     <LinearLayout
-        android:id="@+id/showForm"
+        android:id="@+id/valueForm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:orientation="vertical"
+        android:background="@color/smoke"
         android:padding="10dp">
-        <!--        txtTaskName-->
-        <TextView
-            android:id="@+id/txtTaskName"
+<!--        txtTaskName-->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:text="Task name: "
-            android:textSize="16dp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/showTaskName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:text="Task name"
-            android:textSize="16dp" />
+            <TextView
+                android:id="@+id/txtTaskName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:text="Task name: "
+                android:textColor="@color/darkBlue"
+                android:textSize="13dp"
+                android:textStyle="bold" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="5dp"
-            android:background="@color/cardview_dark_background" />
+            <TextView
+                android:id="@+id/valueTaskName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:text="Task name"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <View
+                android:id="@+id/lineTaskname"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="5dp"
+                android:background="@color/cardview_dark_background" />
+        </LinearLayout>
         <!--        txtIDTask-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp">
 
@@ -60,23 +71,26 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="ID: "
-                    android:textSize="16dp"
+                    android:textColor="@color/darkBlue"
+                    android:textSize="13dp"
                     android:textStyle="bold" />
 
-                <Spinner
-                    android:id="@+id/showIDTask"
+                <TextView
+                    android:id="@+id/valueIDTask"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:text="ID Task"
-                    android:textSize="16dp" />
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
             </LinearLayout>
+
             <!--        txtIdOldTask-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp">
 
@@ -84,21 +98,26 @@
                     android:id="@+id/txtIdOldTask"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
                     android:text="ID Old: "
-                    android:textSize="16dp"
+                    android:textColor="@color/darkBlue"
+                    android:textSize="13dp"
                     android:textStyle="bold" />
 
                 <Spinner
-                    android:id="@+id/showIDOldTask"
-                    android:layout_width="fill_parent"
+                    android:id="@+id/valueIDOldTask"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:text="ID Old Task"
-                    android:textSize="16dp" />
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
             </LinearLayout>
         </LinearLayout>
 
         <View
+            android:id="@+id/lineID"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -107,40 +126,48 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:weightSum="1">
+            android:paddingBottom="3dp">
 
             <TextView
                 android:id="@+id/txtDeadline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.1"
                 android:text="Deadline: "
-                android:textSize="16dp"
+                android:textColor="@color/darkBlue"
+                android:textSize="13dp"
                 android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/showDeadline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="0.5"
-                android:text="Deadline"
-                android:textSize="16dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <Spinner
-                android:id="@+id/showTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="0.4"
-                android:text="Time"
-                android:textSize="16dp" />
+                <Button
+                    android:id="@+id/valueDateDeadline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:background="@color/white"
+                    android:text="Get date"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+
+                <Button
+                    android:id="@+id/valueTimeDeadline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="0.5"
+                    android:background="@color/white"
+                    android:text="Get time"
+                    android:textSize="18dp" />
+            </LinearLayout>
         </LinearLayout>
 
         <View
+            android:id="@+id/lineDeadline"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -158,50 +185,58 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:orientation="horizontal">
+                android:orientation="vertical">
+
                 <!--            Status-->
                 <TextView
                     android:id="@+id/txtStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Status: "
-                    android:textSize="16dp"
+                    android:textColor="@color/darkBlue"
+                    android:textSize="13dp"
                     android:textStyle="bold" />
 
                 <Spinner
-                    android:id="@+id/showStatus"
+                    android:id="@+id/valueStatus"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
                     android:text="Status"
-                    android:textSize="16dp" />
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:textSize="18dp" />
             </LinearLayout>
             <!--            Note-->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/txtNote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
                     android:text="Note: "
-                    android:textSize="16dp"
+                    android:textColor="@color/darkBlue"
+                    android:textSize="13dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/showNote"
+                    android:id="@+id/valueNote"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:text="Note"
-                    android:textSize="16dp" />
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
             </LinearLayout>
         </LinearLayout>
 
         <View
+            android:id="@+id/lineStatus"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -211,28 +246,32 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:paddingTop="3dp"
             android:paddingBottom="3dp">
             <!--            Creator-->
+
             <TextView
                 android:id="@+id/txtCreator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Creator: "
-                android:textSize="16dp"
+                android:textColor="@color/darkBlue"
+                android:textSize="13dp"
                 android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/showCreator"
+            <TextView
+                android:id="@+id/valueCreator"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
                 android:text="Creator"
-                android:textSize="16dp" />
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
         </LinearLayout>
 
         <View
+            android:id="@+id/lineCreator"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -241,7 +280,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:paddingTop="3dp"
             android:paddingBottom="3dp">
             <!--            Assignee-->
@@ -250,50 +289,62 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Assignee: "
-                android:textSize="16dp"
+                android:textColor="@color/darkBlue"
+                android:textSize="13dp"
                 android:textStyle="bold" />
 
             <Spinner
-                android:id="@+id/showAssignee"
+                android:id="@+id/valueAssignee"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
                 android:text="Assignee"
-                android:textSize="16dp" />
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:textSize="18dp" />
         </LinearLayout>
 
         <View
+            android:id="@+id/lineAssignee"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
             android:background="@color/cardview_dark_background" />
 
         <!--        txtDescription-->
-        <TextView
-            android:id="@+id/txtDescription"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:text="Description: "
-            android:textSize="16dp"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/showDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minLines="5"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:text="Description"
-            android:textSize="16dp" />
+            <TextView
+                android:id="@+id/txtDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:text="Description: "
+                android:textColor="@color/darkBlue"
+                android:textSize="13dp"
+                android:textStyle="bold" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="5dp"
-            android:background="@color/cardview_dark_background" />
+            <TextView
+                android:id="@+id/valueDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minLines="5"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:text="Description"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <View
+                android:id="@+id/lineDescription"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="5dp"
+                android:background="@color/cardview_dark_background" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -307,51 +358,60 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:orientation="horizontal">
+                android:orientation="vertical">
                 <!--            txtDateStart-->
+
                 <TextView
                     android:id="@+id/txtDateStart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Start date: "
-                    android:textSize="16dp"
+                    android:textColor="@color/darkBlue"
+                    android:textSize="13dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/showDateStart"
+                    android:id="@+id/valueDateStart"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
                     android:text="DateStart"
-                    android:textSize="16dp" />
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:textSize="18dp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:orientation="horizontal">
+                android:background="@drawable/br_vertical"
+                android:orientation="vertical">
                 <!--            txtDateEnd-->
+
                 <TextView
                     android:id="@+id/txtDateEnd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
                     android:text="End date: "
-                    android:textSize="16dp"
+                    android:textColor="@color/darkBlue"
+                    android:textSize="13dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/showDateEnd"
+                    android:id="@+id/valueDateEnd"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
                     android:text="DateEnd"
-                    android:textSize="16dp" />
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:textSize="18dp" />
             </LinearLayout>
         </LinearLayout>
 
         <View
+            android:id="@+id/lineDate"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -370,57 +430,69 @@
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 android:text="Photo of evidence: "
-                android:textSize="16dp"
+                android:textColor="@color/darkBlue"
+                android:textSize="13dp"
                 android:textStyle="bold" />
 
             <ImageButton
+                android:id="@+id/btnImg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:src="@drawable/ic_insert_photo_black_20dp" />
+
+            <ImageView
+                android:id="@+id/valueImgResolution"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/showImgResolution"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
         <View
+            android:id="@+id/linePhoto"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
             android:background="@color/cardview_dark_background" />
         <!--        txtResult-->
-        <TextView
-            android:id="@+id/txtResult"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:text="Result: "
-            android:textSize="16dp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/showResult"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minLines="5"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:text="Result"
-            android:textSize="16dp" />
+            <TextView
+                android:id="@+id/txtResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:text="Result: "
+                android:textColor="@color/darkBlue"
+                android:textSize="13dp"
+                android:textStyle="bold" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="5dp"
-            android:background="@color/cardview_dark_background" />
+            <TextView
+                android:id="@+id/valueResult"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minLines="5"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:text="Result"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <View
+                android:id="@+id/lineResult"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="5dp"
+                android:background="@color/cardview_dark_background" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:paddingTop="3dp"
             android:paddingBottom="3dp">
             <!--            txtReviewer-->
@@ -429,49 +501,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Reviewer: "
-                android:textSize="16dp"
+                android:textColor="@color/darkBlue"
+                android:textSize="13dp"
                 android:textStyle="bold" />
 
-            <Spinner
-                android:id="@+id/showReviewer"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="Reviewer"
-                android:textSize="16dp" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="5dp"
-            android:background="@color/cardview_dark_background" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:orientation="horizontal">
-            <!--            txtConfirm-->
             <TextView
-                android:id="@+id/txtConfirm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Confirm: "
-                android:textSize="16dp"
-                android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/showConfirm"
+                android:id="@+id/valueReviewer"
                 android:layout_width="fill_parent"
+                android:gravity="center"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="Confirm"
-                android:textSize="16dp" />
-
+                android:text="Reviewer"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
         </LinearLayout>
 
         <View
+            android:id="@+id/lineReviewer"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -489,81 +534,130 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:orientation="horizontal">
-                <!--            Mark-->
+                android:orientation="vertical">
+                <!--            txtConfirm-->
                 <TextView
-                    android:id="@+id/txtMark"
+                    android:id="@+id/txtConfirm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mark: "
-                    android:textSize="16dp"
+                    android:text="Confirm: "
+                    android:textColor="@color/darkBlue"
+                    android:textSize="13dp"
                     android:textStyle="bold" />
 
                 <Spinner
-                    android:id="@+id/showMark"
+                    android:id="@+id/valueConfirm"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
-                    android:text="Mark"
-                    android:textSize="16dp" />
+                    android:text="Confirm"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:orientation="horizontal">
+                android:background="@drawable/br_vertical"
+                android:orientation="vertical">
                 <!--            txtDateReview-->
                 <TextView
                     android:id="@+id/txtDateReview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
-                    android:text="End review: "
-                    android:textSize="16dp"
+                    android:text="Date review: "
+                    android:textColor="@color/darkBlue"
+                    android:textSize="13dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/showDateReview"
+                    android:id="@+id/valueDateReview"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
+                    android:gravity="center"
                     android:text="DateReview"
-                    android:textSize="16dp" />
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
             </LinearLayout>
         </LinearLayout>
 
         <View
+            android:id="@+id/lineConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="5dp"
+            android:background="@color/cardview_dark_background" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <!--            Mark-->
+            <TextView
+                android:id="@+id/txtMark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mark: "
+                android:textColor="@color/darkBlue"
+                android:textSize="13dp"
+                android:textStyle="bold" />
+
+            <NumberPicker
+                android:id="@+id/valueMark"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginLeft="3dp"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/lineMark"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
             android:background="@color/cardview_dark_background" />
         <!--        txtReview-->
-        <TextView
-            android:id="@+id/txtReview"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:text="Review: "
-            android:textSize="16dp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/showReview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minLines="5"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp"
-            android:text="Review"
-            android:textSize="16dp" />
+            <TextView
+                android:id="@+id/txtReview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:text="Review: "
+                android:textColor="@color/darkBlue"
+                android:textSize="13dp"
+                android:textStyle="bold" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="5dp"
-            android:background="@color/cardview_dark_background" />
+            <TextView
+                android:id="@+id/valueReview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minLines="5"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:text="Review"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <View
+                android:id="@+id/lineReview"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_margin="5dp"
+                android:background="@color/cardview_dark_background" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
@@ -572,15 +666,18 @@
         android:orientation="vertical">
 
         <Button
+            android:id="@+id/btnCreateTask"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/background_button"
+            android:onClick="clickToCreateTask"
             android:text="Create"
             android:textColor="@color/white"
             android:textStyle="bold" />
 
         <Button
+            android:id="@+id/btnUpdateTask"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -607,13 +704,13 @@
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/btnDisApprove"
+                android:id="@+id/btnDecline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="0.5"
-                android:background="@drawable/button_disapprove"
-                android:text="Disapprove"
+                android:background="@drawable/button_decline"
+                android:text="Decline"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
         </LinearLayout>
