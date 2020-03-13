@@ -38,9 +38,11 @@ public class AccountController {
      * @return
      */
     @GetMapping("/accounts")
-    public List<Account> getAccountsByField(@RequestParam(name = "fieldName", required = false) String fieldName,
-                                            @RequestParam(name = "fieldValue", required = false) Long fieldValue) {
-        return accountMapper.getAccountsByField(fieldName, fieldValue);
+    public HashMap<String, List<Account>> getAccountsByField(@RequestParam(name = "fieldName", required = false) String fieldName,
+                                                             @RequestParam(name = "fieldValue", required = false) Long fieldValue) {
+        HashMap<String, List<Account>> result = new HashMap<>();
+        result.put("data", accountMapper.getAccountsByField(fieldName, fieldValue));
+        return result;
     }
 
     /**
