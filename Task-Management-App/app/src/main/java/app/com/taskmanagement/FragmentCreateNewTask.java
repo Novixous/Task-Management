@@ -48,13 +48,6 @@ public class FragmentCreateNewTask extends Fragment {
         gridViewModelArrayList = new ArrayList();
 
         TaskModel gridViewModel = null;
-//        btnCreateTask = (Button)rootView.findViewById(R.id.btnCreateTask);
-//        btnCreateTask.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
         gridViewModel = new TaskModel(TaskModel.SHOW_FORM_CREATE, null, null, "", null, null, null, null, "", null, null, null, null, null);
 
         gridViewModelArrayList.add(gridViewModel);

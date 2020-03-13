@@ -4,9 +4,12 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
@@ -19,15 +22,24 @@ import android.widget.TimePicker;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 
 import app.com.taskmanagement.R;
 import app.com.taskmanagement.model.AccountModel;
 import app.com.taskmanagement.model.TaskModel;
+import app.com.taskmanagement.model.response.UserListReponse;
+import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.PreferenceUtil;
 
 public class TaskAdapter extends RecyclerView.Adapter {
@@ -35,12 +47,17 @@ public class TaskAdapter extends RecyclerView.Adapter {
     Context mContext;
     int total_types;
     TaskModel taskModel;
+    private List<AccountModel> listMembers;
+    private AccountModel currentAccount;
+    Boolean dataLoaded;
 
     public TaskAdapter(ArrayList<TaskModel> data, Context context) {
         this.dataSet = data;
         this.mContext = context;
         total_types = dataSet.size();
         this.taskModel = new TaskModel();
+        currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
+        dataLoaded = false;
     }
 
     public static class ShowCardTaskHolder extends RecyclerView.ViewHolder {
@@ -63,7 +80,7 @@ public class TaskAdapter extends RecyclerView.Adapter {
         ImageView valueImgResolution;
         NumberPicker valueMark;
         Button valueDateDeadline, valueTimeDeadline;
-        Button btnCreate;
+        Button btnCreate, btnUpdate, btnApprove, btnDecline;
 
         public TaskFormHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,22 +89,28 @@ public class TaskAdapter extends RecyclerView.Adapter {
             this.valueOldID = (Spinner) itemView.findViewById(R.id.valueIDOldTask);
             this.valueDateDeadline = (Button) itemView.findViewById(R.id.valueDateDeadline);
             this.valueTimeDeadline = (Button) itemView.findViewById(R.id.valueTimeDeadline);
-            this.valueNote = (TextView) itemView.findViewById(R.id.valueNote);
+            this.valueCreator = (TextView) itemView.findViewById(R.id.valueCreator);
+            this.valueAssignee = (Spinner) itemView.findViewById(R.id.valueAssignee);
             this.valueDescription = (TextView) itemView.findViewById(R.id.valueDescription);
+
+            this.valueNote = (TextView) itemView.findViewById(R.id.valueNote);
+            this.valueReviewer = (TextView) itemView.findViewById(R.id.valueReviewer);
+            this.valueConfirm = (Spinner) itemView.findViewById(R.id.valueConfirm);
+            this.valueStatus = (Spinner) itemView.findViewById(R.id.valueStatus);
             this.valueStartdate = (TextView) itemView.findViewById(R.id.valueDateStart);
             this.valueEnddate = (TextView) itemView.findViewById(R.id.valueDateEnd);
             this.valueResult = (TextView) itemView.findViewById(R.id.valueResult);
-            this.valueStatus = (Spinner) itemView.findViewById(R.id.valueStatus);
-            this.valueCreator = (TextView) itemView.findViewById(R.id.valueCreator);
-            this.valueAssignee = (Spinner) itemView.findViewById(R.id.valueAssignee);
             this.btnImg = (ImageButton) itemView.findViewById(R.id.btnImg);
             this.valueImgResolution = (ImageView) itemView.findViewById(R.id.valueImgResolution);
-            this.valueReviewer = (TextView) itemView.findViewById(R.id.valueReviewer);
-            this.valueConfirm = (Spinner) itemView.findViewById(R.id.valueConfirm);
+
             this.valueDateReview = (TextView) itemView.findViewById(R.id.valueDateReview);
             this.valueMark = (NumberPicker) itemView.findViewById(R.id.valueMark);
             this.valueReview = (TextView) itemView.findViewById(R.id.valueReview);
+
             this.btnCreate = (Button) itemView.findViewById(R.id.btnCreateTask);
+            this.btnUpdate = (Button) itemView.findViewById(R.id.btnUpdateTask);
+            this.btnApprove = (Button) itemView.findViewById(R.id.btnApprove);
+            this.btnDecline = (Button) itemView.findViewById(R.id.btnDecline);
         }
     }
 
@@ -235,28 +258,17 @@ public class TaskAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final AccountModel currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
-
         final TaskModel object = dataSet.get(position);
         if (object != null) {
             switch (object.type) {
 
                 case TaskModel.SHOW_FORM_CREATE:
+//                    -Taskname-
                     ((TaskFormHolder) holder).valueTaskname.setText(object.getTaskName());
-                    ((TaskFormHolder) holder).valueOldID.setTag(object.getOldTaskId());
+//                    -Choose date and time of deadline-
                     final Button valueDeadline = ((TaskFormHolder) holder).valueDateDeadline;
                     final Button valueTimeDeadline = ((TaskFormHolder) holder).valueTimeDeadline;
-                    ((TaskFormHolder) holder).valueAssignee.setTag(object.getAssignee());
-                    ((TaskFormHolder) holder).valueDescription.setText(object.getDescription());
-                    ((TaskFormHolder) holder).btnCreate.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            taskModel.setCreatedTime(Instant.now());
-                            taskModel.setAccountCreated(currentAccount.getAccountId());
-                            taskModel.setAssignee(currentAccount.getAccountId());
-                        }
-                    });
-
+//                    Choose date
                     final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     final Calendar newCalendar = Calendar.getInstance();
                     final DatePickerDialog pickDate = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
@@ -268,13 +280,13 @@ public class TaskAdapter extends RecyclerView.Adapter {
                             taskModel.setDate(date);
                         }
                     }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-
                     valueDeadline.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             pickDate.show();
                         }
                     });
+//                    Choose time
                     final DateFormat timeFormat = new SimpleDateFormat("HH:mm");
                     final Calendar newClock = Calendar.getInstance();
                     final TimePickerDialog pickTime = new TimePickerDialog(mContext, new TimePickerDialog.OnTimeSetListener() {
@@ -293,7 +305,62 @@ public class TaskAdapter extends RecyclerView.Adapter {
                             pickTime.show();
                         }
                     });
+//                    -Choose Assignee-
+                    ((TaskFormHolder) holder).valueAssignee.setTag(object.getAssignee());
+                    ((TaskFormHolder) holder).valueAssignee.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            if (!dataLoaded) {
+                                getUserList();
+                                return false;
+                            } else {
+                                return false;
+                            }
+                        }
+                    });
+                    List<String> spinnerItems = new ArrayList<>();
+                    if (listMembers != null) {
+                        for (AccountModel account : listMembers) {
+                            spinnerItems.add(account.getFullName());
+                        }
+                    }
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext,
+                            android.R.layout.simple_spinner_item, spinnerItems);
+                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    ((TaskFormHolder) holder).valueAssignee.setAdapter(dataAdapter);
+//                    -Description-
+                    ((TaskFormHolder) holder).valueDescription.setText(object.getDescription());
+//                    -Time created-
+                    taskModel.setCreatedTime(Instant.now());
+//                    -creator-
+                    taskModel.setAccountCreated(currentAccount.getAccountId());
+                    ((TaskFormHolder)holder).valueCreator.setText(currentAccount.getFullName());
+//                    -status default-
+                    taskModel.setStatus(new Long(0));
+//                    -confirm default-
+                    taskModel.setConfirmId(new Long(0));
+//                    -Button Create-
+                    ((TaskFormHolder) holder).btnCreate.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            switch (currentAccount.getRoleId().intValue()) {
+                                case 0://User
+                                    taskModel.setAssignee(currentAccount.getAccountId());
+                                    taskModel.setGroupId(currentAccount.getGroupId());
+                                    taskModel.setApprovedId(new Long(0)); //not consider
+                                    break;
+                                case 1://Manager
+                                    taskModel.setGroupId(currentAccount.getGroupId());
+                                    taskModel.setApprovedId(new Long(1)); //approve
+                                    break;
+                                case 2://Admin
+                                    taskModel.setApprovedId(new Long(1)); //approve
+                                    break;
+                            }
+                        }
+                    });
                     break;
+
                 case TaskModel.SHOW_CARD_TASK:
                     String splitDeadline = object.getDeadline().toString();
                     ((ShowCardTaskHolder) holder).valueTaskName.setText(object.getTaskName());
@@ -301,6 +368,7 @@ public class TaskAdapter extends RecyclerView.Adapter {
                     ((ShowCardTaskHolder) holder).valueStatus.setText(object.getStatus().toString());
                     ((ShowCardTaskHolder) holder).valueDeadline.setText(splitDeadline.substring(0, 19).replace("T", "\n"));
                     break;
+
                 case TaskModel.SHOW_UPDATE_TASK:
                     String splitStartdate = object.getStartTime().toString();
                     String splitEnddate = object.getEndTime().toString();
@@ -351,5 +419,26 @@ public class TaskAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return dataSet.size();
+    }
+
+    public void getUserList() {
+        String url = String.format(mContext.getResources().getString(R.string.BASE_URL) + "/accounts?fieldName=group_id&fieldValue=" + currentAccount.getGroupId());
+        HashMap<String, String> header = new HashMap<>();
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext.getApplicationContext());
+        GsonRequest<UserListReponse> userListReponseGsonRequest = new GsonRequest<>(url, UserListReponse.class, header, new Response.Listener<UserListReponse>() {
+            @Override
+            public void onResponse(UserListReponse response) {
+                listMembers = new ArrayList<>();
+                listMembers.addAll(response.getAccountModels());
+                dataLoaded = true;
+                notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.println(Log.ERROR, "", "");
+            }
+        });
+        requestQueue.add(userListReponseGsonRequest);
     }
 }

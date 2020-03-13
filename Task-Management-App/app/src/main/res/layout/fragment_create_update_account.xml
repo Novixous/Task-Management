@@ -65,7 +65,8 @@
                     android:layout_height="wrap_content"
                     android:text="Fullname:"
                     android:textColor="@color/darkBlue"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txtFullname"
@@ -93,7 +94,8 @@
                     android:layout_height="wrap_content"
                     android:text="Username:"
                     android:textColor="@color/darkBlue"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txtUsername"
@@ -131,7 +133,8 @@
                     android:fontFamily="sans-serif-light"
                     android:text="Click to change password"
                     android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
@@ -150,7 +153,8 @@
                     android:layout_height="wrap_content"
                     android:text="Role:"
                     android:textColor="@color/darkBlue"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/txtRole"
@@ -178,7 +182,8 @@
                     android:layout_height="wrap_content"
                     android:text="Email:"
                     android:textColor="@color/darkBlue"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txtEmail"
@@ -207,7 +212,8 @@
                     android:layout_height="wrap_content"
                     android:text="Phone:"
                     android:textColor="@color/darkBlue"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txtPhone"
@@ -236,7 +242,8 @@
                     android:layout_height="wrap_content"
                     android:text="Status:"
                     android:textColor="@color/darkBlue"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
                 <Spinner
                     android:id="@+id/txtActive"
@@ -265,17 +272,17 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:background="@drawable/background_button"
             android:onClick="clickToUpdateProfile"
             android:text="Save"
-            android:layout_margin="10dp"
             android:textColor="@color/white"
             android:textStyle="bold" />
 
         <Button
             android:layout_width="match_parent"
-            android:layout_margin="10dp"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:background="@drawable/background_button"
             android:onClick="clickToCreateProfile"
             android:text="Create"
