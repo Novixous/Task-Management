@@ -33,35 +33,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
-        sendRegistrationToServer(token);
+        writeTokenToPreference(token);
     }
 
-    public void sendRegistrationToServer(String token) {
-
-        RequestQueue mRequestQueue = SingletonRequestQueue.getInstance(getApplicationContext()).getRequestQueue();
-        String url = String.format(getResources().getString(R.string.BASE_URL) + "/notification/registerToken");
-
-        HashMap<String, String> headers = new HashMap<>();
-//        headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-        headers.put("connection", "keep-alive");
-        headers.put("Content-Type", "application/json");
-        TokenRequestModel tokenRequestModel = new TokenRequestModel(PreferenceUtil.getAccountFromSharedPreferences(getApplicationContext()).getAccountId(), token);
-        Gson gson = new Gson();
-        String body = gson.toJson(tokenRequestModel);
-
-        GsonRequest<Integer> gsonRequest = new GsonRequest<>(Request.Method.POST, url, Integer.class, headers, body, new Response.Listener<Integer>() {
-            @Override
-            public void onResponse(Integer response) {
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        });
-
-        mRequestQueue.add(gsonRequest);
+    public void writeTokenToPreference(String token) {
+        PreferenceUtil.writeStringToPreference(getApplicationContext(), "newToken", token);
     }
 
     @Override

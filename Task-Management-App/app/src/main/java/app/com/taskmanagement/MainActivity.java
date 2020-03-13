@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     HashMap<Long, String> approveList = new HashMap<>();
     HashMap<Long, String> roleList = new HashMap<>();
     HashMap<Long, String> statusList = new HashMap<>();
+    String newToken;
 
 
     @Override
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupToolbar();
+        sendTokenToServer();
 
 //        customRequest();
 
@@ -93,13 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 currentFragment = new SettingsFragment();
                 break;
             case 4:
-                SharedPreferences preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.remove("account");
-                editor.commit();
-                finish();
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
+
 
             default:
                 break;
@@ -149,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
             case "Settings":
                 return 3;
             case "Logout":
+                deleteTokenFromServer();
                 return 4;
             default:
                 return -1;
@@ -164,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
         currentFragment = new UserUpdateTaskFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, currentFragment).addToBackStack(null).commit();
     }
-
 
 
     public void clickToGetTime(View view) {
@@ -230,5 +226,74 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void sendTokenToServer() {
+        newToken = PreferenceUtil.getStringFromPreference(getApplicationContext(), "newToken");
+        String oldToken = PreferenceUtil.getStringFromPreference(getApplicationContext(), "oldToken");
+        if (newToken == null && oldToken != null) {
+            newToken = oldToken;
+            oldToken = null;
+        }
+        if (oldToken != null) {
+            if (oldToken.equals(newToken)) return;
+        }
+        RequestQueue mRequestQueue = SingletonRequestQueue.getInstance(getApplicationContext()).getRequestQueue();
+        String url = String.format(getResources().getString(R.string.BASE_URL) + "/notification/registerToken");
+
+        HashMap<String, String> headers = new HashMap<>();
+//        headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+        headers.put("connection", "keep-alive");
+        headers.put("Content-Type", "application/json");
+        TokenRequestModel tokenRequestModel = new TokenRequestModel(PreferenceUtil.getAccountFromSharedPreferences(getApplicationContext()).getAccountId(), newToken);
+        Gson gson = new Gson();
+        String body = gson.toJson(tokenRequestModel);
+
+        GsonRequest<Integer> gsonRequest = new GsonRequest<>(Request.Method.POST, url, Integer.class, headers, body, new Response.Listener<Integer>() {
+            @Override
+            public void onResponse(Integer response) {
+                PreferenceUtil.writeStringToPreference(getApplicationContext(), "oldToken", newToken);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        mRequestQueue.add(gsonRequest);
+    }
+
+    public void deleteTokenFromServer() {
+        RequestQueue mRequestQueue = SingletonRequestQueue.getInstance(getApplicationContext()).getRequestQueue();
+        String url = String.format(getResources().getString(R.string.BASE_URL) + "/notification/deleteToken");
+        if(newToken == null)newToken = PreferenceUtil.getStringFromPreference(this,"newToken");
+        HashMap<String, String> headers = new HashMap<>();
+//        headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
+        headers.put("connection", "keep-alive");
+        headers.put("Content-Type", "application/json");
+        TokenRequestModel tokenRequestModel = new TokenRequestModel(PreferenceUtil.getAccountFromSharedPreferences(getApplicationContext()).getAccountId(), newToken);
+        Gson gson = new Gson();
+        String body = gson.toJson(tokenRequestModel);
+
+        GsonRequest<Integer> gsonRequest = new GsonRequest<>(Request.Method.POST, url, Integer.class, headers, body, new Response.Listener<Integer>() {
+            @Override
+            public void onResponse(Integer response) {
+                SharedPreferences preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.remove("account");
+                editor.remove("newToken");
+                editor.commit();
+                finish();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        mRequestQueue.add(gsonRequest);
+    }
 
 }

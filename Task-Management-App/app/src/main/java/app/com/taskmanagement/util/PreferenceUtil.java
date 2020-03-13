@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
+import java.util.Set;
 import app.com.taskmanagement.model.AccountModel;
 
 public class PreferenceUtil {
@@ -18,4 +19,17 @@ public class PreferenceUtil {
         }
         return result;
     }
+
+    public static void writeStringToPreference(Context mContext, String key, String value) {
+        SharedPreferences preference = mContext.getSharedPreferences("login", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preference.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
+    public static String getStringFromPreference(Context mContext, String key) {
+        SharedPreferences preference = mContext.getSharedPreferences("login", Context.MODE_PRIVATE);
+        return preference.getString(key, null);
+    }
+
 }

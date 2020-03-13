@@ -150,5 +150,11 @@ public interface AccountMapper {
     @Insert("INSERT INTO token (deviceToken, accountId) VALUES (#{token}, #{accountId})")
     int registerToken(@Param("accountId") Long accountId, @Param("token") String token);
 
+    @Delete("DELETE FROM token WHERE deviceToken = #{token} AND accountId = #{accountId}")
+    int deleteToken(@Param("accountId") Long accountId, @Param("token") String token);
+
+    @Select("SELECT deviceToken FROM token WHERE deviceToken = #{token} AND accountId = #{accountId}")
+    String getTokenByTokenAndAccountId(@Param("accountId") Long accountId, @Param("token") String token);
+
 
 }

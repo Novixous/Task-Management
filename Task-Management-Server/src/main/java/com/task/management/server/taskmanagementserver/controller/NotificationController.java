@@ -6,10 +6,8 @@ import com.task.management.server.taskmanagementserver.dto.SubscriptionRequestDt
 import com.task.management.server.taskmanagementserver.mapper.AccountMapper;
 import com.task.management.server.taskmanagementserver.model.request.TokenRequestModel;
 import com.task.management.server.taskmanagementserver.service.NotificationService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.ibatis.annotations.Delete;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/notification")
@@ -44,7 +42,16 @@ public class NotificationController {
     }
 
     @PostMapping("/registerToken")
-    public void registerToken(@RequestBody TokenRequestModel tokenRequestModel) {
-        accountMapper.registerToken(tokenRequestModel.getAccountId(), tokenRequestModel.getToken());
+    public int registerToken(@RequestBody TokenRequestModel tokenRequestModel) {
+        if (accountMapper.getTokenByTokenAndAccountId(tokenRequestModel.getAccountId(), tokenRequestModel.getToken()) == null) {
+            return accountMapper.registerToken(tokenRequestModel.getAccountId(), tokenRequestModel.getToken());
+        }
+        return 0;
+    }
+
+    @PostMapping("/deleteToken")
+    public int deleteToken(@RequestBody TokenRequestModel tokenRequestModel) {
+        return accountMapper.deleteToken(tokenRequestModel.getAccountId(), tokenRequestModel.getToken());
+
     }
 }
