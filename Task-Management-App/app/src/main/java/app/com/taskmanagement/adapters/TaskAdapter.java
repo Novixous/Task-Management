@@ -253,7 +253,7 @@ public class TaskAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final AccountModel currentAccount = PreferenceUtil.getAccountFromPreference(mContext);
+        final AccountModel currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
 
         final TaskModel object = dataSet.get(position);
         if (object != null) {
