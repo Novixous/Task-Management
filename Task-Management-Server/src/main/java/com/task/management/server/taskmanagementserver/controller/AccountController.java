@@ -52,7 +52,7 @@ public class AccountController {
     public void updateAccount(@RequestBody Account account) {
         if (account.getAccountId() != null) {
             if (CheckUtil.hasFieldNotNull(account, "accountId")) {
-                accountMapper.UpdateAccountById(account);
+                accountMapper.updateAccountById(account);
             }
         }
     }
@@ -64,7 +64,7 @@ public class AccountController {
      */
     @PostMapping("/account")
     public void createAccount(@RequestBody Account account) {
-        accountMapper.CreateAccount(account);
+        accountMapper.createAccount(account);
     }
 
     @Delete("/account")
@@ -72,7 +72,7 @@ public class AccountController {
         Account account = new Account();
         account.setAccountId(accountId);
         account.setDeactivated(true);
-        accountMapper.UpdateAccountById(account);
+        accountMapper.updateAccountById(account);
     }
 
     @PostMapping("/login")

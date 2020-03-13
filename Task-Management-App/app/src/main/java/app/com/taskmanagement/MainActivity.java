@@ -20,6 +20,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -28,6 +29,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 
@@ -35,9 +37,11 @@ import app.com.taskmanagement.model.Approve;
 import app.com.taskmanagement.model.Confirm;
 import app.com.taskmanagement.model.Role;
 import app.com.taskmanagement.model.Status;
+import app.com.taskmanagement.model.request.TokenRequestModel;
 import app.com.taskmanagement.model.response.InitialResponse;
 import app.com.taskmanagement.util.DialogUtil;
 import app.com.taskmanagement.util.GsonRequest;
+import app.com.taskmanagement.util.PreferenceUtil;
 import app.com.taskmanagement.util.SingletonRequestQueue;
 
 public class MainActivity extends AppCompatActivity {
@@ -57,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupToolbar();
+
 //        customRequest();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -223,4 +228,6 @@ public class MainActivity extends AppCompatActivity {
             approveList.put(approve.getId(), approve.getName());
         }
     }
+
+
 }

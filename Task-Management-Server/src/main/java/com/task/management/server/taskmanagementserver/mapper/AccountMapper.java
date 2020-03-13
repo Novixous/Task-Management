@@ -75,7 +75,7 @@ public interface AccountMapper {
             "#{account.groupId}," +
             "#{account.deactivated}" +
             ")")
-    int CreateAccount(@Param("account") Account account);
+    int createAccount(@Param("account") Account account);
 
     @Update({
             "<script>" +
@@ -145,7 +145,10 @@ public interface AccountMapper {
                     "</if>" +
                     "WHERE idaccount = #{account.accountId}" +
                     "</script>"})
-    int UpdateAccountById(@Param("account") Account account);
+    int updateAccountById(@Param("account") Account account);
+
+    @Insert("INSERT INTO token (deviceToken, accountId) VALUES (#{token}, #{accountId})")
+    int registerToken(@Param("accountId") Long accountId, @Param("token") String token);
 
 
 }

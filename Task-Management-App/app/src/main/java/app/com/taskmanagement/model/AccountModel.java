@@ -37,6 +37,9 @@ public class AccountModel implements Serializable {
     @SerializedName("groupId")
     private Long groupId;
 
+    public AccountModel() {
+    }
+
     public AccountModel(int type, Long accountId, String username, String firstname, String lastname, String password, String fullName, String phone, String email, String address, boolean deactivated, Long roleId, Long groupId) {
         this.type = type;
         this.accountId = accountId;
