@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.text.InputType;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -12,9 +13,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
+import android.widget.Scroller;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -73,8 +76,8 @@ public class TaskAdapter extends RecyclerView.Adapter {
     }
 
     public static class TaskFormHolder extends RecyclerView.ViewHolder {
-        TextView valueTaskname, valueIDtask, valueNote, valueDescription,
-                valueStartdate, valueEnddate, valueResult, valueCreator, valueReviewer, valueReview, valueDateReview;
+        TextView valueIDtask, valueNote, valueStartdate, valueEnddate, valueCreator, valueReviewer, valueDateReview;
+        EditText valueDescription, valueTaskname, valueReview, valueResult;
         Spinner valueOldID, valueStatus, valueAssignee, valueConfirm;
         ImageButton btnImg;
         ImageView valueImgResolution;
@@ -84,14 +87,14 @@ public class TaskAdapter extends RecyclerView.Adapter {
 
         public TaskFormHolder(@NonNull View itemView) {
             super(itemView);
-            this.valueTaskname = (TextView) itemView.findViewById(R.id.valueTaskName);
+            this.valueTaskname = (EditText) itemView.findViewById(R.id.valueTaskName);
             this.valueIDtask = (TextView) itemView.findViewById(R.id.valueIDTask);
             this.valueOldID = (Spinner) itemView.findViewById(R.id.valueIDOldTask);
             this.valueDateDeadline = (Button) itemView.findViewById(R.id.valueDateDeadline);
             this.valueTimeDeadline = (Button) itemView.findViewById(R.id.valueTimeDeadline);
             this.valueCreator = (TextView) itemView.findViewById(R.id.valueCreator);
             this.valueAssignee = (Spinner) itemView.findViewById(R.id.valueAssignee);
-            this.valueDescription = (TextView) itemView.findViewById(R.id.valueDescription);
+            this.valueDescription = (EditText) itemView.findViewById(R.id.valueDescription);
 
             this.valueNote = (TextView) itemView.findViewById(R.id.valueNote);
             this.valueReviewer = (TextView) itemView.findViewById(R.id.valueReviewer);
@@ -99,13 +102,13 @@ public class TaskAdapter extends RecyclerView.Adapter {
             this.valueStatus = (Spinner) itemView.findViewById(R.id.valueStatus);
             this.valueStartdate = (TextView) itemView.findViewById(R.id.valueDateStart);
             this.valueEnddate = (TextView) itemView.findViewById(R.id.valueDateEnd);
-            this.valueResult = (TextView) itemView.findViewById(R.id.valueResult);
+            this.valueResult = (EditText) itemView.findViewById(R.id.valueResult);
             this.btnImg = (ImageButton) itemView.findViewById(R.id.btnImg);
             this.valueImgResolution = (ImageView) itemView.findViewById(R.id.valueImgResolution);
 
             this.valueDateReview = (TextView) itemView.findViewById(R.id.valueDateReview);
             this.valueMark = (NumberPicker) itemView.findViewById(R.id.valueMark);
-            this.valueReview = (TextView) itemView.findViewById(R.id.valueReview);
+            this.valueReview = (EditText) itemView.findViewById(R.id.valueReview);
 
             this.btnCreate = (Button) itemView.findViewById(R.id.btnCreateTask);
             this.btnUpdate = (Button) itemView.findViewById(R.id.btnUpdateTask);
@@ -198,7 +201,7 @@ public class TaskAdapter extends RecyclerView.Adapter {
                     view.findViewById(id_not_show_create_task[i]).setVisibility(View.GONE);
                 }
                 for (int i = 0; i < create_edit_textview.length; i++) {
-                    final TextView temp = view.findViewById(create_edit_textview[i]);
+                    final EditText temp = view.findViewById(create_edit_textview[i]);
                     temp.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -207,6 +210,9 @@ public class TaskAdapter extends RecyclerView.Adapter {
                             temp.setInputType(InputType.TYPE_CLASS_TEXT);
                             temp.setTextIsSelectable(true);
                             temp.requestFocus();
+                            temp.setMovementMethod(new ScrollingMovementMethod());
+                            temp.setScroller(new Scroller(mContext));
+                            temp.setVerticalScrollBarEnabled(true);
                         }
                     });
                 }
@@ -219,8 +225,9 @@ public class TaskAdapter extends RecyclerView.Adapter {
                 for (int i = 0; i < id_not_show_update.length; i++) {
                     view.findViewById(id_not_show_update[i]).setVisibility(View.GONE);
                 }
+
                 for (int i = 0; i < update_edit_textview.length; i++) {
-                    final TextView temp = view.findViewById(update_edit_textview[i]);
+                    final EditText temp = view.findViewById(update_edit_textview[i]);
                     temp.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -229,6 +236,9 @@ public class TaskAdapter extends RecyclerView.Adapter {
                             temp.setInputType(InputType.TYPE_CLASS_TEXT);
                             temp.setTextIsSelectable(true);
                             temp.requestFocus();
+                            temp.setMovementMethod(new ScrollingMovementMethod());
+                            temp.setScroller(new Scroller(mContext));
+                            temp.setVerticalScrollBarEnabled(true);
                         }
                     });
                 }
@@ -237,19 +247,6 @@ public class TaskAdapter extends RecyclerView.Adapter {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_task, parent, false);
                 for (int i = 0; i < id_not_show_review.length; i++) {
                     view.findViewById(id_not_show_review[i]).setVisibility(View.GONE);
-                }
-                for (int i = 0; i < update_review_textview.length; i++) {
-                    final TextView temp = view.findViewById(update_review_textview[i]);
-                    temp.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            temp.setCursorVisible(true);
-                            temp.setFocusableInTouchMode(true);
-                            temp.setInputType(InputType.TYPE_CLASS_TEXT);
-                            temp.setTextIsSelectable(true);
-                            temp.requestFocus();
-                        }
-                    });
                 }
                 return new TaskFormHolder(view);
         }
@@ -335,7 +332,7 @@ public class TaskAdapter extends RecyclerView.Adapter {
                     taskModel.setCreatedTime(Instant.now());
 //                    -creator-
                     taskModel.setAccountCreated(currentAccount.getAccountId());
-                    ((TaskFormHolder)holder).valueCreator.setText(currentAccount.getFullName());
+                    ((TaskFormHolder) holder).valueCreator.setText(currentAccount.getFullName());
 //                    -status default-
                     taskModel.setStatus(new Long(0));
 //                    -confirm default-

@@ -11,10 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:orientation="vertical"
         android:background="@color/smoke"
+        android:orientation="vertical"
         android:padding="10dp">
-<!--        txtTaskName-->
+        <!--        txtTaskName-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,14 +31,16 @@
                 android:textSize="13dp"
                 android:textStyle="bold" />
 
-            <TextView
+            <EditText
                 android:id="@+id/valueTaskName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="top"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
+                android:singleLine="false"
                 android:text="Task name"
-                android:gravity="center"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
@@ -79,8 +81,8 @@
                     android:id="@+id/valueIDTask"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="ID Task"
                     android:gravity="center"
+                    android:text="ID Task"
                     android:textColor="@color/black"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -109,8 +111,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="ID Old Task"
                     android:gravity="center"
+                    android:text="ID Old Task"
                     android:textColor="@color/black"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -201,9 +203,9 @@
                     android:id="@+id/valueStatus"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="Status"
                     android:textColor="@color/black"
-                    android:gravity="center"
                     android:textSize="18dp" />
             </LinearLayout>
             <!--            Note-->
@@ -228,8 +230,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:text="Note"
                     android:gravity="center"
+                    android:text="Note"
                     android:textColor="@color/black"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -264,8 +266,8 @@
                 android:id="@+id/valueCreator"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Creator"
                 android:gravity="center"
+                android:text="Creator"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
         </LinearLayout>
@@ -297,9 +299,9 @@
                 android:id="@+id/valueAssignee"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="Assignee"
                 android:textColor="@color/black"
-                android:gravity="center"
                 android:textSize="18dp" />
         </LinearLayout>
 
@@ -327,13 +329,17 @@
                 android:textSize="13dp"
                 android:textStyle="bold" />
 
-            <TextView
+            <EditText
                 android:id="@+id/valueDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minLines="5"
+                android:background="@android:color/transparent"
+                android:gravity="top"
+                android:minLines="3"
+                android:maxLines="5"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
+                android:singleLine="false"
                 android:text="Description"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
@@ -374,9 +380,9 @@
                     android:id="@+id/valueDateStart"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="DateStart"
                     android:textColor="@color/black"
-                    android:gravity="center"
                     android:textSize="18dp" />
             </LinearLayout>
 
@@ -403,9 +409,9 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
+                    android:gravity="center"
                     android:text="DateEnd"
                     android:textColor="@color/black"
-                    android:gravity="center"
                     android:textSize="18dp" />
             </LinearLayout>
         </LinearLayout>
@@ -470,13 +476,17 @@
                 android:textSize="13dp"
                 android:textStyle="bold" />
 
-            <TextView
+            <EditText
                 android:id="@+id/valueResult"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minLines="5"
+                android:background="@android:color/transparent"
+                android:gravity="top"
+                android:minLines="3"
+                android:maxLines="5"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
+                android:singleLine="false"
                 android:text="Result"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
@@ -508,8 +518,8 @@
             <TextView
                 android:id="@+id/valueReviewer"
                 android:layout_width="fill_parent"
-                android:gravity="center"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="Reviewer"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
@@ -549,8 +559,8 @@
                     android:id="@+id/valueConfirm"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="Confirm"
                     android:gravity="center"
+                    android:text="Confirm"
                     android:textColor="@color/black"
                     android:textSize="18dp" />
 
@@ -640,13 +650,17 @@
                 android:textSize="13dp"
                 android:textStyle="bold" />
 
-            <TextView
+            <EditText
                 android:id="@+id/valueReview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minLines="5"
+                android:background="@android:color/transparent"
+                android:gravity="top"
+                android:minLines="3"
+                android:maxLines="5"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
+                android:singleLine="false"
                 android:text="Review"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
