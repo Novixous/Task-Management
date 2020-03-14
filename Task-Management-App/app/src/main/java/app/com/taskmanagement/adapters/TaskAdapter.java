@@ -284,6 +284,7 @@ public class TaskAdapter extends RecyclerView.Adapter {
                         @Override
                         public void onClick(View v) {
                             pickDate.show();
+                            pickDate.getDatePicker().setMinDate(System.currentTimeMillis());
                         }
                     });
 //                    Choose time
