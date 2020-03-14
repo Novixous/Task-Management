@@ -20,17 +20,17 @@ public class Task {
     private Long mark;
     private Long reviewerId;
     private Instant reviewTime;
-    private Long confirmId;
     private Long approvedId;
     private Long status;
     private Long groupId;
     private Long editedBy;
     private Instant editedAt;
+    private Boolean closed;
 
     public Task() {
     }
 
-    public Task(Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline, Long accountCreated, Long assignee, String description, String resolution, String imgResolutionUrl, String result, Instant startTime, Instant endTime, String managerComment, Long mark, Long reviewerId, Instant reviewTime, Long confirmId, Long approvedId, Long status, Long groupId, Long editedBy, Instant editedAt) {
+    public Task(Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline, Long accountCreated, Long assignee, String description, String resolution, String imgResolutionUrl, String result, Instant startTime, Instant endTime, String managerComment, Long mark, Long reviewerId, Instant reviewTime, Long approvedId, Long status, Long groupId, Long editedBy, Instant editedAt, Boolean closed) {
         this.taskId = taskId;
         this.oldTaskId = oldTaskId;
         this.taskName = taskName;
@@ -48,12 +48,12 @@ public class Task {
         this.mark = mark;
         this.reviewerId = reviewerId;
         this.reviewTime = reviewTime;
-        this.confirmId = confirmId;
         this.approvedId = approvedId;
         this.status = status;
         this.groupId = groupId;
         this.editedBy = editedBy;
         this.editedAt = editedAt;
+        this.closed = closed;
     }
 
     public Long getTaskId() {
@@ -192,14 +192,6 @@ public class Task {
         this.reviewTime = reviewTime;
     }
 
-    public Long getConfirmId() {
-        return confirmId;
-    }
-
-    public void setConfirmId(Long confirmId) {
-        this.confirmId = confirmId;
-    }
-
     public Long getApprovedId() {
         return approvedId;
     }
@@ -238,5 +230,13 @@ public class Task {
 
     public void setEditedAt(Instant editedAt) {
         this.editedAt = editedAt;
+    }
+
+    public Boolean getClosed() {
+        return closed;
+    }
+
+    public void setClosed(Boolean closed) {
+        this.closed = closed;
     }
 }

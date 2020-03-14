@@ -28,7 +28,6 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 
 import app.com.taskmanagement.model.Approve;
-import app.com.taskmanagement.model.Confirm;
 import app.com.taskmanagement.model.Role;
 import app.com.taskmanagement.model.Status;
 import app.com.taskmanagement.model.request.TokenRequestModel;
@@ -45,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     Toolbar toolbar;
     private CharSequence mTitle;
-    HashMap<Long, String> confirmList = new HashMap<>();
     HashMap<Long, String> approveList = new HashMap<>();
     HashMap<Long, String> roleList = new HashMap<>();
     HashMap<Long, String> statusList = new HashMap<>();
@@ -59,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         setupToolbar();
         sendTokenToServer();
 
-//        customRequest();
+        getInitialValue();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.Open, R.string.Close);
@@ -192,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void customRequest() {
+    private void getInitialValue() {
         RequestQueue mRequestQueue = SingletonRequestQueue.getInstance(getApplicationContext()).getRequestQueue();
         String url = String.format(getResources().getString(R.string.BASE_URL) + "/getInitialValue");
 
@@ -216,9 +214,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void publishInitialValues(InitialResponse response) {
-        for (Confirm confirm : response.getConfirms()) {
-            confirmList.put(confirm.getId(), confirm.getName());
-        }
         for (Role role : response.getRoles()) {
             roleList.put(role.getId(), role.getName());
         }
@@ -269,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
     public void deleteTokenFromServer() {
         RequestQueue mRequestQueue = SingletonRequestQueue.getInstance(getApplicationContext()).getRequestQueue();
         String url = String.format(getResources().getString(R.string.BASE_URL) + "/notification/deleteToken");
-        if(newToken == null)newToken = PreferenceUtil.getStringFromPreference(this,"newToken");
+        if (newToken == null) newToken = PreferenceUtil.getStringFromPreference(this, "newToken");
         HashMap<String, String> headers = new HashMap<>();
 //        headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
         headers.put("connection", "keep-alive");

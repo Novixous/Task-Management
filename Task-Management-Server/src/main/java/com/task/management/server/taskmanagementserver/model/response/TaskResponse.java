@@ -19,17 +19,17 @@ public class TaskResponse {
     private Long mark;
     private Long reviewerId;
     private String reviewTime;
-    private Long confirmId;
     private Long approvedId;
     private Long status;
     private Long groupId;
     private Long editedBy;
     private String editedAt;
+    private Boolean closed;
 
     public TaskResponse() {
     }
 
-    public TaskResponse(Long taskId, Long oldTaskId, String taskName, String createdTime, String deadline, Long accountCreated, Long assignee, String description, String resolution, String imgResolutionUrl, String result, String startTime, String endTime, String managerComment, Long mark, Long reviewerId, String reviewTime, Long confirmId, Long approvedId, Long status, Long groupId, Long editedBy, String editedAt) {
+    public TaskResponse(Long taskId, Long oldTaskId, String taskName, String createdTime, String deadline, Long accountCreated, Long assignee, String description, String resolution, String imgResolutionUrl, String result, String startTime, String endTime, String managerComment, Long mark, Long reviewerId, String reviewTime, Long approvedId, Long status, Long groupId, Long editedBy, String editedAt, Boolean closed) {
         this.taskId = taskId;
         this.oldTaskId = oldTaskId;
         this.taskName = taskName;
@@ -47,12 +47,12 @@ public class TaskResponse {
         this.mark = mark;
         this.reviewerId = reviewerId;
         this.reviewTime = reviewTime;
-        this.confirmId = confirmId;
         this.approvedId = approvedId;
         this.status = status;
         this.groupId = groupId;
         this.editedBy = editedBy;
         this.editedAt = editedAt;
+        this.closed = closed;
     }
 
     public Long getTaskId() {
@@ -191,14 +191,6 @@ public class TaskResponse {
         this.reviewTime = reviewTime;
     }
 
-    public Long getConfirmId() {
-        return confirmId;
-    }
-
-    public void setConfirmId(Long confirmId) {
-        this.confirmId = confirmId;
-    }
-
     public Long getApprovedId() {
         return approvedId;
     }
@@ -237,5 +229,13 @@ public class TaskResponse {
 
     public void setEditedAt(String editedAt) {
         this.editedAt = editedAt;
+    }
+
+    public Boolean getClosed() {
+        return closed;
+    }
+
+    public void setClosed(Boolean closed) {
+        this.closed = closed;
     }
 }

@@ -21,7 +21,6 @@ public class InitController {
     public HashMap<String, List<InitialValue>> getInitialValue() {
         HashMap<String, List<InitialValue>> result = new HashMap<>();
         result.put("status", initMapper.getInitValues("status", "id_status"));
-        result.put("confirm", initMapper.getInitValues("confirm", "id_confirm"));
         result.put("approve", initMapper.getInitValues("approve", "id_approve"));
         result.put("role", initMapper.getInitValues("role", "idrole"));
         return result;

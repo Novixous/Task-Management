@@ -3,10 +3,7 @@ package com.task.management.server.taskmanagementserver.service;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingException;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
+import com.google.firebase.messaging.*;
 import com.task.management.server.taskmanagementserver.dto.NotificationRequestDto;
 import com.task.management.server.taskmanagementserver.dto.SubscriptionRequestDto;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -57,14 +56,27 @@ public class NotificationService {
         }
     }
 
+    public String sendsPnsToDevices(NotificationRequestDto notificationRequestDto, List<String> tokens) {
+        MulticastMessage message = MulticastMessage.builder()
+                .setNotification(new Notification(notificationRequestDto.getTitle(), notificationRequestDto.getBody()))
+                .putData("content", notificationRequestDto.getTitle())
+                .putData("body", notificationRequestDto.getBody())
+                .addAllTokens(tokens)
+                .build();
+        BatchResponse response = null;
+        try {
+            response = FirebaseMessaging.getInstance().sendMulticast(message);
+        } catch (FirebaseMessagingException e) {
+        }
+        return "Successfully sent " + response.getSuccessCount() + " notifications.";
+    }
+
     public String sendPnsToDevice(NotificationRequestDto notificationRequestDto) {
         Message message = Message.builder()
                 .setToken(notificationRequestDto.getTarget())
                 .setNotification(new Notification(notificationRequestDto.getTitle(), notificationRequestDto.getBody()))
                 .putData("content", notificationRequestDto.getTitle())
                 .putData("body", notificationRequestDto.getBody())
-                .putData("test","aaaaaaa")
-                .putData("aaaaaaaaaaa","aaaaaaaaaaaaa")
                 .build();
 
         String response = null;

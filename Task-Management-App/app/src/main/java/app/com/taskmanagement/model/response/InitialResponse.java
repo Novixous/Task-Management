@@ -5,13 +5,10 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 import app.com.taskmanagement.model.Approve;
-import app.com.taskmanagement.model.Confirm;
 import app.com.taskmanagement.model.Role;
 import app.com.taskmanagement.model.Status;
 
 public class InitialResponse {
-    @SerializedName("confirm")
-    private List<Confirm> confirms;
     @SerializedName("role")
     private List<Role> roles;
     @SerializedName("status")
@@ -22,19 +19,10 @@ public class InitialResponse {
     public InitialResponse() {
     }
 
-    public InitialResponse(List<Confirm> confirms, List<Role> roles, List<Status> statuses, List<Approve> approves) {
-        this.confirms = confirms;
+    public InitialResponse(List<Role> roles, List<Status> statuses, List<Approve> approves) {
         this.roles = roles;
         this.statuses = statuses;
         this.approves = approves;
-    }
-
-    public List<Confirm> getConfirms() {
-        return confirms;
-    }
-
-    public void setConfirms(List<Confirm> confirms) {
-        this.confirms = confirms;
     }
 
     public List<Role> getRoles() {
