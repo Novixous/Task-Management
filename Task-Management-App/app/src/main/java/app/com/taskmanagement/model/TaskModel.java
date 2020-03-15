@@ -64,9 +64,6 @@ public class TaskModel implements Serializable {
     @SerializedName("reviewTime")
     private Instant reviewTime;
 
-    @SerializedName("confirmId")
-    private Long confirmId;
-
     @SerializedName("approvedId")
     private Long approvedId;
 
@@ -82,6 +79,9 @@ public class TaskModel implements Serializable {
     @SerializedName("editedAt")
     private Instant editedAt;
 
+    @SerializedName("closed")
+    private boolean closed;
+
     private String date;
     private String time;
 
@@ -89,7 +89,12 @@ public class TaskModel implements Serializable {
     }
 
     //Create
-    public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline, Long accountCreated, Long assignee, String description, Long approvedId, Long status, Long groupId, Long editedBy, Instant editedAt) {
+
+    public TaskModel(int type) {
+        this.type = type;
+    }
+
+    public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline, Long accountCreated, Long assignee, String description, Long approvedId, Long status, Long groupId, Long editedBy, Instant editedAt, boolean closed) {
         this.type = type;
         this.taskId = taskId;
         this.oldTaskId = oldTaskId;
@@ -104,35 +109,10 @@ public class TaskModel implements Serializable {
         this.groupId = groupId;
         this.editedBy = editedBy;
         this.editedAt = editedAt;
+        this.closed = closed;
     }
 
     //Update
-    public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline,  Long accountCreated, Long assignee, String description, String resolution, String imgResolutionUrl, String result, Instant startTime, Instant endTime, String managerComment, Long mark, Long reviewerId, Instant reviewTime, Long confirmId, Long approvedId, Long status, Long groupId, Long editedBy, Instant editedAt) {
-        this.type = type;
-        this.taskId = taskId;
-        this.oldTaskId = oldTaskId;
-        this.taskName = taskName;
-        this.createdTime = createdTime;
-        this.deadline = deadline;
-        this.accountCreated = accountCreated;
-        this.assignee = assignee;
-        this.description = description;
-        this.resolution = resolution;
-        this.imgResolutionUrl = imgResolutionUrl;
-        this.result = result;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.managerComment = managerComment;
-        this.mark = mark;
-        this.reviewerId = reviewerId;
-        this.reviewTime = reviewTime;
-        this.confirmId = confirmId;
-        this.approvedId = approvedId;
-        this.status = status;
-        this.groupId = groupId;
-        this.editedBy = editedBy;
-        this.editedAt = editedAt;
-    }
 
     //Show Card Task
     public TaskModel(int type, Long taskId, String taskName, Instant deadline, Long assignee, Long approvedId, Long status, Long groupId) {
@@ -145,7 +125,6 @@ public class TaskModel implements Serializable {
         this.status = status;
         this.groupId = groupId;
     }
-
 
 
     public static int getShowFormCreate() {
@@ -296,14 +275,6 @@ public class TaskModel implements Serializable {
         this.reviewTime = reviewTime;
     }
 
-    public Long getConfirmId() {
-        return confirmId;
-    }
-
-    public void setConfirmId(Long confirmId) {
-        this.confirmId = confirmId;
-    }
-
     public Long getApprovedId() {
         return approvedId;
     }
@@ -346,6 +317,14 @@ public class TaskModel implements Serializable {
 
     public String getDate() {
         return date;
+    }
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public void setClosed(boolean closed) {
+        this.closed = closed;
     }
 
     public void setDate(String date) {

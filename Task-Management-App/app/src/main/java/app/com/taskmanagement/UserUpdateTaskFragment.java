@@ -33,11 +33,7 @@ public class UserUpdateTaskFragment extends Fragment {
         gridViewModelArrayList = new ArrayList();
 
         TaskModel gridViewModel = null;
-        gridViewModel = new TaskModel(TaskModel.SHOW_UPDATE_TASK, 1L, 1l,
-                "",  Instant.now(), Instant.now(), 1l,
-                1l, "", "", "", "", Instant.now(),
-                Instant.now(), "", 1l, 1l, Instant.now(), 1l,
-                1l, 1l, 1l, 1l, Instant.now());
+        gridViewModel = new TaskModel(TaskModel.SHOW_UPDATE_TASK);
         gridViewModelArrayList.add(gridViewModel);
 
         TaskAdapter taskAdapter = new TaskAdapter(gridViewModelArrayList, this.getActivity().getApplicationContext());

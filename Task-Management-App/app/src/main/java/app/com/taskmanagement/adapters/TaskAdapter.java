@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -21,14 +22,17 @@ import android.widget.Scroller;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -41,6 +45,7 @@ import java.util.List;
 import app.com.taskmanagement.R;
 import app.com.taskmanagement.model.AccountModel;
 import app.com.taskmanagement.model.TaskModel;
+import app.com.taskmanagement.model.request.TaskCreateRequest;
 import app.com.taskmanagement.model.response.UserListReponse;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.PreferenceUtil;
@@ -76,9 +81,9 @@ public class TaskAdapter extends RecyclerView.Adapter {
     }
 
     public static class TaskFormHolder extends RecyclerView.ViewHolder {
-        TextView valueIDtask, valueNote, valueStartdate, valueEnddate, valueCreator, valueReviewer, valueDateReview;
+        TextView valueIDtask, valueNote, valueStartdate, valueEnddate, valueOldID, valueCreator, valueReviewer, valueDateReview;
         EditText valueDescription, valueTaskname, valueReview, valueResult;
-        Spinner valueOldID, valueStatus, valueAssignee, valueConfirm;
+        Spinner valueStatus, valueAssignee, valueConfirm;
         ImageButton btnImg;
         ImageView valueImgResolution;
         NumberPicker valueMark;
@@ -89,7 +94,7 @@ public class TaskAdapter extends RecyclerView.Adapter {
             super(itemView);
             this.valueTaskname = (EditText) itemView.findViewById(R.id.valueTaskName);
             this.valueIDtask = (TextView) itemView.findViewById(R.id.valueIDTask);
-            this.valueOldID = (Spinner) itemView.findViewById(R.id.valueIDOldTask);
+            this.valueOldID = (TextView) itemView.findViewById(R.id.valueIDOldTask);
             this.valueDateDeadline = (Button) itemView.findViewById(R.id.valueDateDeadline);
             this.valueTimeDeadline = (Button) itemView.findViewById(R.id.valueTimeDeadline);
             this.valueCreator = (TextView) itemView.findViewById(R.id.valueCreator);
@@ -98,7 +103,6 @@ public class TaskAdapter extends RecyclerView.Adapter {
 
             this.valueNote = (TextView) itemView.findViewById(R.id.valueNote);
             this.valueReviewer = (TextView) itemView.findViewById(R.id.valueReviewer);
-            this.valueConfirm = (Spinner) itemView.findViewById(R.id.valueConfirm);
             this.valueStatus = (Spinner) itemView.findViewById(R.id.valueStatus);
             this.valueStartdate = (TextView) itemView.findViewById(R.id.valueDateStart);
             this.valueEnddate = (TextView) itemView.findViewById(R.id.valueDateEnd);
@@ -156,14 +160,11 @@ public class TaskAdapter extends RecyclerView.Adapter {
                 R.id.txtReviewer,
                 R.id.valueReviewer,
                 R.id.lineReviewer,
-                R.id.txtConfirm,
-                R.id.valueConfirm,
                 R.id.lineConfirm,
                 R.id.txtMark,
                 R.id.valueMark,
                 R.id.txtDateReview,
                 R.id.valueDateReview,
-                R.id.lineMark,
                 R.id.txtReview,
                 R.id.valueReview,
                 R.id.lineReview,
@@ -174,11 +175,13 @@ public class TaskAdapter extends RecyclerView.Adapter {
                 R.id.txtIDTask,
                 R.id.txtIdOldTask,
                 R.id.valueIDOldTask,
-                R.id.lineID
+                R.id.lineID,
+                R.id.btnCloneTask
         };
         Integer[] id_not_show_update = {
                 R.id.btnCreateTask,
                 R.id.btnApprove,
+                R.id.btnCloneTask,
                 R.id.btnDecline,
         };
         Integer[] id_not_show_review = {
@@ -215,6 +218,12 @@ public class TaskAdapter extends RecyclerView.Adapter {
                             temp.setVerticalScrollBarEnabled(true);
                         }
                     });
+                }
+                switch (currentAccount.getRoleId().intValue()) {
+                    case 0:
+                        view.findViewById(R.id.valueAssignee).setVisibility(View.GONE);
+                        view.findViewById(R.id.txtAssignee).setVisibility(View.GONE);
+                        view.findViewById(R.id.lineAssignee).setVisibility(View.GONE);
                 }
                 return new TaskFormHolder(view);
             case TaskModel.SHOW_CARD_TASK:
@@ -254,14 +263,13 @@ public class TaskAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         final TaskModel object = dataSet.get(position);
         if (object != null) {
             switch (object.type) {
 
                 case TaskModel.SHOW_FORM_CREATE:
-//                    -Taskname-
-                    ((TaskFormHolder) holder).valueTaskname.setText(object.getTaskName());
+
 //                    -Choose date and time of deadline-
                     final Button valueDeadline = ((TaskFormHolder) holder).valueDateDeadline;
                     final Button valueTimeDeadline = ((TaskFormHolder) holder).valueTimeDeadline;
@@ -304,7 +312,6 @@ public class TaskAdapter extends RecyclerView.Adapter {
                         }
                     });
 //                    -Choose Assignee-
-                    ((TaskFormHolder) holder).valueAssignee.setTag(object.getAssignee());
                     ((TaskFormHolder) holder).valueAssignee.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View v, MotionEvent event) {
@@ -326,33 +333,55 @@ public class TaskAdapter extends RecyclerView.Adapter {
                             android.R.layout.simple_spinner_item, spinnerItems);
                     dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     ((TaskFormHolder) holder).valueAssignee.setAdapter(dataAdapter);
-//                    -Description-
-                    ((TaskFormHolder) holder).valueDescription.setText(object.getDescription());
-//                    -Time created-
-                    taskModel.setCreatedTime(Instant.now());
-//                    -creator-
-                    taskModel.setAccountCreated(currentAccount.getAccountId());
+                    //Choose assignee
+                    ((TaskFormHolder) holder).valueAssignee.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            taskModel.setAssignee(listMembers.get(position).getAccountId());
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                        }
+                    });
+//                  show name creator
                     ((TaskFormHolder) holder).valueCreator.setText(currentAccount.getFullName());
-//                    -status default-
-                    taskModel.setStatus(new Long(0));
-//                    -confirm default-
-                    taskModel.setConfirmId(new Long(0));
 //                    -Button Create-
                     ((TaskFormHolder) holder).btnCreate.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+//                          -Taskname-
+//                            String edtTaskName=((TaskFormHolder) holder).valueTaskname.getText().toString();
+                            taskModel.setTaskName(((TaskFormHolder) holder).valueTaskname.getText().toString());
+//                          -Description-
+                            taskModel.setDescription(((TaskFormHolder) holder).valueDescription.getText().toString());
+//                          -Time created-
+                            taskModel.setCreatedTime(Instant.now());
+//                          -creator-
+                            taskModel.setAccountCreated(currentAccount.getAccountId());
+//                          -status default-
+                            taskModel.setStatus(new Long(0));
+//                          -closed-
+                            taskModel.setClosed(false);
+//                            edited by
+                            taskModel.setEditedBy(currentAccount.getAccountId());
+                            taskModel.setEditedAt(Instant.now());
                             switch (currentAccount.getRoleId().intValue()) {
                                 case 0://User
                                     taskModel.setAssignee(currentAccount.getAccountId());
                                     taskModel.setGroupId(currentAccount.getGroupId());
                                     taskModel.setApprovedId(new Long(0)); //not consider
+
+                                    createNewTask(taskModel);
                                     break;
                                 case 1://Manager
                                     taskModel.setGroupId(currentAccount.getGroupId());
                                     taskModel.setApprovedId(new Long(1)); //approve
+                                    createNewTask(taskModel);
                                     break;
                                 case 2://Admin
                                     taskModel.setApprovedId(new Long(1)); //approve
+                                    createNewTask(taskModel);
                                     break;
                             }
                         }
@@ -368,26 +397,24 @@ public class TaskAdapter extends RecyclerView.Adapter {
                     break;
 
                 case TaskModel.SHOW_UPDATE_TASK:
-                    String splitStartdate = object.getStartTime().toString();
-                    String splitEnddate = object.getEndTime().toString();
-                    ((TaskFormHolder) holder).valueTaskname.setText(object.getTaskName());
-                    ((TaskFormHolder) holder).valueIDtask.setText(object.getTaskId().toString());
-                    ((TaskFormHolder) holder).valueOldID.setTag(object.getTaskName());
-                    ((TaskFormHolder) holder).valueDateDeadline.setTag(object.getDeadline());
+//                    String splitStartdate = object.getStartTime().toString();
+//                    String splitEnddate = object.getEndTime().toString();
+                    ((TaskFormHolder) holder).valueIDtask.setText("");
+                    ((TaskFormHolder) holder).valueOldID.setTag("");
+                    ((TaskFormHolder) holder).valueDateDeadline.setTag("");
                     ((TaskFormHolder) holder).valueNote.setText("");
-                    ((TaskFormHolder) holder).valueDescription.setText(object.getDescription());
-                    ((TaskFormHolder) holder).valueStartdate.setText(splitStartdate.substring(0, 19).replace("T", "\n"));
-                    ((TaskFormHolder) holder).valueEnddate.setText(splitEnddate.substring(0, 19).replace("T", "\n"));
-                    ((TaskFormHolder) holder).valueResult.setText(object.getResult());
-                    ((TaskFormHolder) holder).valueStatus.setTag(object.getStatus());
-                    ((TaskFormHolder) holder).valueCreator.setTag(object.getAccountCreated());
+                    ((TaskFormHolder) holder).valueDescription.setText("");
+                    ((TaskFormHolder) holder).valueStartdate.setText("");
+                    ((TaskFormHolder) holder).valueEnddate.setText("");
+                    ((TaskFormHolder) holder).valueResult.setText("");
+                    ((TaskFormHolder) holder).valueStatus.setTag("");
+                    ((TaskFormHolder) holder).valueCreator.setTag("");
 //                    ((UpdateTaskHolder) holder).btnImg.setTag(object.getAssignee());
 //                    ((UpdateTaskHolder) holder).valueImgResolution.setTag(object.getAssignee());
-                    ((TaskFormHolder) holder).valueReviewer.setText(object.getReviewerId().toString());
-                    ((TaskFormHolder) holder).valueConfirm.setTag(object.getConfirmId());
-                    ((TaskFormHolder) holder).valueDateReview.setText(object.getReviewTime().toString());
-                    ((TaskFormHolder) holder).valueMark.setTag(object.getAssignee());
-                    ((TaskFormHolder) holder).valueReview.setText(object.getManagerComment());
+                    ((TaskFormHolder) holder).valueReviewer.setText("");
+                    ((TaskFormHolder) holder).valueDateReview.setText("");
+                    ((TaskFormHolder) holder).valueMark.setTag("");
+                    ((TaskFormHolder) holder).valueReview.setText("");
                     break;
                 case TaskModel.SHOW_REVIEW_TASK:
                     String startdate = object.getStartTime().toString();
@@ -405,7 +432,6 @@ public class TaskAdapter extends RecyclerView.Adapter {
                     ((TaskFormHolder) holder).valueStatus.setTag(object.getStatus());
                     ((TaskFormHolder) holder).valueCreator.setTag(object.getAccountCreated());
                     ((TaskFormHolder) holder).valueReviewer.setText(dateReview.substring(0, 19).replace("T", "\n"));
-                    ((TaskFormHolder) holder).valueConfirm.setTag(object.getConfirmId());
                     ((TaskFormHolder) holder).valueDateReview.setText(object.getReviewTime().toString());
                     ((TaskFormHolder) holder).valueMark.setTag(object.getAssignee());
                     ((TaskFormHolder) holder).valueReview.setText(object.getManagerComment());
@@ -438,5 +464,30 @@ public class TaskAdapter extends RecyclerView.Adapter {
             }
         });
         requestQueue.add(userListReponseGsonRequest);
+    }
+
+    public void createNewTask(TaskModel taskModel) {
+        String url = String.format(mContext.getResources().getString(R.string.BASE_URL) + "/task");
+        HashMap<String, String> header = new HashMap<>();
+        header.put("Content-Type", "application/json");
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext.getApplicationContext());
+        Gson gson = new Gson();
+        List<TaskModel> taskModels = new ArrayList<>();
+        taskModels.add(taskModel);
+        TaskCreateRequest taskCreateRequest = new TaskCreateRequest(taskModels);
+        String body = gson.toJson(taskCreateRequest);
+        GsonRequest<Integer> taskResponseCreateRequest = new GsonRequest<>(Request.Method.POST, url, Integer.class, header, body, new Response.Listener<Integer>() {
+            @Override
+            public void onResponse(Integer response) {
+                Toast.makeText(mContext, "Create successfully!", Toast.LENGTH_LONG);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.println(Log.ERROR, "", "");
+                Toast.makeText(mContext, "Create failed!", Toast.LENGTH_LONG);
+            }
+        });
+        requestQueue.add(taskResponseCreateRequest);
     }
 }

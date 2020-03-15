@@ -40,7 +40,7 @@
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 android:singleLine="false"
-                android:text="Task name"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
@@ -82,7 +82,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="ID Task"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -106,13 +106,13 @@
                     android:textSize="13dp"
                     android:textStyle="bold" />
 
-                <Spinner
+                <TextView
                     android:id="@+id/valueIDOldTask"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:gravity="center"
-                    android:text="ID Old Task"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -231,7 +231,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:gravity="center"
-                    android:text="Note"
+                    android:text="Nope"
                     android:textColor="@color/black"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -335,12 +335,12 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:gravity="top"
-                android:minLines="3"
                 android:maxLines="5"
+                android:minLines="3"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 android:singleLine="false"
-                android:text="Description"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
@@ -381,7 +381,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="DateStart"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -410,7 +410,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
                     android:gravity="center"
-                    android:text="DateEnd"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -482,12 +482,12 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:gravity="top"
-                android:minLines="3"
                 android:maxLines="5"
+                android:minLines="3"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 android:singleLine="false"
-                android:text="Result"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
@@ -520,7 +520,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Reviewer"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="18dp" />
         </LinearLayout>
@@ -545,27 +545,25 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:orientation="vertical">
-                <!--            txtConfirm-->
+                <!--Mark-->
                 <TextView
-                    android:id="@+id/txtConfirm"
+                    android:id="@+id/txtMark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Confirm: "
+                    android:text="Mark: "
                     android:textColor="@color/darkBlue"
                     android:textSize="13dp"
                     android:textStyle="bold" />
 
-                <Spinner
-                    android:id="@+id/valueConfirm"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Confirm"
+                <NumberPicker
+                    android:id="@+id/valueMark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="3dp"
                     android:textColor="@color/black"
                     android:textSize="18dp" />
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -590,7 +588,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
                     android:gravity="center"
-                    android:text="DateReview"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -603,36 +601,6 @@
             android:layout_margin="5dp"
             android:background="@color/cardview_dark_background" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-            <!--            Mark-->
-            <TextView
-                android:id="@+id/txtMark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Mark: "
-                android:textColor="@color/darkBlue"
-                android:textSize="13dp"
-                android:textStyle="bold" />
-
-            <NumberPicker
-                android:id="@+id/valueMark"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_marginLeft="3dp"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-        </LinearLayout>
-
-        <View
-            android:id="@+id/lineMark"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="5dp"
-            android:background="@color/cardview_dark_background" />
         <!--        txtReview-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -656,12 +624,12 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:gravity="top"
-                android:minLines="3"
                 android:maxLines="5"
+                android:minLines="3"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 android:singleLine="false"
-                android:text="Review"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
@@ -677,28 +645,48 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <Button
             android:id="@+id/btnCreateTask"
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/background_button"
-            android:onClick="clickToCreateTask"
-            android:text="Create"
+            android:gravity="center"
+            android:text="Create Task"
             android:textColor="@color/white"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/btnUpdateTask"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/background_button"
-            android:text="Update"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnUpdateTask"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/background_button"
+                android:text="Update Task"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnCloneTask"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="0.5"
+                android:background="@drawable/background_button"
+                android:text="Clone task"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

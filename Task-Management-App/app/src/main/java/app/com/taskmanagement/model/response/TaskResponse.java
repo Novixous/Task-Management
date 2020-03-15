@@ -5,6 +5,13 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 public class TaskResponse implements Serializable {
+    public static final int SHOW_FORM_CREATE = 0;
+    public static final int SHOW_CARD_TASK = 1;
+    public static final int SHOW_UPDATE_TASK = 2;
+    public static final int SHOW_REVIEW_TASK = 3;
+    public static final int SHOW_TASK_TO_APPROVE = 4;
+    public int type;
+
     @SerializedName("taskId")
     private Long taskId;
 
@@ -56,9 +63,6 @@ public class TaskResponse implements Serializable {
     @SerializedName("reviewTime")
     private String reviewTime;
 
-    @SerializedName("confirmId")
-    private Long confirmId;
-
     @SerializedName("approvedId")
     private Long approvedId;
 
@@ -74,33 +78,29 @@ public class TaskResponse implements Serializable {
     @SerializedName("editedAt")
     private String editedAt;
 
+    @SerializedName("closed")
+    private boolean closed;
+
+    private String date;
+    private String time;
+
     public TaskResponse() {
     }
 
-    public TaskResponse(Long taskId, Long oldTaskId, String taskName, String createdTime, String deadline, Long accountCreated, Long assignee, String description, String resolution, String imgResolutionUrl, String result, String startTime, String endTime, String managerComment, Long mark, Long reviewerId, String reviewTime, Long confirmId, Long approvedId, Long status, Long groupId, Long editedBy, String editedAt) {
-        this.taskId = taskId;
-        this.oldTaskId = oldTaskId;
+    //Create
+    public TaskResponse(String taskName, String createdTime, String deadline, Long accountCreated, Long assignee, String description, Long approvedId, Long status, Long groupId, Long editedBy, String editedAt, boolean closed) {
         this.taskName = taskName;
         this.createdTime = createdTime;
         this.deadline = deadline;
         this.accountCreated = accountCreated;
         this.assignee = assignee;
         this.description = description;
-        this.resolution = resolution;
-        this.imgResolutionUrl = imgResolutionUrl;
-        this.result = result;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.managerComment = managerComment;
-        this.mark = mark;
-        this.reviewerId = reviewerId;
-        this.reviewTime = reviewTime;
-        this.confirmId = confirmId;
         this.approvedId = approvedId;
         this.status = status;
         this.groupId = groupId;
         this.editedBy = editedBy;
         this.editedAt = editedAt;
+        this.closed = closed;
     }
 
     public Long getTaskId() {
@@ -239,14 +239,6 @@ public class TaskResponse implements Serializable {
         this.reviewTime = reviewTime;
     }
 
-    public Long getConfirmId() {
-        return confirmId;
-    }
-
-    public void setConfirmId(Long confirmId) {
-        this.confirmId = confirmId;
-    }
-
     public Long getApprovedId() {
         return approvedId;
     }
@@ -285,5 +277,13 @@ public class TaskResponse implements Serializable {
 
     public void setEditedAt(String editedAt) {
         this.editedAt = editedAt;
+    }
+
+    public boolean isClosed() {
+        return closed;
+    }
+
+    public void setClosed(boolean closed) {
+        this.closed = closed;
     }
 }

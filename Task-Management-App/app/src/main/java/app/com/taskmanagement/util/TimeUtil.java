@@ -1,22 +1,19 @@
 package app.com.taskmanagement.util;
 
-import com.task.management.server.taskmanagementserver.model.Task;
-import com.task.management.server.taskmanagementserver.model.response.TaskResponse;
 
 import java.lang.reflect.Field;
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+
+import app.com.taskmanagement.model.TaskModel;
+import app.com.taskmanagement.model.response.TaskResponse;
 
 public class TimeUtil {
-    public static List<TaskResponse> convertTaskToTaskResponse(List<Task> original) {
+    public static List<TaskResponse> convertTaskToTaskResponse(List<TaskModel> original) {
         List<TaskResponse> result = new ArrayList<>();
         try {
-            for (Task task : original) {
+            for (TaskModel task : original) {
                 Field[] fields = task.getClass().getDeclaredFields();
                 TaskResponse response = new TaskResponse();
                 for (int i = 0; i < fields.length; i++) {
@@ -43,12 +40,12 @@ public class TimeUtil {
         }
     }
 
-    public static List<Task> convertTaskResponseToTask(List<TaskResponse> responses) {
-        List<Task> result = new ArrayList<>();
+    public static List<TaskModel> convertTaskResponseToTask(List<TaskResponse> responses) {
+        List<TaskModel> result = new ArrayList<>();
         try {
             for (TaskResponse taskResponse : responses) {
                 Field[] responseFields = taskResponse.getClass().getDeclaredFields();
-                Task originalTask = new Task();
+                TaskModel originalTask = new TaskModel();
                 for (int i = 0; i < responseFields.length; i++) {
                     Field responseField = responseFields[i];
                     responseField.setAccessible(true);
