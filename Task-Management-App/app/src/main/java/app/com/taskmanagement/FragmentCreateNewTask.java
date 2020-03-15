@@ -4,8 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,11 +22,6 @@ import app.com.taskmanagement.model.TaskModel;
 public class FragmentCreateNewTask extends Fragment {
     ArrayList<TaskModel> gridViewModelArrayList;
     private RecyclerView recyclerView;
-    TextView valueTaskName, valueDescription;
-    private Button valueDateDeadline;
-    private Button valueTimeDeadline;
-    private Button btnCreateTask;
-
 
 
     public FragmentCreateNewTask() {
@@ -48,7 +42,7 @@ public class FragmentCreateNewTask extends Fragment {
         gridViewModelArrayList = new ArrayList();
 
         TaskModel gridViewModel = null;
-        gridViewModel = new TaskModel(TaskModel.SHOW_FORM_CREATE, null, null, "", null, null, null, null, "", null, null, null, null, null);
+        gridViewModel = new TaskModel(TaskModel.SHOW_FORM_CREATE);
 
         gridViewModelArrayList.add(gridViewModel);
 
@@ -65,8 +59,6 @@ public class FragmentCreateNewTask extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        valueDateDeadline = view.findViewById(R.id.valueDateDeadline);
-        valueTimeDeadline = view.findViewById(R.id.valueTimeDeadline);
     }
 
 

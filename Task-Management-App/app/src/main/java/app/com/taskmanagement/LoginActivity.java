@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String body = gson.toJson(loginRequest);
 
-        GsonRequest<LoginResponse> gsonRequest = new GsonRequest<>(Request.Method.PUT, url, LoginResponse.class, headers, body, new Response.Listener<LoginResponse>() {
+        GsonRequest<LoginResponse> gsonRequest = new GsonRequest<>(Request.Method.POST, url, LoginResponse.class, headers, body, new Response.Listener<LoginResponse>() {
             @Override
             public void onResponse(LoginResponse response) {
                 if (response.errorMessage != null) {
