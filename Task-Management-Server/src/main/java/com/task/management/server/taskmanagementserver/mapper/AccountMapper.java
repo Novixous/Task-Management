@@ -156,5 +156,13 @@ public interface AccountMapper {
     @Select("SELECT deviceToken FROM token WHERE deviceToken = #{token} AND accountId = #{accountId}")
     String getTokenByTokenAndAccountId(@Param("accountId") Long accountId, @Param("token") String token);
 
+    @Select("SELECT deviceToken from token WHERE accountId = #{accountId}")
+    List<String> getTokensByAccountId(@Param("accountId") Long accountId);
+
+    @Select("SELECT role_id FROM account WHERE accountId  = #{accountId}")
+    Long getRoleIdByAccountId(@Param("accountId") Long accountId);
+
+    @Select("SELECT idaccount FROM account WHERE group_id = #{groupId} AND role_id = 1")
+    Long getManagerIdOfGroupByGroupId(@Param("groupId") Long groupId);
 
 }

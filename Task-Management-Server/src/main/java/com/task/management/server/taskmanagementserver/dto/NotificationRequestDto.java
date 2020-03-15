@@ -8,6 +8,7 @@ public class NotificationRequestDto {
     private String target;
     private String title;
     private String body;
+    TaskToBeNotifiedDTO taskToBeNotifiedDTO;
 
     public String getTarget() {
         return target;
@@ -31,5 +32,13 @@ public class NotificationRequestDto {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    public TaskToBeNotifiedDTO getTaskToBeNotifiedDTO() {
+        return taskToBeNotifiedDTO;
+    }
+
+    public void setTaskToBeNotifiedDTO(TaskToBeNotifiedDTO taskToBeNotifiedDTO) {
+        this.taskToBeNotifiedDTO = taskToBeNotifiedDTO;
     }
 }

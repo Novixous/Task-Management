@@ -1,5 +1,6 @@
 package com.task.management.server.taskmanagementserver.mapper;
 
+import com.task.management.server.taskmanagementserver.dto.TaskToBeNotifiedDTO;
 import com.task.management.server.taskmanagementserver.model.InitialValue;
 import com.task.management.server.taskmanagementserver.model.Task;
 import org.apache.ibatis.annotations.*;
@@ -249,6 +250,12 @@ public interface TaskMapper {
                     " WHERE id_task = #{task.taskId}" +
                     "</script>"})
     int updateTask(@Param("task") Task task);
+
+    @Select("CALL getTaskToBeNotified()")
+    List<TaskToBeNotifiedDTO> getTaskToBeNotifed();
+
+    @Update("UPDATE task SET notified = TRUE where id_task = #{taskId}")
+    int setTaskAsNotified(@Param("taskId") Long taskId);
 
 
 }

@@ -15,6 +15,7 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -61,6 +62,10 @@ public class NotificationService {
                 .setNotification(new Notification(notificationRequestDto.getTitle(), notificationRequestDto.getBody()))
                 .putData("content", notificationRequestDto.getTitle())
                 .putData("body", notificationRequestDto.getBody())
+                .putData("taskId", notificationRequestDto.getTaskToBeNotifiedDTO().getTaskId().toString())
+                .putData("oldTaskId", Optional.ofNullable(notificationRequestDto.getTaskToBeNotifiedDTO().getOldTaskId().toString()).orElse(""))
+                .putData("taskName", notificationRequestDto.getTaskToBeNotifiedDTO().getTaskName())
+                .putData("deadLine", notificationRequestDto.getTaskToBeNotifiedDTO().getDeadline().toString())
                 .addAllTokens(tokens)
                 .build();
         BatchResponse response = null;
