@@ -13,6 +13,84 @@ import java.util.List;
 public interface TaskMapper {
 
 
+    @Select("<script>" +
+            "SELECT id_task as taskId, " +
+            "id_old_task as oldTaskId, " +
+            "task_name as taskName, " +
+            "create_date as createdTime, " +
+            "deadline as deadline, " +
+            "account_create as accountCreated, " +
+            "assignee as assignee, " +
+            "description as description, " +
+            "resolution as resolution, " +
+            "img_solution as imgResolutionUrl, " +
+            "result as result, " +
+            "start_date as startTime, " +
+            "end_date as endDate, " +
+            "comment_manager as managerComment, " +
+            "mark as mark, " +
+            "reviewer as reviewerId, " +
+            "review_date as reviewTime, " +
+            "approve_id as approvedId, " +
+            "status_id as status, " +
+            "group_id as groupId, " +
+            "edited_by as editedBy, " +
+            "edited_at as editedAt, " +
+            "closed as closed " +
+            "FROM task WHERE ${fieldName} = #{value} " +
+            "<if test='fieldName2 != null and value2 != null'>" +
+            "<if test='split2 != null'>" +
+            " ${split2} " +
+            "</if>" +
+            "<if test='split2 == null'>" +
+            "AND " +
+            "</if>" +
+            "${fieldName2} = #{value2} " +
+            "</if>" +
+            "<if test='fieldName3 != null and value3 != null'>" +
+            "<if test='split3 != null'>" +
+            " ${split3} " +
+            "</if>" +
+            "<if test='split3 == null'>" +
+            "AND " +
+            "</if>" +
+            "${fieldName3} = #{value3} " +
+            "</if>" +
+            "<if test='fieldName4 != null and value4 != null'>" +
+            "<if test='split4 != null'>" +
+            " ${split4} " +
+            "</if>" +
+            "<if test='split4 == null'>" +
+            "AND " +
+            "</if>" +
+            "${fieldName4} = #{value4} " +
+            "</if>" +
+            "<if test='fieldName5 != null and value5 != null'>" +
+            "<if test='split5 != null'>" +
+            " ${split5} " +
+            "</if>" +
+            "<if test='split5 == null'>" +
+            "AND " +
+            "</if>" +
+            "${fieldName5} = #{value5} " +
+            "</if>" +
+            "<if test='isClosed != null'>" +
+            "<if test='splitClosed != null'>" +
+            " ${splitClosed} " +
+            "</if>" +
+            "<if test='splitClosed == null'>" +
+            "AND " +
+            "</if>" +
+            "closed = #{isClosed} " +
+            "</if>" +
+            "</script>")
+    List<Task> getTasksByIdField(@Param("fieldName") String fieldName, @Param("value") Long value,
+                                 @Param("split2") String split2, @Param("fieldName2") String fieldName2, @Param("value2") Long value2,
+                                 @Param("split3") String split3, @Param("fieldName3") String fieldName3, @Param("value3") Long value3,
+                                 @Param("split4") String split4, @Param("fieldName4") String fieldName4, @Param("value4") Long value4,
+                                 @Param("split5") String split5, @Param("fieldName5") String fieldName5, @Param("value5") Long value5,
+                                 @Param("splitClosed") String splitClosed, @Param("isClosed") Boolean isClosed);
+
     @Select("SELECT id_task as taskId, " +
             "id_old_task as oldTaskId, " +
             "task_name as taskName, " +
@@ -36,8 +114,8 @@ public interface TaskMapper {
             "edited_by as editedBy, " +
             "edited_at as editedAt, " +
             "closed as closed " +
-            "FROM task WHERE ${fieldName} = #{value}")
-    List<Task> getTasksByIdField(@Param("fieldName") String fieldName, @Param("value") Long value);
+            "FROM task WHERE id_task = #{taskId}")
+    Task getTaskByTaskId(@Param("taskId") Long taskId);
 
     @Select("SELECT id_task as taskId, " +
             "id_old_task as oldTaskId, " +
