@@ -6,36 +6,53 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import app.com.taskmanagement.R;
 import app.com.taskmanagement.UserUpdateTaskFragment;
 import app.com.taskmanagement.model.AccountModel;
 import app.com.taskmanagement.model.TaskModel;
+import app.com.taskmanagement.model.response.TaskList;
+import app.com.taskmanagement.model.response.TaskResponse;
+import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.PreferenceUtil;
+import app.com.taskmanagement.util.SingletonRequestQueue;
+import app.com.taskmanagement.util.TimeUtil;
 
-public class CardTaskAdapter extends RecyclerView.Adapter {
+public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
     private ArrayList<TaskModel> dataSet;
     Context mContext;
     int total_types;
-    TaskModel taskModel;
     private List<AccountModel> listMembers;
     private AccountModel currentAccount;
     Boolean dataLoaded;
 
-    public CardTaskAdapter(ArrayList<TaskModel> data, Context context) {
-        this.dataSet = data;
+    public CardTaskFinishedAdapter(Context context) {
+        this.dataSet = new ArrayList<>();
         this.mContext = context;
         total_types = dataSet.size();
-        this.taskModel = new TaskModel();
         currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
         dataLoaded = false;
+
+        if (currentAccount.getRoleId().equals(Long.valueOf(0))) {
+            getUserPendingTaskList();
+        } else if (currentAccount.getRoleId().equals(Long.valueOf(1))) {
+
+        } else {
+
+        }
     }
 
     public static class ShowCardTaskHolder extends RecyclerView.ViewHolder {
@@ -52,6 +69,20 @@ public class CardTaskAdapter extends RecyclerView.Adapter {
         }
     }
 
+    @Override
+    public int getItemViewType(int position) {
+
+        switch (dataSet.get(position).type) {
+            case 0:
+                return TaskModel.SHOW_FORM_CREATE;
+            case 1:
+                return TaskModel.SHOW_CARD_TASK;
+            case 2:
+                return TaskModel.SHOW_UPDATE_TASK;
+        }
+        return 0;
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -65,7 +96,7 @@ public class CardTaskAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         final TaskModel object = dataSet.get(position);
         if (object != null) {
             switch (object.type) {
@@ -74,7 +105,7 @@ public class CardTaskAdapter extends RecyclerView.Adapter {
                     ((ShowCardTaskHolder) holder).cardTask.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new UserUpdateTaskFragment()).addToBackStack(null).commit();
+                            ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new UserUpdateTaskFragment(null, null, null, dataSet.get(position).getTaskId())).addToBackStack(null).commit();
 
                         }
                     });
@@ -92,4 +123,32 @@ public class CardTaskAdapter extends RecyclerView.Adapter {
         return dataSet.size();
 
     }
+
+    public void getUserPendingTaskList() {
+        RequestQueue requestQueue = SingletonRequestQueue.getInstance(mContext.getApplicationContext()).getRequestQueue();
+        HashMap<String, String> headers = new HashMap<>();
+        String url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(2) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(3) + "&splitClosed=)and&isClosed=false";
+        GsonRequest<TaskList> gsonRequest = new GsonRequest<>(url, TaskList.class, headers, new Response.Listener<TaskList>() {
+            @Override
+            public void onResponse(TaskList response) {
+                List<TaskResponse> responses = new ArrayList<>();
+                responses.addAll(response.getTaskList());
+                List<TaskModel> taskModels = TimeUtil.convertTaskResponseToTask(responses);
+                dataSet = new ArrayList<>();
+                for (TaskModel task : taskModels) {
+                    task.setType(TaskModel.SHOW_CARD_TASK);
+                    dataSet.add(task);
+                }
+                dataLoaded = true;
+                notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Connection Time Out", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(gsonRequest);
+    }
+
 }

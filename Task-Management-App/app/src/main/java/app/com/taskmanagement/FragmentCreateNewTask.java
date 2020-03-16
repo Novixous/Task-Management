@@ -45,7 +45,7 @@ public class FragmentCreateNewTask extends Fragment {
 
         gridViewModelArrayList.add(gridViewModel);
 
-        NewTaskAdapter newTaskAdapter = new NewTaskAdapter(gridViewModelArrayList, this.getActivity());
+        NewTaskAdapter newTaskAdapter = new NewTaskAdapter(this.getActivity());
         recyclerView = rootView.findViewById(R.id.viewRecycler);
         StaggeredGridLayoutManager lm =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);

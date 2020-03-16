@@ -14,34 +14,59 @@ import android.widget.NumberPicker;
 import android.widget.Scroller;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import app.com.taskmanagement.R;
 import app.com.taskmanagement.model.AccountModel;
 import app.com.taskmanagement.model.TaskModel;
+import app.com.taskmanagement.model.response.TaskResponse;
+import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.PreferenceUtil;
+import app.com.taskmanagement.util.SingletonRequestQueue;
+import app.com.taskmanagement.util.TimeUtil;
 
 public class UpdateTaskAdapter extends RecyclerView.Adapter {
-    private ArrayList<TaskModel> dataSet;
+    private static final Integer[] id_not_show_update = {
+            R.id.btnCreateTask,
+            R.id.btnApprove,
+            R.id.btnCloneTask,
+            R.id.btnDecline,
+    };
+    private static final Integer[] update_edit_textview = {
+            R.id.valueResult
+    };
     Context mContext;
-    int total_types;
     TaskModel taskModel;
-    private List<AccountModel> listMembers;
     private AccountModel currentAccount;
     Boolean dataLoaded;
 
-    public UpdateTaskAdapter(ArrayList<TaskModel> data, Context context) {
-        this.dataSet = data;
+    HashMap<Long, String> approveList;
+    HashMap<Long, String> roleList;
+    HashMap<Long, String> statusList;
+
+    public UpdateTaskAdapter(Context context, Long taskId, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
         this.mContext = context;
-        total_types = dataSet.size();
         this.taskModel = new TaskModel();
-        currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
-        dataLoaded = false;
+        this.currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
+        this.dataLoaded = false;
+        this.approveList = approveList;
+        this.roleList = roleList;
+        this.statusList = statusList;
+        getTaskById(taskId);
     }
 
     public static class TaskFormHolder extends RecyclerView.ViewHolder {
@@ -82,82 +107,102 @@ public class UpdateTaskAdapter extends RecyclerView.Adapter {
             this.btnUpdate = (Button) itemView.findViewById(R.id.btnUpdateTask);
             this.btnApprove = (Button) itemView.findViewById(R.id.btnApprove);
             this.btnDecline = (Button) itemView.findViewById(R.id.btnDecline);
+
+            this.valueNote = (TextView) itemView.findViewById((R.id.valueNote));
         }
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view;
-        Integer[] id_not_show_update = {
-                R.id.btnCreateTask,
-                R.id.btnApprove,
-                R.id.btnCloneTask,
-                R.id.btnDecline,
-        };
-
-        Integer[] update_edit_textview = {
-                R.id.valueResult
-        };
-        switch (viewType) {
-            case TaskModel.SHOW_UPDATE_TASK:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_task, parent, false);
-                for (int i = 0; i < id_not_show_update.length; i++) {
-                    view.findViewById(id_not_show_update[i]).setVisibility(View.GONE);
-                }
-
-                for (int i = 0; i < update_edit_textview.length; i++) {
-                    final EditText temp = view.findViewById(update_edit_textview[i]);
-                    temp.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            temp.setCursorVisible(true);
-                            temp.setFocusableInTouchMode(true);
-                            temp.setInputType(InputType.TYPE_CLASS_TEXT);
-                            temp.setTextIsSelectable(true);
-                            temp.requestFocus();
-                            temp.setMovementMethod(new ScrollingMovementMethod());
-                            temp.setScroller(new Scroller(mContext));
-                            temp.setVerticalScrollBarEnabled(true);
-                        }
-                    });
-                }
-                return new NewTaskAdapter.TaskFormHolder(view);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_task, parent, false);
+        for (int i = 0; i < id_not_show_update.length; i++) {
+            view.findViewById(id_not_show_update[i]).setVisibility(View.GONE);
         }
-        return null;
+
+        for (int i = 0; i < update_edit_textview.length; i++) {
+            final EditText temp = view.findViewById(update_edit_textview[i]);
+            temp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    temp.setCursorVisible(true);
+                    temp.setFocusableInTouchMode(true);
+                    temp.setInputType(InputType.TYPE_CLASS_TEXT);
+                    temp.setTextIsSelectable(true);
+                    temp.requestFocus();
+                    temp.setMovementMethod(new ScrollingMovementMethod());
+                    temp.setScroller(new Scroller(mContext));
+                    temp.setVerticalScrollBarEnabled(true);
+                }
+            });
+        }
+        return new TaskFormHolder(view);
     }
 
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        final TaskModel object = dataSet.get(position);
-        if (object != null) {
-            switch (object.type) {
-                case TaskModel.SHOW_UPDATE_TASK:
+
+
 //                    String splitStartdate = object.getStartTime().toString();
 //                    String splitEnddate = object.getEndTime().toString();
-                    ((NewTaskAdapter.TaskFormHolder) holder).valueIDtask.setText("");
-                    ((NewTaskAdapter.TaskFormHolder) holder).valueOldID.setTag("");
-                    ((NewTaskAdapter.TaskFormHolder) holder).valueDateDeadline.setTag("");
-                    ((NewTaskAdapter.TaskFormHolder) holder).valueNote.setText("");
-                    ((NewTaskAdapter.TaskFormHolder) holder).valueDescription.setText("");
-                    ((NewTaskAdapter.TaskFormHolder) holder).valueStartdate.setText("");
-                    ((NewTaskAdapter.TaskFormHolder) holder).valueEnddate.setText("");
-                    ((NewTaskAdapter.TaskFormHolder) holder).valueResult.setText("");
-                    ((NewTaskAdapter.TaskFormHolder) holder).valueStatus.setTag("");
-                    ((NewTaskAdapter.TaskFormHolder) holder).valueCreator.setTag("");
+        if (dataLoaded) {
+            String note = "";
+            if (taskModel.getEndTime() == null) {
+                if (Instant.now().isAfter(taskModel.getDeadline())) {
+                    note = Duration.between(Instant.now(), taskModel.getDeadline()).toString() + " late!";
+                }
+            } else {
+                if (taskModel.getEndTime().isAfter(taskModel.getDeadline())) {
+                    note = Duration.between(taskModel.getEndTime(), taskModel.getDeadline()).toString() + " late!";
+                }
+            }
+            ((TaskFormHolder) holder).valueTaskname.setText(taskModel.getTaskName().toString());
+            ((TaskFormHolder) holder).valueIDtask.setText(taskModel.getTaskId().toString());
+            ((TaskFormHolder) holder).valueOldID.setTag(taskModel.getOldTaskId() != null ? taskModel.getOldTaskId().toString() : "");
+            ((TaskFormHolder) holder).valueDateDeadline.setTag(taskModel.getDeadline().toString());
+            ((TaskFormHolder) holder).valueNote.setText(note);
+            ((TaskFormHolder) holder).valueDescription.setText(taskModel.getDescription());
+            ((TaskFormHolder) holder).valueStartdate.setText(taskModel.getStartTime() != null ? taskModel.getStartTime().toString() : "");
+            ((TaskFormHolder) holder).valueEnddate.setText(taskModel.getEndTime() != null ? taskModel.getStartTime().toString() : "");
+            ((TaskFormHolder) holder).valueResult.setText(taskModel.getResult() != null ? taskModel.getResult().toString() : "");
+            ((TaskFormHolder) holder).valueStatus.setTag(taskModel.getStatus());
+            ((TaskFormHolder) holder).valueCreator.setTag("");
 //                    ((UpdateTaskHolder) holder).btnImg.setTag(object.getAssignee());
 //                    ((UpdateTaskHolder) holder).valueImgResolution.setTag(object.getAssignee());
-                    ((NewTaskAdapter.TaskFormHolder) holder).valueReviewer.setText("");
-                    ((NewTaskAdapter.TaskFormHolder) holder).valueDateReview.setText("");
-                    ((NewTaskAdapter.TaskFormHolder) holder).valueMark.setTag("");
-                    ((NewTaskAdapter.TaskFormHolder) holder).valueReview.setText("");
-                    break;
-            }
+            ((TaskFormHolder) holder).valueReviewer.setText("");
+            ((TaskFormHolder) holder).valueDateReview.setText("");
+            ((TaskFormHolder) holder).valueMark.setTag("");
+            ((TaskFormHolder) holder).valueReview.setText("");
         }
+
     }
 
     @Override
     public int getItemCount() {
-        return dataSet.size();
+        return 1;
     }
+
+    public void getTaskById(Long taskId) {
+        RequestQueue requestQueue = SingletonRequestQueue.getInstance(mContext.getApplicationContext()).getRequestQueue();
+        HashMap<String, String> headers = new HashMap<>();
+        String url = mContext.getResources().getString(R.string.BASE_URL) + "/task/" + taskId;
+        GsonRequest<TaskResponse> gsonRequest = new GsonRequest<>(url, TaskResponse.class, headers, new Response.Listener<TaskResponse>() {
+            @Override
+            public void onResponse(TaskResponse response) {
+                List<TaskResponse> responses = new ArrayList<>();
+                responses.add(response);
+                List<TaskModel> taskModels = TimeUtil.convertTaskResponseToTask(responses);
+                taskModel = taskModels.get(0);
+                dataLoaded = true;
+                notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Connection Time Out", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(gsonRequest);
+    }
+
 }

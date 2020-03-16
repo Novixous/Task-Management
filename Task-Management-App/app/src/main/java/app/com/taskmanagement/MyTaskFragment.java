@@ -22,7 +22,7 @@ public class MyTaskFragment extends Fragment {
 
     TabLayout tabLayout;
     ViewPager viewPager;
-    TaskPageAdapter taskPageAdapter;
+    public TaskPageAdapter taskPageAdapter;
 
 
     public MyTaskFragment() {
@@ -45,6 +45,18 @@ public class MyTaskFragment extends Fragment {
         taskPageAdapter = new TaskPageAdapter(getChildFragmentManager());
         viewPager.setAdapter(taskPageAdapter);
         tabLayout.setupWithViewPager(viewPager);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(final int i, final float v, final int i2) {
+            }
+            @Override
+            public void onPageSelected(final int i) {
+               taskPageAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onPageScrollStateChanged(final int i) {
+            }
+        });
     }
 
 

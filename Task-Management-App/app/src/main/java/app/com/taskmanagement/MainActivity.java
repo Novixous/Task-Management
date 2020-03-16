@@ -94,7 +94,8 @@ public class MainActivity extends AppCompatActivity {
                 currentFragment = new MyAccountFragment();
                 break;
             case 3:
-                currentFragment = new SettingsFragment();
+//                currentFragment = new SettingsFragment();
+                currentFragment = new UserUpdateTaskFragment(null, null, null, Long.valueOf(6));
                 break;
             case 4:
 
@@ -158,8 +159,6 @@ public class MainActivity extends AppCompatActivity {
         currentFragment = new FragmentChangePassword();
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, currentFragment).addToBackStack(null).commit();
     }
-
-
 
 
     public void clickToGetTime(View view) {

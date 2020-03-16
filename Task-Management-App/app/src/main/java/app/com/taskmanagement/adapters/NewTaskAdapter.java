@@ -49,18 +49,14 @@ import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.PreferenceUtil;
 
 public class NewTaskAdapter extends RecyclerView.Adapter {
-    private ArrayList<TaskModel> dataSet;
     Context mContext;
-    int total_types;
     TaskModel taskModel;
     private List<AccountModel> listMembers;
     private AccountModel currentAccount;
     Boolean dataLoaded;
 
-    public NewTaskAdapter(ArrayList<TaskModel> data, Context context) {
-        this.dataSet = data;
+    public NewTaskAdapter(Context context) {
         this.mContext = context;
-        total_types = dataSet.size();
         this.taskModel = new TaskModel();
         currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
         dataLoaded = false;
@@ -184,133 +180,128 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-        final TaskModel object = dataSet.get(position);
-        if (object != null) {
-            switch (object.type) {
-                case TaskModel.SHOW_FORM_CREATE:
 //                    -Choose date and time of deadline-
-                    final Button valueDeadline = ((TaskFormHolder) holder).valueDateDeadline;
-                    final Button valueTimeDeadline = ((TaskFormHolder) holder).valueTimeDeadline;
+        final Button valueDeadline = ((TaskFormHolder) holder).valueDateDeadline;
+        final Button valueTimeDeadline = ((TaskFormHolder) holder).valueTimeDeadline;
 //                    Choose date
-                    final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    final Calendar newCalendar = Calendar.getInstance();
-                    final DatePickerDialog pickDate = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
-                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            Calendar newDate = Calendar.getInstance();
-                            newDate.set(year, monthOfYear, dayOfMonth);
-                            String date = dateFormat.format(newDate.getTime());
-                            valueDeadline.setText(date);
-                            taskModel.setDate(date);
-                        }
-                    }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-                    valueDeadline.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            pickDate.show();
-                            pickDate.getDatePicker().setMinDate(System.currentTimeMillis());
-                        }
-                    });
+        final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        final Calendar newCalendar = Calendar.getInstance();
+        final DatePickerDialog pickDate = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+                String date = dateFormat.format(newDate.getTime());
+                valueDeadline.setText(date);
+                taskModel.setDate(date);
+            }
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        valueDeadline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickDate.show();
+                pickDate.getDatePicker().setMinDate(System.currentTimeMillis());
+            }
+        });
 //                    Choose time
-                    final DateFormat timeFormat = new SimpleDateFormat("HH:mm");
-                    final Calendar newClock = Calendar.getInstance();
-                    final TimePickerDialog pickTime = new TimePickerDialog(mContext, new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            Calendar newClock = Calendar.getInstance();
-                            newClock.set(0, 0, 0, hourOfDay, minute);
-                            String time = timeFormat.format(newClock.getTime());
-                            valueTimeDeadline.setText(time);
-                            taskModel.setTime(time);
-                        }
-                    }, newClock.get(Calendar.HOUR_OF_DAY), newClock.get(Calendar.MINUTE), true);
-                    valueTimeDeadline.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            pickTime.show();
-                        }
-                    });
+        final DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        final Calendar newClock = Calendar.getInstance();
+        final TimePickerDialog pickTime = new TimePickerDialog(mContext, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                Calendar newClock = Calendar.getInstance();
+                newClock.set(0, 0, 0, hourOfDay, minute);
+                String time = timeFormat.format(newClock.getTime());
+                valueTimeDeadline.setText(time);
+                taskModel.setTime(time);
+            }
+        }, newClock.get(Calendar.HOUR_OF_DAY), newClock.get(Calendar.MINUTE), true);
+        valueTimeDeadline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickTime.show();
+            }
+        });
 //                    -Choose Assignee-
-                    ((TaskFormHolder) holder).valueAssignee.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            if (!dataLoaded) {
-                                getUserList();
-                                return false;
-                            } else {
-                                return false;
-                            }
-                        }
-                    });
-                    List<String> spinnerItems = new ArrayList<>();
-                    if (listMembers != null) {
-                        for (AccountModel account : listMembers) {
-                            spinnerItems.add(account.getFullName());
-                        }
-                    }
-                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext,
-                            android.R.layout.simple_spinner_item, spinnerItems);
-                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    ((TaskFormHolder) holder).valueAssignee.setAdapter(dataAdapter);
-                    //Choose assignee
-                    ((TaskFormHolder) holder).valueAssignee.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                            taskModel.setAssignee(listMembers.get(position).getAccountId());
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> parent) {
-                        }
-                    });
-//                  show name creator
-                    ((TaskFormHolder) holder).valueCreator.setText(currentAccount.getFullName());
-//                    -Button Create-
-                    ((TaskFormHolder) holder).btnCreate.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-//                          -Taskname-
-//                            String edtTaskName=((TaskFormHolder) holder).valueTaskname.getText().toString();
-                            taskModel.setTaskName(((TaskFormHolder) holder).valueTaskname.getText().toString());
-//                          -Description-
-                            taskModel.setDescription(((TaskFormHolder) holder).valueDescription.getText().toString());
-//                          -Time created-
-                            taskModel.setCreatedTime(Instant.now());
-//                          -creator-
-                            taskModel.setAccountCreated(currentAccount.getAccountId());
-//                          -status default-
-                            taskModel.setStatus(new Long(0));
-//                          -closed-
-                            taskModel.setClosed(false);
-//                            edited by
-                            taskModel.setEditedBy(currentAccount.getAccountId());
-                            taskModel.setEditedAt(Instant.now());
-                            switch (currentAccount.getRoleId().intValue()) {
-                                case 0://User
-                                    taskModel.setAssignee(currentAccount.getAccountId());
-                                    taskModel.setGroupId(currentAccount.getGroupId());
-                                    taskModel.setApprovedId(new Long(0)); //not consider
-                                    createNewTask(taskModel);
-                                    break;
-                                case 1://Manager
-                                    taskModel.setGroupId(currentAccount.getGroupId());
-                                    taskModel.setApprovedId(new Long(1)); //approve
-                                    createNewTask(taskModel);
-                                    break;
-                                case 2://Admin
-                                    taskModel.setApprovedId(new Long(1)); //approve
-                                    createNewTask(taskModel);
-                                    break;
-                            }
-                        }
-                    });
-                    break;
+        ((TaskFormHolder) holder).valueAssignee.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (!dataLoaded) {
+                    getUserList();
+                    return false;
+                } else {
+                    return false;
+                }
+            }
+        });
+        List<String> spinnerItems = new ArrayList<>();
+        if (listMembers != null) {
+            for (AccountModel account : listMembers) {
+                spinnerItems.add(account.getFullName());
             }
         }
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext,
+                android.R.layout.simple_spinner_item, spinnerItems);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ((TaskFormHolder) holder).valueAssignee.setAdapter(dataAdapter);
+        //Choose assignee
+        ((TaskFormHolder) holder).valueAssignee.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                taskModel.setAssignee(listMembers.get(position).getAccountId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+//                  show name creator
+        ((TaskFormHolder) holder).valueCreator.setText(currentAccount.getFullName());
+//                    -Button Create-
+        ((TaskFormHolder) holder).btnCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                          -Taskname-
+//                            String edtTaskName=((TaskFormHolder) holder).valueTaskname.getText().toString();
+                taskModel.setTaskName(((TaskFormHolder) holder).valueTaskname.getText().toString());
+//                          -Description-
+                taskModel.setDescription(((TaskFormHolder) holder).valueDescription.getText().toString());
+//                          -Time created-
+                taskModel.setCreatedTime(Instant.now());
+//                          -creator-
+                taskModel.setAccountCreated(currentAccount.getAccountId());
+//                          -status default-
+                taskModel.setStatus(new Long(0));
+//                          -closed-
+                taskModel.setClosed(false);
+//                            edited by
+                taskModel.setEditedBy(currentAccount.getAccountId());
+                taskModel.setEditedAt(Instant.now());
+                switch (currentAccount.getRoleId().intValue()) {
+                    case 0://User
+                        taskModel.setAssignee(currentAccount.getAccountId());
+                        taskModel.setGroupId(currentAccount.getGroupId());
+                        taskModel.setApprovedId(new Long(0)); //not consider
+                        createNewTask(taskModel);
+                        break;
+                    case 1://Manager
+                        taskModel.setGroupId(currentAccount.getGroupId());
+                        taskModel.setApprovedId(new Long(1)); //approve
+                        createNewTask(taskModel);
+                        break;
+                    case 2://Admin
+                        taskModel.setApprovedId(new Long(1)); //approve
+                        createNewTask(taskModel);
+                        break;
+                }
+            }
+        });
+
     }
+
 
     @Override
     public int getItemCount() {
-        return dataSet.size();
+        return 1;
     }
 
     public void getUserList() {

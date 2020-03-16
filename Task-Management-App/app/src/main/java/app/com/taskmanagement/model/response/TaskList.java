@@ -7,5 +7,13 @@ import java.util.List;
 
 public class TaskList implements Serializable {
     @SerializedName("data")
-    public List<TaskResponse> taskList;
+    private List<TaskResponse> taskList;
+
+    public List<TaskResponse> getTaskList() {
+        return taskList;
+    }
+
+    public void setTaskList(List<TaskResponse> taskList) {
+        this.taskList = taskList;
+    }
 }

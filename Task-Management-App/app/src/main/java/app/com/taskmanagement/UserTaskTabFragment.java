@@ -18,11 +18,12 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import app.com.taskmanagement.adapters.NewTaskAdapter;
+import app.com.taskmanagement.adapters.CardTaskFinishedAdapter;
+import app.com.taskmanagement.adapters.CardTaskPendingAdapter;
+import app.com.taskmanagement.adapters.CardTaskTodoAdapter;
 import app.com.taskmanagement.model.TaskModel;
 import app.com.taskmanagement.model.response.TaskList;
 import app.com.taskmanagement.model.response.TaskResponse;
@@ -38,7 +39,6 @@ public class UserTaskTabFragment extends Fragment {
     public static final String ARG_OBJECT = "object";
     public String tabTitle;
     public ArrayList<TaskResponse> taskList = new ArrayList<>();
-    ArrayList<TaskModel> gridViewModelArrayList;
     private RecyclerView recyclerView;
 
     public UserTaskTabFragment(String tabTitle) {
@@ -58,44 +58,32 @@ public class UserTaskTabFragment extends Fragment {
 //        ((TextView) view.findViewById(R.id.text1))
 //                .setText(Integer.toString(args.getInt(ARG_OBJECT)));
         TaskModel gridViewModel;
-        NewTaskAdapter newTaskAdapter;
+        RecyclerView.Adapter cardTaskAdapter;
         StaggeredGridLayoutManager lm;
         switch (tabTitle) {
             case "Todo":
-                gridViewModelArrayList = new ArrayList();
-                gridViewModel = null;
-                gridViewModel = new TaskModel(TaskModel.SHOW_CARD_TASK, null, "Doing", Instant.now(), 1L, null, 1L, null);
-                gridViewModelArrayList.add(gridViewModel);
-                newTaskAdapter = new NewTaskAdapter(gridViewModelArrayList, this.getActivity());
+                cardTaskAdapter = new CardTaskTodoAdapter(this.getActivity());
                 recyclerView = view.findViewById(R.id.tabShowCard);
                 lm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(lm);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
-                recyclerView.setAdapter(newTaskAdapter);
+                recyclerView.setAdapter(cardTaskAdapter);
                 break;
             case "Finished":
-                gridViewModelArrayList = new ArrayList();
-                gridViewModel = null;
-                gridViewModel = new TaskModel(TaskModel.SHOW_CARD_TASK, null, "Doneeeee", Instant.now(), 1L, null, 1L, null);
-                gridViewModelArrayList.add(gridViewModel);
-                newTaskAdapter = new NewTaskAdapter(gridViewModelArrayList, this.getActivity());
+                cardTaskAdapter = new CardTaskFinishedAdapter(this.getActivity());
                 recyclerView = view.findViewById(R.id.tabShowCard);
                 lm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(lm);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
-                recyclerView.setAdapter(newTaskAdapter);
+                recyclerView.setAdapter(cardTaskAdapter);
                 break;
             case "Pending":
-                gridViewModelArrayList = new ArrayList();
-                gridViewModel = null;
-                gridViewModel = new TaskModel(TaskModel.SHOW_CARD_TASK, null, "Waig", Instant.now(), 1L, null, 1L, null);
-                gridViewModelArrayList.add(gridViewModel);
-                newTaskAdapter = new NewTaskAdapter(gridViewModelArrayList, this.getActivity());
+                cardTaskAdapter = new CardTaskPendingAdapter(this.getActivity());
                 recyclerView = view.findViewById(R.id.tabShowCard);
                 lm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(lm);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
-                recyclerView.setAdapter(newTaskAdapter);
+                recyclerView.setAdapter(cardTaskAdapter);
                 getTaskList("assignee", PreferenceUtil.getAccountFromSharedPreferences(getActivity()).getAccountId());
                 break;
         }
@@ -112,7 +100,7 @@ public class UserTaskTabFragment extends Fragment {
         GsonRequest<TaskList> gsonRequest = new GsonRequest<>(url, TaskList.class, headers, new Response.Listener<TaskList>() {
             @Override
             public void onResponse(TaskList response) {
-                taskList.addAll(response.taskList);
+                taskList.addAll(response.getTaskList());
             }
         }, new Response.ErrorListener() {
             @Override

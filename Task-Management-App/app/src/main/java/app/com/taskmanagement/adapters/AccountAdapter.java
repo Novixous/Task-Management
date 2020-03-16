@@ -10,10 +10,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import app.com.taskmanagement.R;
 import app.com.taskmanagement.model.AccountModel;
+import app.com.taskmanagement.model.response.TaskResponse;
+import app.com.taskmanagement.util.GsonRequest;
+import app.com.taskmanagement.util.SingletonRequestQueue;
 
 public class AccountAdapter extends RecyclerView.Adapter {
     private ArrayList<AccountModel> dataSet;
@@ -99,4 +108,6 @@ public class AccountAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return dataSet.size();
     }
+
+
 }

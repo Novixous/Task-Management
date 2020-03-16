@@ -2,13 +2,14 @@ package app.com.taskmanagement.adapter;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 import app.com.taskmanagement.UserTaskTabFragment;
 
-public class TaskPageAdapter extends FragmentStatePagerAdapter {
+public class TaskPageAdapter extends FragmentPagerAdapter {
     private String[] tabTitles = new String[]{
             "Pending",
             "Todo",
@@ -20,13 +21,13 @@ public class TaskPageAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
+    }
+
+    @Override
     public Fragment getItem(int i) {
         Fragment fragment = new UserTaskTabFragment(tabTitles[i]);
-        Bundle args = new Bundle();
-        // Our object is just an integer 😛
-        args.putInt(UserTaskTabFragment.ARG_OBJECT, i + 1);
-        fragment.setArguments(args);
-
         return fragment;
     }
 
@@ -39,4 +40,5 @@ public class TaskPageAdapter extends FragmentStatePagerAdapter {
     public CharSequence getPageTitle(int position) {
         return tabTitles[position];
     }
+
 }
