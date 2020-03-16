@@ -191,6 +191,7 @@ public interface TaskMapper {
             "#{task.editedBy}, " +
             "#{task.editedAt}" +
             ")")
+    @Options(useGeneratedKeys = true, keyProperty = "taskId", keyColumn = "id_task")
     int createTask(@Param("task") Task task);
 
     @Update({

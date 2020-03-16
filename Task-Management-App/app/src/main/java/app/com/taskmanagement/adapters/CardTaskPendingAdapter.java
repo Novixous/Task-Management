@@ -98,24 +98,20 @@ public class CardTaskPendingAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         final TaskModel object = dataSet.get(position);
-        if (object != null) {
-            switch (object.type) {
-                case TaskModel.SHOW_CARD_TASK:
-                    String splitDeadline = object.getDeadline().toString();
-                    ((ShowCardTaskHolder) holder).cardTask.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new UserUpdateTaskFragment(null, null, null, dataSet.get(position).getTaskId())).addToBackStack(null).commit();
 
-                        }
-                    });
-                    ((ShowCardTaskHolder) holder).valueTaskName.setText(object.getTaskName());
-                    ((ShowCardTaskHolder) holder).valueAssignee.setText(object.getAssignee().toString());
-                    ((ShowCardTaskHolder) holder).valueStatus.setText(object.getStatus().toString());
-                    ((ShowCardTaskHolder) holder).valueDeadline.setText(splitDeadline.substring(0, 19).replace("T", "\n"));
-                    break;
+        String splitDeadline = object.getDeadline().toString();
+        ((ShowCardTaskHolder) holder).cardTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new UserUpdateTaskFragment(null, null, null, dataSet.get(position).getTaskId())).addToBackStack(null).commit();
+
             }
-        }
+        });
+        ((ShowCardTaskHolder) holder).valueTaskName.setText(object.getTaskName());
+        ((ShowCardTaskHolder) holder).valueAssignee.setText(object.getAssignee().toString());
+        ((ShowCardTaskHolder) holder).valueStatus.setText(object.getStatus().toString());
+        ((ShowCardTaskHolder) holder).valueDeadline.setText(splitDeadline.substring(0, 19).replace("T", "\n"));
+
     }
 
     @Override
@@ -127,7 +123,7 @@ public class CardTaskPendingAdapter extends RecyclerView.Adapter {
     public void getUserPendingTaskList() {
         RequestQueue requestQueue = SingletonRequestQueue.getInstance(mContext.getApplicationContext()).getRequestQueue();
         HashMap<String, String> headers = new HashMap<>();
-        String url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId()+"&fieldName2=approve_id&value2="+ Long.valueOf(0) + "&isClosed=false";
+        String url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(0) + "&isClosed=false";
         GsonRequest<TaskList> gsonRequest = new GsonRequest<>(url, TaskList.class, headers, new Response.Listener<TaskList>() {
             @Override
             public void onResponse(TaskList response) {

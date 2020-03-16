@@ -23,6 +23,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
@@ -40,7 +41,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import app.com.taskmanagement.FragmentCreateNewTask;
+import app.com.taskmanagement.MainActivity;
 import app.com.taskmanagement.R;
+import app.com.taskmanagement.UserUpdateTaskFragment;
 import app.com.taskmanagement.model.AccountModel;
 import app.com.taskmanagement.model.TaskModel;
 import app.com.taskmanagement.model.request.TaskCreateRequest;
@@ -339,6 +343,8 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
             @Override
             public void onResponse(Integer response) {
                 Toast.makeText(mContext, "Create successfully!", Toast.LENGTH_LONG);
+                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new UserUpdateTaskFragment(null, null, null, response.longValue())).commit();
+                ((AppCompatActivity) mContext).setTitle("Task Detail");
             }
         }, new Response.ErrorListener() {
             @Override

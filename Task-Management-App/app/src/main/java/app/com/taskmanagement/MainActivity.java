@@ -94,8 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 currentFragment = new MyAccountFragment();
                 break;
             case 3:
-//                currentFragment = new SettingsFragment();
-                currentFragment = new UserUpdateTaskFragment(null, null, null, Long.valueOf(6));
+                currentFragment = new SettingsFragment();
                 break;
             case 4:
 

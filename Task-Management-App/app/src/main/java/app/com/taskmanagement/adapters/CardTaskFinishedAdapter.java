@@ -99,22 +99,20 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         final TaskModel object = dataSet.get(position);
         if (object != null) {
-            switch (object.type) {
-                case TaskModel.SHOW_CARD_TASK:
-                    String splitDeadline = object.getDeadline().toString();
-                    ((ShowCardTaskHolder) holder).cardTask.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new UserUpdateTaskFragment(null, null, null, dataSet.get(position).getTaskId())).addToBackStack(null).commit();
+            String splitDeadline = object.getDeadline().toString();
+            ((ShowCardTaskHolder) holder).cardTask.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new UserUpdateTaskFragment(null, null, null, dataSet.get(position).getTaskId())).addToBackStack(null).commit();
 
-                        }
-                    });
-                    ((ShowCardTaskHolder) holder).valueTaskName.setText(object.getTaskName());
-                    ((ShowCardTaskHolder) holder).valueAssignee.setText(object.getAssignee().toString());
-                    ((ShowCardTaskHolder) holder).valueStatus.setText(object.getStatus().toString());
-                    ((ShowCardTaskHolder) holder).valueDeadline.setText(splitDeadline.substring(0, 19).replace("T", "\n"));
-                    break;
-            }
+                }
+            });
+            ((ShowCardTaskHolder) holder).valueTaskName.setText(object.getTaskName());
+            ((ShowCardTaskHolder) holder).valueAssignee.setText(object.getAssignee().toString());
+            ((ShowCardTaskHolder) holder).valueStatus.setText(object.getStatus().toString());
+            ((ShowCardTaskHolder) holder).valueDeadline.setText(splitDeadline.substring(0, 19).replace("T", "\n"));
+
+
         }
     }
 

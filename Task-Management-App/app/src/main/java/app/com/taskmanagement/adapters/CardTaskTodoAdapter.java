@@ -133,11 +133,14 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
             public void onResponse(TaskList response) {
                 List<TaskResponse> responses = new ArrayList<>();
                 responses.addAll(response.getTaskList());
-                List<TaskModel> taskModels = TimeUtil.convertTaskResponseToTask(responses);
-                dataSet = new ArrayList<>();
-                for (TaskModel task : taskModels) {
-                    task.setType(TaskModel.SHOW_CARD_TASK);
-                    dataSet.add(task);
+                switch (currentAccount.getRoleId().intValue()) {
+                    case 0:
+                        List<TaskModel> taskModels = TimeUtil.convertTaskResponseToTask(responses);
+                        dataSet = new ArrayList<>();
+                        for (TaskModel task : taskModels) {
+                            task.setType(TaskModel.SHOW_CARD_TASK);
+                            dataSet.add(task);
+                        }
                 }
                 dataLoaded = true;
                 notifyDataSetChanged();

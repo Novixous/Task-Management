@@ -45,7 +45,10 @@ public class TaskController {
     public int createTask(@RequestBody TaskRequest taskRequest) {
         List<TaskResponse> taskResponses = taskRequest.getData();
         List<Task> converted = TimeUtil.convertTaskResponseToTask(taskResponses);
-        return taskMapper.createTask(converted.get(0));
+        Task result = converted.get(0);
+        taskMapper.createTask(result);
+        return result.getTaskId().intValue();
+
     }
 
     @PutMapping
