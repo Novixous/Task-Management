@@ -6,22 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.google.gson.Gson;
 
-import java.util.HashMap;
-
-import app.com.taskmanagement.R;
 import app.com.taskmanagement.model.MyWorker;
-import app.com.taskmanagement.model.request.TokenRequestModel;
-import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.PreferenceUtil;
-import app.com.taskmanagement.util.SingletonRequestQueue;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public static final String TAG = "MyFirebaseMsgService";

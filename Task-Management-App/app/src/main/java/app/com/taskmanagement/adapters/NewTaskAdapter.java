@@ -15,8 +15,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.Scroller;
 import android.widget.Spinner;
@@ -50,7 +48,7 @@ import app.com.taskmanagement.model.response.UserListReponse;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.PreferenceUtil;
 
-public class TaskAdapter extends RecyclerView.Adapter {
+public class NewTaskAdapter extends RecyclerView.Adapter {
     private ArrayList<TaskModel> dataSet;
     Context mContext;
     int total_types;
@@ -59,7 +57,7 @@ public class TaskAdapter extends RecyclerView.Adapter {
     private AccountModel currentAccount;
     Boolean dataLoaded;
 
-    public TaskAdapter(ArrayList<TaskModel> data, Context context) {
+    public NewTaskAdapter(ArrayList<TaskModel> data, Context context) {
         this.dataSet = data;
         this.mContext = context;
         total_types = dataSet.size();
@@ -68,27 +66,13 @@ public class TaskAdapter extends RecyclerView.Adapter {
         dataLoaded = false;
     }
 
-    public static class ShowCardTaskHolder extends RecyclerView.ViewHolder {
-        TextView valueTaskName, valueAssignee, valueStatus, valueDeadline;
-
-        public ShowCardTaskHolder(@NonNull View itemView) {
-            super(itemView);
-            this.valueTaskName = (TextView) itemView.findViewById(R.id.valuetxtTaskName);
-            this.valueAssignee = (TextView) itemView.findViewById(R.id.valuetxtAssignee);
-            this.valueStatus = (TextView) itemView.findViewById(R.id.valuetxtStatus);
-            this.valueDeadline = (TextView) itemView.findViewById(R.id.valuetxtDeadline);
-        }
-    }
-
     public static class TaskFormHolder extends RecyclerView.ViewHolder {
         TextView valueIDtask, valueNote, valueStartdate, valueEnddate, valueOldID, valueCreator, valueReviewer, valueDateReview;
         EditText valueDescription, valueTaskname, valueReview, valueResult;
-        Spinner valueStatus, valueAssignee, valueConfirm;
-        ImageButton btnImg;
-        ImageView valueImgResolution;
+        Spinner valueStatus, valueAssignee;
         NumberPicker valueMark;
         Button valueDateDeadline, valueTimeDeadline;
-        Button btnCreate, btnUpdate, btnApprove, btnDecline;
+        Button btnCreate;
 
         public TaskFormHolder(@NonNull View itemView) {
             super(itemView);
@@ -100,41 +84,23 @@ public class TaskAdapter extends RecyclerView.Adapter {
             this.valueCreator = (TextView) itemView.findViewById(R.id.valueCreator);
             this.valueAssignee = (Spinner) itemView.findViewById(R.id.valueAssignee);
             this.valueDescription = (EditText) itemView.findViewById(R.id.valueDescription);
-
-            this.valueNote = (TextView) itemView.findViewById(R.id.valueNote);
-            this.valueReviewer = (TextView) itemView.findViewById(R.id.valueReviewer);
-            this.valueStatus = (Spinner) itemView.findViewById(R.id.valueStatus);
-            this.valueStartdate = (TextView) itemView.findViewById(R.id.valueDateStart);
-            this.valueEnddate = (TextView) itemView.findViewById(R.id.valueDateEnd);
-            this.valueResult = (EditText) itemView.findViewById(R.id.valueResult);
-            this.btnImg = (ImageButton) itemView.findViewById(R.id.btnImg);
-            this.valueImgResolution = (ImageView) itemView.findViewById(R.id.valueImgResolution);
-
-            this.valueDateReview = (TextView) itemView.findViewById(R.id.valueDateReview);
-            this.valueMark = (NumberPicker) itemView.findViewById(R.id.valueMark);
-            this.valueReview = (EditText) itemView.findViewById(R.id.valueReview);
-
             this.btnCreate = (Button) itemView.findViewById(R.id.btnCreateTask);
-            this.btnUpdate = (Button) itemView.findViewById(R.id.btnUpdateTask);
-            this.btnApprove = (Button) itemView.findViewById(R.id.btnApprove);
-            this.btnDecline = (Button) itemView.findViewById(R.id.btnDecline);
         }
     }
 
-    @Override
-    public int getItemViewType(int position) {
-
-        switch (dataSet.get(position).type) {
-            case 0:
-                return TaskModel.SHOW_FORM_CREATE;
-            case 1:
-                return TaskModel.SHOW_CARD_TASK;
-            case 2:
-                return TaskModel.SHOW_UPDATE_TASK;
-        }
-        return 0;
-    }
-
+//    @Override
+//    public int getItemViewType(int position) {
+//
+//        switch (dataSet.get(position).type) {
+//            case 0:
+//                return TaskModel.SHOW_FORM_CREATE;
+//            case 1:
+//                return TaskModel.SHOW_CARD_TASK;
+//            case 2:
+//                return TaskModel.SHOW_UPDATE_TASK;
+//        }
+//        return 0;
+//    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -178,25 +144,11 @@ public class TaskAdapter extends RecyclerView.Adapter {
                 R.id.lineID,
                 R.id.btnCloneTask
         };
-        Integer[] id_not_show_update = {
-                R.id.btnCreateTask,
-                R.id.btnApprove,
-                R.id.btnCloneTask,
-                R.id.btnDecline,
-        };
-        Integer[] id_not_show_review = {
-                R.id.btnCreateTask,
-        };
         Integer[] create_edit_textview = {
                 R.id.valueDescription,
                 R.id.valueTaskName,
         };
-        Integer[] update_edit_textview = {
-                R.id.valueResult
-        };
-        Integer[] update_review_textview = {
-                R.id.valueReview
-        };
+
         switch (viewType) {
             case TaskModel.SHOW_FORM_CREATE:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_task, parent, false);
@@ -226,38 +178,6 @@ public class TaskAdapter extends RecyclerView.Adapter {
                         view.findViewById(R.id.lineAssignee).setVisibility(View.GONE);
                 }
                 return new TaskFormHolder(view);
-            case TaskModel.SHOW_CARD_TASK:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_card_task, parent, false);
-                return new ShowCardTaskHolder(view);
-            case TaskModel.SHOW_UPDATE_TASK:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_task, parent, false);
-                for (int i = 0; i < id_not_show_update.length; i++) {
-                    view.findViewById(id_not_show_update[i]).setVisibility(View.GONE);
-                }
-
-                for (int i = 0; i < update_edit_textview.length; i++) {
-                    final EditText temp = view.findViewById(update_edit_textview[i]);
-                    temp.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            temp.setCursorVisible(true);
-                            temp.setFocusableInTouchMode(true);
-                            temp.setInputType(InputType.TYPE_CLASS_TEXT);
-                            temp.setTextIsSelectable(true);
-                            temp.requestFocus();
-                            temp.setMovementMethod(new ScrollingMovementMethod());
-                            temp.setScroller(new Scroller(mContext));
-                            temp.setVerticalScrollBarEnabled(true);
-                        }
-                    });
-                }
-                return new TaskFormHolder(view);
-            case TaskModel.SHOW_REVIEW_TASK:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_task, parent, false);
-                for (int i = 0; i < id_not_show_review.length; i++) {
-                    view.findViewById(id_not_show_review[i]).setVisibility(View.GONE);
-                }
-                return new TaskFormHolder(view);
         }
         return null;
     }
@@ -267,9 +187,7 @@ public class TaskAdapter extends RecyclerView.Adapter {
         final TaskModel object = dataSet.get(position);
         if (object != null) {
             switch (object.type) {
-
                 case TaskModel.SHOW_FORM_CREATE:
-
 //                    -Choose date and time of deadline-
                     final Button valueDeadline = ((TaskFormHolder) holder).valueDateDeadline;
                     final Button valueTimeDeadline = ((TaskFormHolder) holder).valueTimeDeadline;
@@ -371,7 +289,6 @@ public class TaskAdapter extends RecyclerView.Adapter {
                                     taskModel.setAssignee(currentAccount.getAccountId());
                                     taskModel.setGroupId(currentAccount.getGroupId());
                                     taskModel.setApprovedId(new Long(0)); //not consider
-
                                     createNewTask(taskModel);
                                     break;
                                 case 1://Manager
@@ -386,55 +303,6 @@ public class TaskAdapter extends RecyclerView.Adapter {
                             }
                         }
                     });
-                    break;
-
-                case TaskModel.SHOW_CARD_TASK:
-                    String splitDeadline = object.getDeadline().toString();
-                    ((ShowCardTaskHolder) holder).valueTaskName.setText(object.getTaskName());
-                    ((ShowCardTaskHolder) holder).valueAssignee.setText(object.getAssignee().toString());
-                    ((ShowCardTaskHolder) holder).valueStatus.setText(object.getStatus().toString());
-                    ((ShowCardTaskHolder) holder).valueDeadline.setText(splitDeadline.substring(0, 19).replace("T", "\n"));
-                    break;
-
-                case TaskModel.SHOW_UPDATE_TASK:
-//                    String splitStartdate = object.getStartTime().toString();
-//                    String splitEnddate = object.getEndTime().toString();
-                    ((TaskFormHolder) holder).valueIDtask.setText("");
-                    ((TaskFormHolder) holder).valueOldID.setTag("");
-                    ((TaskFormHolder) holder).valueDateDeadline.setTag("");
-                    ((TaskFormHolder) holder).valueNote.setText("");
-                    ((TaskFormHolder) holder).valueDescription.setText("");
-                    ((TaskFormHolder) holder).valueStartdate.setText("");
-                    ((TaskFormHolder) holder).valueEnddate.setText("");
-                    ((TaskFormHolder) holder).valueResult.setText("");
-                    ((TaskFormHolder) holder).valueStatus.setTag("");
-                    ((TaskFormHolder) holder).valueCreator.setTag("");
-//                    ((UpdateTaskHolder) holder).btnImg.setTag(object.getAssignee());
-//                    ((UpdateTaskHolder) holder).valueImgResolution.setTag(object.getAssignee());
-                    ((TaskFormHolder) holder).valueReviewer.setText("");
-                    ((TaskFormHolder) holder).valueDateReview.setText("");
-                    ((TaskFormHolder) holder).valueMark.setTag("");
-                    ((TaskFormHolder) holder).valueReview.setText("");
-                    break;
-                case TaskModel.SHOW_REVIEW_TASK:
-                    String startdate = object.getStartTime().toString();
-                    String enddate = object.getEndTime().toString();
-                    String dateReview = object.getReviewTime().toString();
-                    ((TaskFormHolder) holder).valueTaskname.setText(object.getTaskName());
-                    ((TaskFormHolder) holder).valueIDtask.setText(object.getTaskId().toString());
-                    ((TaskFormHolder) holder).valueOldID.setTag(object.getTaskName());
-                    ((TaskFormHolder) holder).valueDateDeadline.setTag(object.getDeadline());
-                    ((TaskFormHolder) holder).valueNote.setText("");
-                    ((TaskFormHolder) holder).valueDescription.setText(object.getDescription());
-                    ((TaskFormHolder) holder).valueStartdate.setText(startdate.substring(0, 19).replace("T", "\n"));
-                    ((TaskFormHolder) holder).valueEnddate.setText(enddate.substring(0, 19).replace("T", "\n"));
-                    ((TaskFormHolder) holder).valueResult.setText(object.getResult());
-                    ((TaskFormHolder) holder).valueStatus.setTag(object.getStatus());
-                    ((TaskFormHolder) holder).valueCreator.setTag(object.getAccountCreated());
-                    ((TaskFormHolder) holder).valueReviewer.setText(dateReview.substring(0, 19).replace("T", "\n"));
-                    ((TaskFormHolder) holder).valueDateReview.setText(object.getReviewTime().toString());
-                    ((TaskFormHolder) holder).valueMark.setTag(object.getAssignee());
-                    ((TaskFormHolder) holder).valueReview.setText(object.getManagerComment());
                     break;
             }
         }

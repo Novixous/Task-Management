@@ -4,12 +4,12 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/card_task"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:background="@drawable/border_card_task"
         android:clickable="true"
-        android:onClick="clickToShowDetailTask"
         android:orientation="horizontal"
         android:weightSum="1">
 

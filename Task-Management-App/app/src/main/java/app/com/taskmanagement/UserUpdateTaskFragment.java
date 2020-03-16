@@ -10,10 +10,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import java.time.Instant;
 import java.util.ArrayList;
 
-import app.com.taskmanagement.adapters.TaskAdapter;
+import app.com.taskmanagement.adapters.NewTaskAdapter;
 import app.com.taskmanagement.model.TaskModel;
 
 public class UserUpdateTaskFragment extends Fragment {
@@ -36,13 +35,13 @@ public class UserUpdateTaskFragment extends Fragment {
         gridViewModel = new TaskModel(TaskModel.SHOW_UPDATE_TASK);
         gridViewModelArrayList.add(gridViewModel);
 
-        TaskAdapter taskAdapter = new TaskAdapter(gridViewModelArrayList, this.getActivity().getApplicationContext());
+        NewTaskAdapter newTaskAdapter = new NewTaskAdapter(gridViewModelArrayList, this.getActivity().getApplicationContext());
         recyclerView = rootView.findViewById(R.id.viewRecycler);
         StaggeredGridLayoutManager lm =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(lm);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(taskAdapter);
+        recyclerView.setAdapter(newTaskAdapter);
 
         return rootView;
     }

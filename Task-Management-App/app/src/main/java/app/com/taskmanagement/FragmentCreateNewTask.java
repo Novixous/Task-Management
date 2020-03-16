@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,7 +14,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
 
-import app.com.taskmanagement.adapters.TaskAdapter;
+import app.com.taskmanagement.adapters.NewTaskAdapter;
 import app.com.taskmanagement.model.TaskModel;
 
 
@@ -46,13 +45,13 @@ public class FragmentCreateNewTask extends Fragment {
 
         gridViewModelArrayList.add(gridViewModel);
 
-        TaskAdapter taskAdapter = new TaskAdapter(gridViewModelArrayList, this.getActivity());
+        NewTaskAdapter newTaskAdapter = new NewTaskAdapter(gridViewModelArrayList, this.getActivity());
         recyclerView = rootView.findViewById(R.id.viewRecycler);
         StaggeredGridLayoutManager lm =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(lm);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(taskAdapter);
+        recyclerView.setAdapter(newTaskAdapter);
         return rootView;
     }
 

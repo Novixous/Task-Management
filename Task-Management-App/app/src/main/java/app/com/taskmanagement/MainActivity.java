@@ -159,10 +159,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, currentFragment).addToBackStack(null).commit();
     }
 
-    public void clickToShowDetailTask(View view) {
-        currentFragment = new UserUpdateTaskFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, currentFragment).addToBackStack(null).commit();
-    }
+
 
 
     public void clickToGetTime(View view) {
