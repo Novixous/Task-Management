@@ -26,7 +26,7 @@ public interface AccountMapper {
 
     @Select("SELECT idaccount as accountId, " +
             "username as username, " +
-            "password as password, " +
+//            "password as password, " +
             "firstname as firstName, " +
             "lastname as lastName, " +
             "fullname as fullName, " +
@@ -159,10 +159,12 @@ public interface AccountMapper {
     @Select("SELECT deviceToken from token WHERE accountId = #{accountId}")
     List<String> getTokensByAccountId(@Param("accountId") Long accountId);
 
-    @Select("SELECT role_id FROM account WHERE accountId  = #{accountId}")
+    @Select("SELECT role_id FROM account WHERE idaccount  = #{accountId}")
     Long getRoleIdByAccountId(@Param("accountId") Long accountId);
 
     @Select("SELECT idaccount FROM account WHERE group_id = #{groupId} AND role_id = 1")
     Long getManagerIdOfGroupByGroupId(@Param("groupId") Long groupId);
+
+
 
 }

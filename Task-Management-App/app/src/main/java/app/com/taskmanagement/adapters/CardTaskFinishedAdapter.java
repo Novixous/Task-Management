@@ -32,6 +32,9 @@ import app.com.taskmanagement.util.SingletonRequestQueue;
 import app.com.taskmanagement.util.TimeUtil;
 
 public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
+    HashMap<Long, String> approveList;
+    HashMap<Long, String> roleList;
+    HashMap<Long, String> statusList;
     private ArrayList<TaskModel> dataSet;
     Context mContext;
     int total_types;
@@ -39,7 +42,10 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
     private AccountModel currentAccount;
     Boolean dataLoaded;
 
-    public CardTaskFinishedAdapter(Context context) {
+    public CardTaskFinishedAdapter(Context context,HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
+        this.approveList = approveList;
+        this.roleList = roleList;
+        this.statusList = statusList;
         this.dataSet = new ArrayList<>();
         this.mContext = context;
         total_types = dataSet.size();

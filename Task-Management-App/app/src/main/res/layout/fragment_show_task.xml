@@ -278,6 +278,40 @@
             android:layout_height="1dp"
             android:layout_margin="5dp"
             android:background="@color/cardview_dark_background" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp">
+            <!--            Assignee-->
+            <TextView
+                android:id="@+id/txtGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Group: "
+                android:textColor="@color/darkBlue"
+                android:textSize="13dp"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <Spinner
+                android:id="@+id/valueGroup"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Assignee"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:visibility="gone"/>
+        </LinearLayout>
+        <View
+            android:id="@+id/lineGroup"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="5dp"
+            android:background="@color/cardview_dark_background"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:layout_width="match_parent"

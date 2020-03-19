@@ -43,33 +43,64 @@ import java.util.List;
 
 import app.com.taskmanagement.FragmentCreateNewTask;
 import app.com.taskmanagement.MainActivity;
+import app.com.taskmanagement.MyTaskFragment;
 import app.com.taskmanagement.R;
 import app.com.taskmanagement.UserUpdateTaskFragment;
 import app.com.taskmanagement.model.AccountModel;
+import app.com.taskmanagement.model.Group;
 import app.com.taskmanagement.model.TaskModel;
 import app.com.taskmanagement.model.request.TaskCreateRequest;
+import app.com.taskmanagement.model.response.GroupResponse;
 import app.com.taskmanagement.model.response.UserListReponse;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.PreferenceUtil;
+import app.com.taskmanagement.util.SingletonRequestQueue;
 
 public class NewTaskAdapter extends RecyclerView.Adapter {
-    Context mContext;
-    TaskModel taskModel;
+    private Context mContext;
+    private TaskModel taskModel;
     private List<AccountModel> listMembers;
+    private List<Group> groupList;
     private AccountModel currentAccount;
-    Boolean dataLoaded;
+    private Boolean dataLoaded;
+    private AccountModel assignee;
+    private HashMap<Long, String> approveList;
+    private HashMap<Long, String> roleList;
+    private HashMap<Long, String> statusList;
 
-    public NewTaskAdapter(Context context) {
+    public NewTaskAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
+        this.approveList = approveList;
+        this.roleList = roleList;
+        this.statusList = statusList;
         this.mContext = context;
         this.taskModel = new TaskModel();
         currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
+        this.assignee = null;
+        this.groupList = null;
+        dataLoaded = false;
+        if (!currentAccount.getRoleId().equals(Long.valueOf(2))) {
+            getUserList(currentAccount.getGroupId());
+        } else {
+            getGroups();
+        }
+    }
+
+    public NewTaskAdapter(Context context, AccountModel assignee, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
+        this.approveList = approveList;
+        this.roleList = roleList;
+        this.statusList = statusList;
+        this.mContext = context;
+        this.taskModel = new TaskModel();
+        currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
+        this.assignee = assignee;
+        this.groupList = null;
         dataLoaded = false;
     }
 
     public static class TaskFormHolder extends RecyclerView.ViewHolder {
         TextView valueIDtask, valueNote, valueStartdate, valueEnddate, valueOldID, valueCreator, valueReviewer, valueDateReview;
         EditText valueDescription, valueTaskname, valueReview, valueResult;
-        Spinner valueStatus, valueAssignee;
+        Spinner valueStatus, valueAssignee, valueGroup;
         NumberPicker valueMark;
         Button valueDateDeadline, valueTimeDeadline;
         Button btnCreate;
@@ -82,6 +113,7 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
             this.valueDateDeadline = (Button) itemView.findViewById(R.id.valueDateDeadline);
             this.valueTimeDeadline = (Button) itemView.findViewById(R.id.valueTimeDeadline);
             this.valueCreator = (TextView) itemView.findViewById(R.id.valueCreator);
+            this.valueGroup = (Spinner) itemView.findViewById(R.id.valueGroup);
             this.valueAssignee = (Spinner) itemView.findViewById(R.id.valueAssignee);
             this.valueDescription = (EditText) itemView.findViewById(R.id.valueDescription);
             this.btnCreate = (Button) itemView.findViewById(R.id.btnCreateTask);
@@ -144,10 +176,7 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
                 R.id.lineID,
                 R.id.btnCloneTask
         };
-        Integer[] create_edit_textview = {
-                R.id.valueDescription,
-                R.id.valueTaskName,
-        };
+
 
         switch (viewType) {
             case TaskModel.SHOW_FORM_CREATE:
@@ -155,27 +184,18 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
                 for (int i = 0; i < id_not_show_create_task.length; i++) {
                     view.findViewById(id_not_show_create_task[i]).setVisibility(View.GONE);
                 }
-                for (int i = 0; i < create_edit_textview.length; i++) {
-                    final EditText temp = view.findViewById(create_edit_textview[i]);
-                    temp.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            temp.setCursorVisible(true);
-                            temp.setFocusableInTouchMode(true);
-                            temp.setInputType(InputType.TYPE_CLASS_TEXT);
-                            temp.setTextIsSelectable(true);
-                            temp.requestFocus();
-                            temp.setMovementMethod(new ScrollingMovementMethod());
-                            temp.setScroller(new Scroller(mContext));
-                            temp.setVerticalScrollBarEnabled(true);
-                        }
-                    });
-                }
+
                 switch (currentAccount.getRoleId().intValue()) {
                     case 0:
                         view.findViewById(R.id.valueAssignee).setVisibility(View.GONE);
                         view.findViewById(R.id.txtAssignee).setVisibility(View.GONE);
                         view.findViewById(R.id.lineAssignee).setVisibility(View.GONE);
+                        break;
+                    case 2:
+                        view.findViewById(R.id.txtGroup).setVisibility(View.VISIBLE);
+                        view.findViewById(R.id.valueGroup).setVisibility(View.VISIBLE);
+                        view.findViewById(R.id.lineGroup).setVisibility(View.VISIBLE);
+
                 }
                 return new TaskFormHolder(view);
         }
@@ -225,28 +245,41 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
                 pickTime.show();
             }
         });
-//                    -Choose Assignee-
-        ((TaskFormHolder) holder).valueAssignee.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (!dataLoaded) {
-                    getUserList();
-                    return false;
-                } else {
-                    return false;
-                }
-            }
-        });
-        List<String> spinnerItems = new ArrayList<>();
-        if (listMembers != null) {
-            for (AccountModel account : listMembers) {
-                spinnerItems.add(account.getFullName());
+//                    -Choose group
+        List<String> spinnerGroupItems = new ArrayList<>();
+        if (groupList != null) {
+            for (Group group : groupList) {
+                spinnerGroupItems.add(group.getGroupName());
             }
         }
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(mContext,
-                android.R.layout.simple_spinner_item, spinnerItems);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ((TaskFormHolder) holder).valueAssignee.setAdapter(dataAdapter);
+        if (listMembers == null) {
+            ArrayAdapter<String> groupAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, spinnerGroupItems);
+            groupAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            ((TaskFormHolder) holder).valueGroup.setAdapter(groupAdapter);
+            ((TaskFormHolder) holder).valueGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    taskModel.setGroupId(groupList.get(position).getGroupId());
+                    getUserList(groupList.get(position).getGroupId());
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+        }
+
+//                    -Choose Assignee-
+        List<String> spinnerAssigneeItems = new ArrayList<>();
+        if (listMembers != null) {
+            for (AccountModel account : listMembers) {
+                spinnerAssigneeItems.add("(" + account.getAccountId() + ") " + account.getFullName());
+            }
+        }
+        ArrayAdapter<String> assigneeAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, spinnerAssigneeItems);
+        assigneeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ((TaskFormHolder) holder).valueAssignee.setAdapter(assigneeAdapter);
         //Choose assignee
         ((TaskFormHolder) holder).valueAssignee.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -308,8 +341,8 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
         return 1;
     }
 
-    public void getUserList() {
-        String url = String.format(mContext.getResources().getString(R.string.BASE_URL) + "/accounts?fieldName=group_id&fieldValue=" + currentAccount.getGroupId());
+    public void getUserList(Long groupId) {
+        String url = String.format(mContext.getResources().getString(R.string.BASE_URL) + "/accounts?fieldName=group_id&fieldValue=" + groupId);
         HashMap<String, String> header = new HashMap<>();
         RequestQueue requestQueue = Volley.newRequestQueue(mContext.getApplicationContext());
         GsonRequest<UserListReponse> userListReponseGsonRequest = new GsonRequest<>(url, UserListReponse.class, header, new Response.Listener<UserListReponse>() {
@@ -343,8 +376,8 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
             @Override
             public void onResponse(Integer response) {
                 Toast.makeText(mContext, "Create successfully!", Toast.LENGTH_LONG);
-                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new UserUpdateTaskFragment(null, null, null, response.longValue())).commit();
-                ((AppCompatActivity) mContext).setTitle("Task Detail");
+                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new MyTaskFragment(approveList,roleList,statusList)).commit();
+                ((AppCompatActivity) mContext).setTitle("My Task");
             }
         }, new Response.ErrorListener() {
             @Override
@@ -354,5 +387,26 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
             }
         });
         requestQueue.add(taskResponseCreateRequest);
+    }
+
+    public void getGroups() {
+        String url = String.format(mContext.getResources().getString(R.string.BASE_URL) + "/groups");
+        HashMap<String, String> header = new HashMap<>();
+        RequestQueue requestQueue = SingletonRequestQueue.getInstance(mContext).getRequestQueue();
+        GsonRequest<GroupResponse> userListReponseGsonRequest = new GsonRequest<>(url, GroupResponse.class, header, new Response.Listener<GroupResponse>() {
+            @Override
+            public void onResponse(GroupResponse response) {
+                groupList = new ArrayList<>();
+                groupList.addAll(response.getData());
+                dataLoaded = true;
+                notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.println(Log.ERROR, "", "");
+            }
+        });
+        requestQueue.add(userListReponseGsonRequest);
     }
 }

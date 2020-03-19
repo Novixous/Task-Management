@@ -32,6 +32,10 @@ import app.com.taskmanagement.util.SingletonRequestQueue;
 import app.com.taskmanagement.util.TimeUtil;
 
 public class CardTaskTodoAdapter extends RecyclerView.Adapter {
+    HashMap<Long, String> approveList;
+    HashMap<Long, String> roleList;
+    HashMap<Long, String> statusList;
+
     private ArrayList<TaskModel> dataSet;
     Context mContext;
     int total_types;
@@ -39,7 +43,10 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
     private AccountModel currentAccount;
     Boolean dataLoaded;
 
-    public CardTaskTodoAdapter(Context context) {
+    public CardTaskTodoAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
+        this.approveList = approveList;
+        this.roleList = roleList;
+        this.statusList = statusList;
         this.dataSet = new ArrayList<>();
         this.mContext = context;
         total_types = dataSet.size();
@@ -105,7 +112,7 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
                     ((ShowCardTaskHolder) holder).cardTask.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new UserUpdateTaskFragment(null, null, null, dataSet.get(position).getTaskId())).addToBackStack(null).commit();
+                            ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new UserUpdateTaskFragment(approveList, roleList, statusList, dataSet.get(position).getTaskId())).addToBackStack(null).commit();
 
                         }
                     });

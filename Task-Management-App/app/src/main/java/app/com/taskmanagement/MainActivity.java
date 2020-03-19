@@ -44,9 +44,9 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     Toolbar toolbar;
     private CharSequence mTitle;
-    HashMap<Long, String> approveList = new HashMap<>();
-    HashMap<Long, String> roleList = new HashMap<>();
-    HashMap<Long, String> statusList = new HashMap<>();
+    private HashMap<Long, String> approveList = new HashMap<>();
+    private HashMap<Long, String> roleList = new HashMap<>();
+    private HashMap<Long, String> statusList = new HashMap<>();
     String newToken;
 
 
@@ -85,10 +85,10 @@ public class MainActivity extends AppCompatActivity {
 
         switch (position) {
             case 0:
-                currentFragment = new MyTaskFragment();
+                currentFragment = new MyTaskFragment(approveList, roleList, statusList);
                 break;
             case 1:
-                currentFragment = new FragmentCreateNewTask();
+                currentFragment = new FragmentCreateNewTask(approveList, roleList, statusList);
                 break;
             case 2:
                 currentFragment = new MyAccountFragment();

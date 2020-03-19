@@ -69,4 +69,19 @@ public class TimeUtil {
         }
     }
 
+    public static String ConvertSectoDay(long n) {
+        long day = n / (24 * 3600);
+
+        n = n % (24 * 3600);
+        long hour = n / 3600;
+
+        n %= 3600;
+        long minutes = n / 60;
+
+//        n %= 60;
+//        long seconds = n;
+
+        return day + " " + "days " + hour + " " + "hours " + minutes + " " + "minutes " /*+ seconds + " " + "seconds "*/;
+    }
+
 }

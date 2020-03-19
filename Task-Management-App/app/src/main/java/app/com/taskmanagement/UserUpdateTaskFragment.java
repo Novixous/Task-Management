@@ -13,8 +13,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import app.com.taskmanagement.adapters.NewTaskAdapter;
-import app.com.taskmanagement.adapters.UpdateTaskAdapter;
+import app.com.taskmanagement.adapters.DetailTaskPendingAdapter;
 import app.com.taskmanagement.model.TaskModel;
 
 public class UserUpdateTaskFragment extends Fragment {
@@ -42,13 +41,13 @@ public class UserUpdateTaskFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_recycler, container, false);
-        UpdateTaskAdapter updateTaskAdapter = new UpdateTaskAdapter(this.getActivity(), taskId, approveList, roleList, statusList);
+        DetailTaskPendingAdapter detailTaskPendingAdapter = new DetailTaskPendingAdapter(this.getActivity(), taskId, approveList, roleList, statusList);
         recyclerView = rootView.findViewById(R.id.viewRecycler);
         StaggeredGridLayoutManager lm =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(lm);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(updateTaskAdapter);
+        recyclerView.setAdapter(detailTaskPendingAdapter);
         return rootView;
     }
 }

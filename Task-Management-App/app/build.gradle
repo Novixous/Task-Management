@@ -55,4 +55,5 @@ dependencies {
 
     //validator
     implementation group: 'com.mobsandgeeks', name: 'android-saripaar', version: '2.0.3'
+
 }

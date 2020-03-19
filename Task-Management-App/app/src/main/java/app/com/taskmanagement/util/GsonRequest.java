@@ -7,13 +7,16 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 public class GsonRequest<T> extends Request<T> {
-    private final Gson gson = new Gson();
+    private final Gson gson = new GsonBuilder()
+            .setLenient()
+            .create();
     private final Class<T> myClass;
     private final Map<String, String> headers;
     private final Map<String, String> params;
@@ -82,7 +85,7 @@ public class GsonRequest<T> extends Request<T> {
     protected Response<T> parseNetworkResponse(NetworkResponse response) {
         try {
             String json = new String(
-                    response.data, HttpHeaderParser.parseCharset(response.headers));
+                    response.data, "UTF-8");
             return Response.success(
                     gson.fromJson(json, myClass), HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {

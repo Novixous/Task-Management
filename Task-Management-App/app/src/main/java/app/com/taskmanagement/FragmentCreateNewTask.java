@@ -13,18 +13,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import app.com.taskmanagement.adapters.NewTaskAdapter;
 import app.com.taskmanagement.model.TaskModel;
 
 
 public class FragmentCreateNewTask extends Fragment {
-    ArrayList<TaskModel> gridViewModelArrayList;
+    private ArrayList<TaskModel> gridViewModelArrayList;
     private RecyclerView recyclerView;
+    private HashMap<Long, String> approveList;
+    private HashMap<Long, String> roleList;
+    private HashMap<Long, String> statusList;
 
 
-    public FragmentCreateNewTask() {
-        // Required empty public constructor
+    public FragmentCreateNewTask(HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
+        this.approveList = approveList;
+        this.roleList = roleList;
+        this.statusList = statusList;
     }
 
     @Override
@@ -45,7 +51,7 @@ public class FragmentCreateNewTask extends Fragment {
 
         gridViewModelArrayList.add(gridViewModel);
 
-        NewTaskAdapter newTaskAdapter = new NewTaskAdapter(this.getActivity());
+        NewTaskAdapter newTaskAdapter = new NewTaskAdapter(this.getActivity(), approveList, roleList, statusList);
         recyclerView = rootView.findViewById(R.id.viewRecycler);
         StaggeredGridLayoutManager lm =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);

@@ -32,6 +32,9 @@ import app.com.taskmanagement.util.SingletonRequestQueue;
 import app.com.taskmanagement.util.TimeUtil;
 
 public class CardTaskPendingAdapter extends RecyclerView.Adapter {
+    HashMap<Long, String> approveList;
+    HashMap<Long, String> roleList;
+    HashMap<Long, String> statusList;
     private ArrayList<TaskModel> dataSet;
     Context mContext;
     int total_types;
@@ -39,20 +42,17 @@ public class CardTaskPendingAdapter extends RecyclerView.Adapter {
     private AccountModel currentAccount;
     Boolean dataLoaded;
 
-    public CardTaskPendingAdapter(Context context) {
+    public CardTaskPendingAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
+        this.approveList = approveList;
+        this.roleList = roleList;
+        this.statusList = statusList;
         this.dataSet = new ArrayList<>();
         this.mContext = context;
         total_types = dataSet.size();
         currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
         dataLoaded = false;
 
-        if (currentAccount.getRoleId().equals(Long.valueOf(0))) {
-            getUserPendingTaskList();
-        } else if (currentAccount.getRoleId().equals(Long.valueOf(1))) {
-
-        } else {
-
-        }
+        getPendingTaskList(currentAccount.getRoleId());
     }
 
     public static class ShowCardTaskHolder extends RecyclerView.ViewHolder {
@@ -103,7 +103,13 @@ public class CardTaskPendingAdapter extends RecyclerView.Adapter {
         ((ShowCardTaskHolder) holder).cardTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new UserUpdateTaskFragment(null, null, null, dataSet.get(position).getTaskId())).addToBackStack(null).commit();
+                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame,
+                                new UserUpdateTaskFragment
+                                        (approveList,
+                                                roleList,
+                                                statusList,
+                                                dataSet.get(position).getTaskId())).addToBackStack(null).commit();
 
             }
         });
@@ -120,10 +126,21 @@ public class CardTaskPendingAdapter extends RecyclerView.Adapter {
 
     }
 
-    public void getUserPendingTaskList() {
+    public void getPendingTaskList(Long roleId) {
         RequestQueue requestQueue = SingletonRequestQueue.getInstance(mContext.getApplicationContext()).getRequestQueue();
         HashMap<String, String> headers = new HashMap<>();
-        String url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(0) + "&isClosed=false";
+        String url = "";
+        switch (roleId.intValue()) {
+            case 0:
+                url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(0) + "&isClosed=false";
+                break;
+            case 1:
+                url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=group_id&value=" + currentAccount.getGroupId() + "&fieldName2=approve_id&value2=" + Long.valueOf(0) + "&isClosed=false";
+                break;
+            case 2:
+                url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=approve_id&value=" + Long.valueOf(0) + "&isClosed=false";
+                break;
+        }
         GsonRequest<TaskList> gsonRequest = new GsonRequest<>(url, TaskList.class, headers, new Response.Listener<TaskList>() {
             @Override
             public void onResponse(TaskList response) {

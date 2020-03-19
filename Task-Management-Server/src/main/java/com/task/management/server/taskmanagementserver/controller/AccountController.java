@@ -26,8 +26,14 @@ public class AccountController {
      * @return
      */
     @GetMapping("/account")
-    public Account getAccountByParameter(@RequestParam("id") Long id) {
-        return accountMapper.getAccountById(id);
+    public HashMap<String, Object> getAccountByParameter(@RequestParam("id") Long id) {
+        HashMap<String, Object> result = new HashMap<>();
+        Account account = accountMapper.getAccountById(id);
+        if (account != null) {
+            result.put("errorMessage", null);
+            result.put("data", account);
+        }
+        return result;
     }
 
     /**
@@ -69,6 +75,11 @@ public class AccountController {
         accountMapper.createAccount(account);
     }
 
+    /**
+     * delete account
+     *
+     * @param accountId
+     */
     @Delete("/account")
     public void deleteAccount(@RequestParam Long accountId) {
         Account account = new Account();
@@ -77,6 +88,12 @@ public class AccountController {
         accountMapper.updateAccountById(account);
     }
 
+    /**
+     * login
+     *
+     * @param loginRequest
+     * @return
+     */
     @PostMapping("/login")
     public HashMap<String, Object> login(@RequestBody LoginRequest loginRequest) {
         HashMap<String, Object> result = new HashMap<>();
@@ -90,4 +107,6 @@ public class AccountController {
         }
         return result;
     }
+
+
 }
