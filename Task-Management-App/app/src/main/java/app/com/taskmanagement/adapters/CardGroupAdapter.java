@@ -37,7 +37,7 @@ public class CardGroupAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_group, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_group_fragment, parent, false);
         return new CardGroupHolder(view);
     }
 
@@ -47,6 +47,7 @@ public class CardGroupAdapter extends RecyclerView.Adapter {
         if (object != null) {
             ((CardGroupHolder) holder).txtGroupName.setText(object.getGroupName());
             ((CardGroupHolder) holder).txtDesGroup.setText(object.getDescription());
+
         }
     }
 

@@ -15,12 +15,12 @@ import java.util.ArrayList;
 import app.com.taskmanagement.R;
 import app.com.taskmanagement.model.AccountModel;
 
-public class AccountAdapter extends RecyclerView.Adapter {
+public class CreateAccountAdapter extends RecyclerView.Adapter {
     private ArrayList<AccountModel> dataSet;
     Context mContext;
     int total_types;
 
-    public AccountAdapter(ArrayList<AccountModel> data, Context context) {
+    public CreateAccountAdapter(ArrayList<AccountModel> data, Context context) {
         this.dataSet = data;
         this.mContext = context;
         total_types = dataSet.size();
@@ -30,39 +30,30 @@ public class AccountAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        switch (viewType) {
-            case AccountModel.SHOW_PROFILE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_create_update_account, parent, false);
-                return new AccountAdapter.CreateUpdateAccountHolder(view);
-        }
-        return null;
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_create_account, parent, false);
+        return new CreateAccountHolder(view);
+
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         final AccountModel object = dataSet.get(position);
         if (object != null) {
-            switch (object.type) {
-                case AccountModel.SHOW_PROFILE:
-                    ((CreateUpdateAccountHolder) holder).txtFullname.setText(object.getFullName());
-                    ((CreateUpdateAccountHolder) holder).txtUsername.setText(object.getUsername());
-                    ((CreateUpdateAccountHolder) holder).txtEmail.setText(object.getEmail());
-                    ((CreateUpdateAccountHolder) holder).txtPhone.setText(object.getPhone());
-                    ((CreateUpdateAccountHolder) holder).txtRole.setTag(object.getRoleId());
-                    ((CreateUpdateAccountHolder) holder).txtActive.setTag(object.isDeactivated());
-                    break;
-                case AccountModel.CHANGE_PASSWORD:
-                    ((ChangePasswordHolder) holder).txtPassword.setText(object.getPassword());
-                    ((ChangePasswordHolder) holder).txtConfirmPwd.setText("");
-            }
+            ((CreateAccountHolder) holder).txtFullname.setText(object.getFullName());
+            ((CreateAccountHolder) holder).txtUsername.setText(object.getUsername());
+            ((CreateAccountHolder) holder).txtEmail.setText(object.getEmail());
+            ((CreateAccountHolder) holder).txtPhone.setText(object.getPhone());
+            ((CreateAccountHolder) holder).txtRole.setTag(object.getRoleId());
+            ((CreateAccountHolder) holder).txtActive.setTag(object.isDeactivated());
+            ((CreateAccountHolder)holder).txtGroup.setTag(object.getGroupId());
         }
     }
 
-    public static class CreateUpdateAccountHolder extends RecyclerView.ViewHolder {
+    public static class CreateAccountHolder extends RecyclerView.ViewHolder {
         TextView txtFullname, txtUsername, txtEmail, txtPhone;
-        Spinner txtRole, txtActive;
+        Spinner txtRole, txtActive, txtGroup;
 
-        public CreateUpdateAccountHolder(@NonNull View itemView) {
+        public CreateAccountHolder(@NonNull View itemView) {
             super(itemView);
             txtFullname = (TextView) itemView.findViewById(R.id.txtFullname);
             txtUsername = (TextView) itemView.findViewById(R.id.txtUsername);
@@ -70,29 +61,8 @@ public class AccountAdapter extends RecyclerView.Adapter {
             txtPhone = (TextView) itemView.findViewById(R.id.txtPhone);
             txtRole = (Spinner) itemView.findViewById(R.id.txtRole);
             txtActive = (Spinner) itemView.findViewById(R.id.txtActive);
+            txtGroup = (Spinner) itemView.findViewById(R.id.txtGroup);
         }
-    }
-
-    public static class ChangePasswordHolder extends RecyclerView.ViewHolder {
-        TextView txtPassword, txtConfirmPwd;
-
-        public ChangePasswordHolder(@NonNull View itemView) {
-            super(itemView);
-            txtPassword = (TextView) itemView.findViewById(R.id.txtPassword);
-            txtConfirmPwd = (TextView) itemView.findViewById(R.id.txtConfirmPwd);
-        }
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-
-        switch (dataSet.get(position).type) {
-            case 0:
-                return AccountModel.SHOW_PROFILE;
-            case 1:
-                return AccountModel.CHANGE_PASSWORD;
-        }
-        return 0;
     }
 
     @Override
