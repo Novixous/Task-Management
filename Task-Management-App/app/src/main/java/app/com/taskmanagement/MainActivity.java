@@ -97,8 +97,13 @@ public class MainActivity extends AppCompatActivity {
                 currentFragment = new SettingsFragment();
                 break;
             case 4:
-
-
+                break;
+            case 5:
+                currentFragment = new FragmentGroupList();
+                break;
+            case 6:
+                currentFragment = new FragmentAccountList();
+                break;
             default:
                 break;
         }
@@ -149,6 +154,10 @@ public class MainActivity extends AppCompatActivity {
             case "Logout":
                 deleteTokenFromServer();
                 return 4;
+            case "Group List":
+                return 5;
+            case "Account List":
+                return 6;
             default:
                 return -1;
         }
@@ -159,9 +168,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, currentFragment).addToBackStack(null).commit();
     }
 
-
-    public void clickToGetTime(View view) {
-    }
 
     public static class FormCreateTaskFragment extends Fragment {
 

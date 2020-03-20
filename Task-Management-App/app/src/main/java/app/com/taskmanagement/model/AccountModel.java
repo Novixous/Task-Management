@@ -8,10 +8,6 @@ import java.io.Serializable;
 
 
 public class AccountModel implements Serializable {
-    public static final int SHOW_PROFILE = 0;
-    public static final int CHANGE_PASSWORD = 1;
-    public int type;
-
     @SerializedName("accountId")
     private Long accountId;
     @SerializedName("username")
@@ -40,17 +36,20 @@ public class AccountModel implements Serializable {
     public AccountModel() {
     }
 
-    public AccountModel(int type, Long accountId, String username, String firstname, String lastname, String password, String fullName, String phone, String email, String address, boolean deactivated, Long roleId, Long groupId) {
-        this.type = type;
+
+    public AccountModel(Long accountId, String fullName, Long roleId, Long groupId) {
+        this.accountId = accountId;
+        this.fullName = fullName;
+        this.roleId = roleId;
+        this.groupId = groupId;
+    }
+
+    public AccountModel(Long accountId, String username, String fullName, String phone, String email, boolean deactivated, Long roleId, Long groupId) {
         this.accountId = accountId;
         this.username = username;
-        this.firstName = firstname;
-        this.lastName = lastname;
-        this.password = password;
         this.fullName = fullName;
         this.phone = phone;
         this.email = email;
-        this.address = address;
         this.deactivated = deactivated;
         this.roleId = roleId;
         this.groupId = groupId;

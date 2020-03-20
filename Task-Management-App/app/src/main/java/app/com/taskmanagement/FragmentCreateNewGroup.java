@@ -12,21 +12,18 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
 
-import app.com.taskmanagement.adapters.CreateAccountAdapter;
-import app.com.taskmanagement.model.AccountModel;
+import app.com.taskmanagement.adapters.CardGroupAdapter;
+import app.com.taskmanagement.adapters.CreateGroupAdapter;
+import app.com.taskmanagement.model.Group;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
-public class MyAccountFragment extends Fragment {
-    ArrayList<AccountModel> gridViewModelArrayList;
+public class FragmentCreateNewGroup extends Fragment {
+    ArrayList<Group> gridViewModelArrayList;
     private RecyclerView recyclerView;
 
-    public MyAccountFragment() {
-        // Required empty public constructor
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,17 +31,17 @@ public class MyAccountFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_recycler, container, false);
         gridViewModelArrayList = new ArrayList();
-        AccountModel gridViewModel = null;
-        gridViewModel = new AccountModel(null,"",null,null);
+        Group gridViewModel = null;
+        gridViewModel = new Group(null,"","",1L);
         gridViewModelArrayList.add(gridViewModel);
 
-        CreateAccountAdapter createAccountAdapter = new CreateAccountAdapter(gridViewModelArrayList, this.getActivity());
+        CreateGroupAdapter createGroupAdapter = new CreateGroupAdapter(gridViewModelArrayList, this.getActivity());
         recyclerView = rootView.findViewById(R.id.viewRecycler);
         StaggeredGridLayoutManager lm =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(lm);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(createAccountAdapter);
+        recyclerView.setAdapter(createGroupAdapter);
         return rootView;
     }
 }

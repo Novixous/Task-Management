@@ -38,7 +38,6 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
     private ArrayList<TaskModel> dataSet;
     Context mContext;
     int total_types;
-    private List<AccountModel> listMembers;
     private AccountModel currentAccount;
     Boolean dataLoaded;
 
@@ -117,8 +116,6 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
             ((ShowCardTaskHolder) holder).valueAssignee.setText(object.getAssignee().toString());
             ((ShowCardTaskHolder) holder).valueStatus.setText(object.getStatus().toString());
             ((ShowCardTaskHolder) holder).valueDeadline.setText(splitDeadline.substring(0, 19).replace("T", "\n"));
-
-
         }
     }
 

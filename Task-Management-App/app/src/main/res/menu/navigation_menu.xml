@@ -9,6 +9,14 @@
         android:icon="@drawable/ic_create_black_24dp"
         android:title="Create New Task" />
     <item
+        android:id="@+id/listgroup"
+        android:icon="@drawable/ic_group"
+        android:title="Group List" />
+    <item
+        android:id="@+id/listaccount"
+        android:icon="@drawable/ic_account_list"
+        android:title="Account List" />
+    <item
         android:id="@+id/account"
         android:icon="@drawable/ic_person_black_24dp"
         android:title="My Account" />
