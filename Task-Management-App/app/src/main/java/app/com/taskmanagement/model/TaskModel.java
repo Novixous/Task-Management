@@ -79,8 +79,8 @@ public class TaskModel implements Serializable {
     @SerializedName("editedAt")
     private Instant editedAt;
 
-    @SerializedName("closed")
-    private boolean closed;
+    @SerializedName("isClosed")
+    private Boolean isClosed;
 
     private String date;
     private String time;
@@ -94,7 +94,7 @@ public class TaskModel implements Serializable {
         this.type = type;
     }
 
-    public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline, Long accountCreated, Long assignee, String description, Long approvedId, Long status, Long groupId, Long editedBy, Instant editedAt, boolean closed) {
+    public TaskModel(int type, Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline, Long accountCreated, Long assignee, String description, Long approvedId, Long status, Long groupId, Long editedBy, Instant editedAt, boolean isClosed) {
         this.type = type;
         this.taskId = taskId;
         this.oldTaskId = oldTaskId;
@@ -109,7 +109,7 @@ public class TaskModel implements Serializable {
         this.groupId = groupId;
         this.editedBy = editedBy;
         this.editedAt = editedAt;
-        this.closed = closed;
+        this.isClosed = isClosed;
     }
 
     //Update
@@ -320,11 +320,11 @@ public class TaskModel implements Serializable {
     }
 
     public boolean isClosed() {
-        return closed;
+        return isClosed;
     }
 
     public void setClosed(boolean closed) {
-        this.closed = closed;
+        this.isClosed = closed;
     }
 
     public void setDate(String date) {

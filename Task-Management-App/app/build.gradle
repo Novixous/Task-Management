@@ -56,4 +56,6 @@ dependencies {
     //validator
     implementation group: 'com.mobsandgeeks', name: 'android-saripaar', version: '2.0.3'
 
+    implementation group: 'com.google.guava', name: 'guava', version: '28.2-android'
+
 }

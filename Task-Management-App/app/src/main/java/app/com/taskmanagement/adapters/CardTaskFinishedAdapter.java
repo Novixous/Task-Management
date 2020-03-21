@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import app.com.taskmanagement.R;
-import app.com.taskmanagement.UserUpdateTaskFragment;
+import app.com.taskmanagement.TaskDetailFragment;
 import app.com.taskmanagement.model.AccountModel;
 import app.com.taskmanagement.model.TaskModel;
 import app.com.taskmanagement.model.response.TaskList;
@@ -32,32 +32,28 @@ import app.com.taskmanagement.util.SingletonRequestQueue;
 import app.com.taskmanagement.util.TimeUtil;
 
 public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
-    HashMap<Long, String> approveList;
-    HashMap<Long, String> roleList;
-    HashMap<Long, String> statusList;
+    public static final int ROLE_USER = 0;
+    public static final int ROLE_MANAGER = 1;
+    public static final int ROLE_ADMIN = 2;
+    private Context mContext;
     private ArrayList<TaskModel> dataSet;
-    Context mContext;
-    int total_types;
-    private AccountModel currentAccount;
-    Boolean dataLoaded;
 
-    public CardTaskFinishedAdapter(Context context,HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
+    private HashMap<Long, String> approveList;
+    private HashMap<Long, String> roleList;
+    private HashMap<Long, String> statusList;
+    private HashMap<Long, String> assigneeMap;
+
+    private AccountModel currentAccount;
+
+    public CardTaskFinishedAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
         this.approveList = approveList;
         this.roleList = roleList;
         this.statusList = statusList;
+        this.assigneeMap = new HashMap<>();
         this.dataSet = new ArrayList<>();
         this.mContext = context;
-        total_types = dataSet.size();
         currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
-        dataLoaded = false;
-
-        if (currentAccount.getRoleId().equals(Long.valueOf(0))) {
-            getUserPendingTaskList();
-        } else if (currentAccount.getRoleId().equals(Long.valueOf(1))) {
-
-        } else {
-
-        }
+        getFinishedTaskList(currentAccount.getRoleId());
     }
 
     public static class ShowCardTaskHolder extends RecyclerView.ViewHolder {
@@ -108,7 +104,7 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
             ((ShowCardTaskHolder) holder).cardTask.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new UserUpdateTaskFragment(null, null, null, dataSet.get(position).getTaskId())).addToBackStack(null).commit();
+                    ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new TaskDetailFragment(approveList  , roleList, statusList, dataSet.get(position).getTaskId(), TaskDetailFragment.MODE_FINISHED)).addToBackStack(null).commit();
 
                 }
             });
@@ -125,10 +121,22 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
 
     }
 
-    public void getUserPendingTaskList() {
+    public void getFinishedTaskList(Long roleId) {
         RequestQueue requestQueue = SingletonRequestQueue.getInstance(mContext.getApplicationContext()).getRequestQueue();
         HashMap<String, String> headers = new HashMap<>();
-        String url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(2) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(3) + "&splitClosed=)and&isClosed=false";
+        String url = "";
+        switch (roleId.intValue()) {
+            case 0:
+                url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(2) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(3) + "&splitClosed=)and&isClosed=false";
+                break;
+            case 1:
+                url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=group_id&value=" + currentAccount.getGroupId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(2) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(3) + "&splitClosed=)and&isClosed=false";
+                break;
+            case 2:
+                url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=approve_id&value=" + Long.valueOf(1) + "&split2=and(&fieldName2=status_id&value2=" + Long.valueOf(2) + "&split3=or&fieldName3=status_id&value3=" + Long.valueOf(3) +  "&splitClosed=)and&isClosed=false";
+                break;
+        }
+
         GsonRequest<TaskList> gsonRequest = new GsonRequest<>(url, TaskList.class, headers, new Response.Listener<TaskList>() {
             @Override
             public void onResponse(TaskList response) {
@@ -140,7 +148,7 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
                     task.setType(TaskModel.SHOW_CARD_TASK);
                     dataSet.add(task);
                 }
-                dataLoaded = true;
+                assigneeMap.putAll(response.getAssigneeList());
                 notifyDataSetChanged();
             }
         }, new Response.ErrorListener() {

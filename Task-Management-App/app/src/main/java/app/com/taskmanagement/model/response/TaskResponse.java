@@ -78,8 +78,8 @@ public class TaskResponse implements Serializable {
     @SerializedName("editedAt")
     private String editedAt;
 
-    @SerializedName("closed")
-    private boolean closed;
+    @SerializedName("isClosed")
+    private Boolean isClosed;
 
     private String date;
     private String time;
@@ -88,7 +88,7 @@ public class TaskResponse implements Serializable {
     }
 
     //Create
-    public TaskResponse(String taskName, String createdTime, String deadline, Long accountCreated, Long assignee, String description, Long approvedId, Long status, Long groupId, Long editedBy, String editedAt, boolean closed) {
+    public TaskResponse(String taskName, String createdTime, String deadline, Long accountCreated, Long assignee, String description, Long approvedId, Long status, Long groupId, Long editedBy, String editedAt, boolean isClosed) {
         this.taskName = taskName;
         this.createdTime = createdTime;
         this.deadline = deadline;
@@ -100,7 +100,7 @@ public class TaskResponse implements Serializable {
         this.groupId = groupId;
         this.editedBy = editedBy;
         this.editedAt = editedAt;
-        this.closed = closed;
+        this.isClosed = isClosed;
     }
 
     public Long getTaskId() {
@@ -280,10 +280,10 @@ public class TaskResponse implements Serializable {
     }
 
     public boolean isClosed() {
-        return closed;
+        return isClosed;
     }
 
     public void setClosed(boolean closed) {
-        this.closed = closed;
+        this.isClosed = closed;
     }
 }

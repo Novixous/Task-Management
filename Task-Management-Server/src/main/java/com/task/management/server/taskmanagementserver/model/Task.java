@@ -25,12 +25,12 @@ public class Task {
     private Long groupId;
     private Long editedBy;
     private Instant editedAt;
-    private Boolean closed;
+    private Boolean isClosed;
 
     public Task() {
     }
 
-    public Task(Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline, Long accountCreated, Long assignee, String description, String resolution, String imgResolutionUrl, String result, Instant startTime, Instant endTime, String managerComment, Long mark, Long reviewerId, Instant reviewTime, Long approvedId, Long status, Long groupId, Long editedBy, Instant editedAt, Boolean closed) {
+    public Task(Long taskId, Long oldTaskId, String taskName, Instant createdTime, Instant deadline, Long accountCreated, Long assignee, String description, String resolution, String imgResolutionUrl, String result, Instant startTime, Instant endTime, String managerComment, Long mark, Long reviewerId, Instant reviewTime, Long approvedId, Long status, Long groupId, Long editedBy, Instant editedAt, Boolean isClosed) {
         this.taskId = taskId;
         this.oldTaskId = oldTaskId;
         this.taskName = taskName;
@@ -53,7 +53,7 @@ public class Task {
         this.groupId = groupId;
         this.editedBy = editedBy;
         this.editedAt = editedAt;
-        this.closed = closed;
+        this.isClosed = isClosed;
     }
 
     public Long getTaskId() {
@@ -232,11 +232,11 @@ public class Task {
         this.editedAt = editedAt;
     }
 
-    public Boolean getClosed() {
-        return closed;
+    public Boolean getIsClosed() {
+        return isClosed;
     }
 
-    public void setClosed(Boolean closed) {
-        this.closed = closed;
+    public void setIsClosed(Boolean isClosed) {
+        this.isClosed = isClosed;
     }
 }

@@ -36,8 +36,12 @@ public interface TaskMapper {
             "group_id as groupId, " +
             "edited_by as editedBy, " +
             "edited_at as editedAt, " +
-            "closed as closed " +
-            "FROM task WHERE ${fieldName} = #{value} " +
+            "isClosed as isClosed " +
+            "FROM task WHERE " +
+            "<if test='split != null'>" +
+            " ${split} " +
+            "</if>"+
+            "${fieldName} = #{value} " +
             "<if test='fieldName2 != null and value2 != null'>" +
             "<if test='split2 != null'>" +
             " ${split2} " +
@@ -81,10 +85,10 @@ public interface TaskMapper {
             "<if test='splitClosed == null'>" +
             "AND " +
             "</if>" +
-            "closed = #{isClosed} " +
+            "isClosed = #{isClosed} " +
             "</if>" +
             "</script>")
-    List<Task> getTasksByIdField(@Param("fieldName") String fieldName, @Param("value") Long value,
+    List<Task> getTasksByIdField(@Param("split") String split, @Param("fieldName") String fieldName, @Param("value") Long value,
                                  @Param("split2") String split2, @Param("fieldName2") String fieldName2, @Param("value2") Long value2,
                                  @Param("split3") String split3, @Param("fieldName3") String fieldName3, @Param("value3") Long value3,
                                  @Param("split4") String split4, @Param("fieldName4") String fieldName4, @Param("value4") Long value4,
@@ -113,7 +117,7 @@ public interface TaskMapper {
             "group_id as groupId, " +
             "edited_by as editedBy, " +
             "edited_at as editedAt, " +
-            "closed as closed " +
+            "isClosed as isClosed " +
             "FROM task WHERE id_task = #{taskId}")
     Task getTaskByTaskId(@Param("taskId") Long taskId);
 
@@ -139,7 +143,7 @@ public interface TaskMapper {
             "group_id as groupId " +
             "edited_by as editedBy, " +
             "edited_at as editedAt, " +
-            "closed as closed " +
+            "isClosed as isClosed " +
             "FROM task WHERE ${fieldName} = #{value} AND status_id = #{approveStatus}")
     List<Task> getTasksByIdFieldAndStatus(@Param("fieldName") String fieldName, @Param("value") Long value,
                                           @Param("approveStatus") Long approveStatus);
@@ -199,132 +203,132 @@ public interface TaskMapper {
                     "UPDATE task SET " +
                     "<if test='task.oldTaskId != null'>" +
                     "id_old_task = #{task.oldTaskId}" +
-                    "<if test='task.taskName != null or task.createdTime !=null or task.deadline !=null or task.accountCreated !=null or task.assignee !=null or task.description !=null or task.resolution !=null or task.imgResolutionUrl !=null or task.result !=null or task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null'>" +
+                    "<if test='task.taskName != null or task.createdTime !=null or task.deadline !=null or task.accountCreated !=null or task.assignee !=null or task.description !=null or task.resolution !=null or task.imgResolutionUrl !=null or task.result !=null or task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.taskName != null'>" +
                     "task_name = #{task.taskName}" +
-                    "<if test='task.createdTime !=null or task.deadline !=null or task.accountCreated !=null or task.assignee !=null or task.description !=null or task.resolution !=null or task.imgResolutionUrl !=null or task.result !=null or task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null'>" +
+                    "<if test='task.createdTime !=null or task.deadline !=null or task.accountCreated !=null or task.assignee !=null or task.description !=null or task.resolution !=null or task.imgResolutionUrl !=null or task.result !=null or task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.createdTime != null'>" +
                     "create_date = #{task.createdTime}" +
-                    "<if test='task.deadline !=null or task.accountCreated !=null or task.assignee !=null or task.description !=null or task.resolution !=null or task.imgResolutionUrl !=null or task.result !=null or task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null'>" +
+                    "<if test='task.deadline !=null or task.accountCreated !=null or task.assignee !=null or task.description !=null or task.resolution !=null or task.imgResolutionUrl !=null or task.result !=null or task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.deadline != null'>" +
                     "deadline = #{task.deadline}" +
-                    "<if test='task.accountCreated !=null or task.assignee !=null or task.description !=null or task.resolution !=null or task.imgResolutionUrl !=null or task.result !=null or task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null'>" +
+                    "<if test='task.accountCreated !=null or task.assignee !=null or task.description !=null or task.resolution !=null or task.imgResolutionUrl !=null or task.result !=null or task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.accountCreated != null'>" +
                     "account_create = #{task.accountCreated}" +
-                    "<if test='task.assignee !=null or task.description !=null or task.resolution !=null or task.imgResolutionUrl !=null or task.result !=null or task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null'>" +
+                    "<if test='task.assignee !=null or task.description !=null or task.resolution !=null or task.imgResolutionUrl !=null or task.result !=null or task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.assignee != null'>" +
                     "assignee = #{task.assignee}" +
-                    "<if test='task.description !=null or task.resolution !=null or task.imgResolutionUrl !=null or task.result !=null or task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null'>" +
+                    "<if test='task.description !=null or task.resolution !=null or task.imgResolutionUrl !=null or task.result !=null or task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.description != null'>" +
                     "description = #{task.description}" +
-                    "<if test='task.resolution !=null or task.imgResolutionUrl !=null or task.result !=null or task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null'>" +
+                    "<if test='task.resolution !=null or task.imgResolutionUrl !=null or task.result !=null or task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.resolution != null'>" +
                     "resolution = #{task.resolution}" +
-                    "<if test='task.imgResolutionUrl !=null or task.result !=null or task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null'>" +
+                    "<if test='task.imgResolutionUrl !=null or task.result !=null or task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.imgResolutionUrl != null'>" +
                     "img_solution = #{task.imgResolutionUrl}" +
-                    "<if test='task.result !=null or task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null'>" +
+                    "<if test='task.result !=null or task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.result != null'>" +
                     "result = #{task.result}" +
-                    "<if test='task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null'>" +
+                    "<if test='task.startTime !=null or task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.startTime != null'>" +
                     "start_date = #{task.startTime}" +
-                    "<if test='task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null'>" +
+                    "<if test='task.endTime !=null or task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.endTime != null'>" +
                     "end_date = #{task.endTime}" +
-                    "<if test='task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null'>" +
+                    "<if test='task.managerComment !=null or task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.managerComment != null'>" +
                     "comment_manager = #{task.managerComment}" +
-                    "<if test='task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null'>" +
+                    "<if test='task.mark !=null or task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.mark != null'>" +
                     "mark = #{task.mark}" +
-                    "<if test='task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null'>" +
+                    "<if test='task.reviewerId !=null or task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.reviewerId != null'>" +
                     "reviewer = #{task.reviewerId}" +
-                    "<if test='task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null'>" +
+                    "<if test='task.reviewTime !=null or task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.reviewTime != null'>" +
                     "review_date = #{task.reviewTime}" +
-                    "<if test='task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null'>" +
+                    "<if test='task.status !=null or task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.status != null'>" +
                     "status_id = #{task.status}" +
-                    "<if test='task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null'>" +
+                    "<if test='task.approvedId !=null or task.groupId !=null or task.editedBy !=null or task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.approvedId != null'>" +
                     "approve_id = #{task.approvedId}" +
-                    "<if test='task.groupId !=null or task.editedBy !=null or task.editedAt !=null'>" +
+                    "<if test='task.groupId !=null or task.editedBy !=null or task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.groupId != null'>" +
                     "group_id = #{task.groupId}" +
-                    "<if test='task.editedBy !=null or task.editedAt !=null'>" +
+                    "<if test='task.editedBy !=null or task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.editedBy != null'>" +
                     "edited_by = #{task.editedBy}" +
-                    "<if test='task.editedAt !=null'>" +
+                    "<if test='task.editedAt !=null or task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
                     "<if test='task.editedAt != null'>" +
                     "edited_at = #{task.editedAt}" +
-                    "<if test='task.closed !=null'>" +
+                    "<if test='task.isClosed !=null'>" +
                     ", " +
                     "</if>" +
                     "</if>" +
-                    "<if test='task.closed != null'>" +
-                    "closed = #{task.closed}" +
+                    "<if test='task.isClosed != null'>" +
+                    "isClosed = #{task.isClosed}" +
                     "</if>" +
                     " WHERE id_task = #{task.taskId}" +
                     "</script>"})
