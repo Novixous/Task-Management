@@ -1,10 +1,16 @@
 package app.com.taskmanagement.adapters;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,8 +21,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -45,6 +57,8 @@ public class CardTaskPendingAdapter extends RecyclerView.Adapter {
 
     private AccountModel currentAccount;
 
+    private int currentStatus;
+
 
     public CardTaskPendingAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
         this.approveList = approveList;
@@ -52,9 +66,13 @@ public class CardTaskPendingAdapter extends RecyclerView.Adapter {
         this.statusList = statusList;
         this.assigneeMap = new HashMap<>();
         this.dataSet = new ArrayList<>();
+        TaskModel temp = new TaskModel();
+        temp.setType(TaskModel.SEARCH_CARD);
+        dataSet.add(temp);
         this.mContext = context;
         currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
-        getPendingTaskList(currentAccount.getRoleId());
+        this.currentStatus = -1;
+        getPendingTaskList(currentAccount.getRoleId(), null, null);
     }
 
     public static class ShowCardTaskHolder extends RecyclerView.ViewHolder {
@@ -71,37 +89,149 @@ public class CardTaskPendingAdapter extends RecyclerView.Adapter {
         }
     }
 
+    public static class SearchCardHolder extends RecyclerView.ViewHolder {
+        Button btnFrom, btnTo, btnSearch, btnReset;
+        Spinner spinnerStatus;
+
+
+        public SearchCardHolder(@NonNull View itemView) {
+            super(itemView);
+            this.btnFrom = itemView.findViewById(R.id.btnFrom);
+            this.btnTo = itemView.findViewById(R.id.btnTo);
+            this.btnSearch = itemView.findViewById(R.id.btnSearch);
+            this.btnReset = itemView.findViewById(R.id.btnReset);
+            this.spinnerStatus = itemView.findViewById(R.id.spinnerStatus);
+        }
+    }
+
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_card_task, parent, false);
-        return new ShowCardTaskHolder(view);
+        View view;
+        switch (viewType) {
+            case TaskModel.TASK_CARD:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_card_task, parent, false);
+                return new ShowCardTaskHolder(view);
+            case TaskModel.SEARCH_CARD:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_card, parent, false);
+                return new SearchCardHolder(view);
+        }
+        return null;
 
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
         final TaskModel object = dataSet.get(position);
-        String splitDeadline = object.getDeadline().toString();
-        ((ShowCardTaskHolder) holder).cardTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_frame,
-                                new TaskDetailFragment
-                                        (approveList,
-                                                roleList,
-                                                statusList,
-                                                dataSet.get(position).getTaskId(),
-                                                TaskDetailFragment.MODE_PENDING)).addToBackStack(null).commit();
+        switch (object.type) {
+            case TaskModel.SEARCH_CARD:
+                final Button btnFrom = ((SearchCardHolder) holder).btnFrom;
+                final Button btnTo = ((SearchCardHolder) holder).btnTo;
+                final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                final Calendar newCalendar = Calendar.getInstance();
+                final DatePickerDialog pickDateFrom = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar newDate = Calendar.getInstance();
+                        newDate.set(year, monthOfYear, dayOfMonth);
+                        String date = dateFormat.format(newDate.getTime());
+                        btnFrom.setText(date);
+                    }
+                }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+                btnFrom.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        pickDateFrom.show();
+                        pickDateFrom.getDatePicker().setMinDate(System.currentTimeMillis());
+                    }
+                });
+                final DatePickerDialog pickDateTo = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar newDate = Calendar.getInstance();
+                        newDate.set(year, monthOfYear, dayOfMonth);
+                        String date = dateFormat.format(newDate.getTime());
+                        btnTo.setText(date);
+                    }
+                }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+                btnTo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        pickDateTo.show();
+                        pickDateTo.getDatePicker().setMinDate(System.currentTimeMillis());
+                    }
+                });
+                HashMap<Long, String> temp = new HashMap<>();
+                temp.put(Long.valueOf(-1), "None");
+                temp.putAll(statusList);
+                final Collection<String> statusValues = temp.values();
+                ArrayList<String> listOfStatus = new ArrayList<String>(statusValues);
+                ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, listOfStatus);
+                ((SearchCardHolder) holder).spinnerStatus.setAdapter(statusAdapter);
+                ((SearchCardHolder) holder).spinnerStatus.setSelection(listOfStatus.indexOf(temp.get(Long.valueOf(currentStatus))));
+                ((SearchCardHolder) holder).spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        String value = ((SearchCardHolder) holder).spinnerStatus.getItemAtPosition(position).toString();
+                        if (!value.equals("None")) {
+                            BiMap<Long, String> statusBiMap = HashBiMap.create(statusList);
+                            currentStatus = statusBiMap.inverse().get(value).intValue();
+                        } else {
+                            currentStatus = -1;
+                        }
+                    }
 
-            }
-        });
-        ((ShowCardTaskHolder) holder).valueTaskName.setText(object.getTaskName());
-        ((ShowCardTaskHolder) holder).valueAssignee.setText(assigneeMap.get(object.getAssignee()));
-        ((ShowCardTaskHolder) holder).valueStatus.setText(statusList.get(object.getStatus()));
-        ((ShowCardTaskHolder) holder).valueDeadline.setText(splitDeadline.substring(0, 19).replace("T", "\n"));
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+                ((SearchCardHolder) holder).btnSearch.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String from = null;
+                        String to = null;
+                        if (!((SearchCardHolder) holder).btnFrom.getText().toString().isEmpty()) {
+                            from = ((SearchCardHolder) holder).btnFrom.getText().toString();
+                        }
+                        if (!((SearchCardHolder) holder).btnTo.getText().toString().isEmpty()) {
+                            to = ((SearchCardHolder) holder).btnTo.getText().toString();
+                        }
+                        getPendingTaskList(currentAccount.getRoleId(), from, to);
+                    }
+                });
+                ((SearchCardHolder) holder).btnReset.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        btnFrom.setText("");
+                        btnTo.setText("");
+                        ((SearchCardHolder) holder).spinnerStatus.setSelection(0);
+                    }
+                });
+                ((SearchCardHolder) holder).spinnerStatus.setVisibility(View.GONE);
+                break;
+            case TaskModel.TASK_CARD:
+                String splitDeadline = object.getDeadline().toString();
+                ((ShowCardTaskHolder) holder).cardTask.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.content_frame,
+                                        new TaskDetailFragment
+                                                (approveList,
+                                                        roleList,
+                                                        statusList,
+                                                        dataSet.get(position).getTaskId(),
+                                                        TaskDetailFragment.MODE_PENDING)).addToBackStack(null).commit();
+
+                    }
+                });
+                ((ShowCardTaskHolder) holder).valueTaskName.setText(object.getTaskName());
+                ((ShowCardTaskHolder) holder).valueAssignee.setText(assigneeMap.get(object.getAssignee()));
+                ((ShowCardTaskHolder) holder).valueStatus.setText(statusList.get(object.getStatus()));
+                ((ShowCardTaskHolder) holder).valueDeadline.setText(splitDeadline.substring(0, 19).replace("T", "\n"));
+                break;
+        }
+
 
     }
 
@@ -111,19 +241,43 @@ public class CardTaskPendingAdapter extends RecyclerView.Adapter {
 
     }
 
-    public void getPendingTaskList(Long roleId) {
+    @Override
+    public int getItemViewType(int position) {
+
+        switch (dataSet.get(position).type) {
+            case 0:
+                return TaskModel.SEARCH_CARD;
+            case 1:
+                return TaskModel.TASK_CARD;
+        }
+        return 0;
+    }
+
+    public void getPendingTaskList(Long roleId, String from, String to) {
         RequestQueue requestQueue = SingletonRequestQueue.getInstance(mContext.getApplicationContext()).getRequestQueue();
         HashMap<String, String> headers = new HashMap<>();
         String url = "";
         switch (roleId.intValue()) {
             case ROLE_USER:
-                url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(0) + "&isClosed=false";
+                if (from == null && to == null && currentStatus == -1) {
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(0) + "&isClosed=false";
+                } else {
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(0) + "&isClosed=false" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
+                }
                 break;
             case ROLE_MANAGER:
-                url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=group_id&value=" + currentAccount.getGroupId() + "&fieldName2=approve_id&value2=" + Long.valueOf(0) + "&isClosed=false";
+                if (from == null && to == null && currentStatus == -1) {
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=group_id&value=" + currentAccount.getGroupId() + "&fieldName2=approve_id&value2=" + Long.valueOf(0) + "&isClosed=false";
+                } else {
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=group_id&value=" + currentAccount.getGroupId() + "&fieldName2=approve_id&value2=" + Long.valueOf(0) + "&isClosed=false" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
+                }
                 break;
             case ROLE_ADMIN:
-                url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=approve_id&value=" + Long.valueOf(0) + "&isClosed=false";
+                if (from == null && to == null && currentStatus == -1) {
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=approve_id&value=" + Long.valueOf(0) + "&isClosed=false";
+                } else {
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=approve_id&value=" + Long.valueOf(0) + "&isClosed=false" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
+                }
                 break;
         }
         GsonRequest<TaskList> gsonRequest = new GsonRequest<>(url, TaskList.class, headers, new Response.Listener<TaskList>() {
@@ -133,8 +287,11 @@ public class CardTaskPendingAdapter extends RecyclerView.Adapter {
                 responses.addAll(response.getTaskList());
                 List<TaskModel> taskModels = TimeUtil.convertTaskResponseToTask(responses);
                 dataSet = new ArrayList<>();
+                TaskModel temp = new TaskModel();
+                temp.setType(TaskModel.SEARCH_CARD);
+                dataSet.add(temp);
                 for (TaskModel task : taskModels) {
-                    task.setType(TaskModel.SHOW_CARD_TASK);
+                    task.setType(TaskModel.TASK_CARD);
                     dataSet.add(task);
                 }
                 assigneeMap.putAll(response.getAssigneeList());

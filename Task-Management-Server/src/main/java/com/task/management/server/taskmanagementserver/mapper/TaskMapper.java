@@ -6,6 +6,7 @@ import com.task.management.server.taskmanagementserver.model.Task;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Mapper
@@ -87,13 +88,20 @@ public interface TaskMapper {
             "</if>" +
             "isClosed = #{isClosed} " +
             "</if>" +
+            "<if test='from != null'>" +
+            "AND deadline <![CDATA[ >= ]]> #{from} " +
+            "</if>" +
+            "<if test='to != null'>" +
+            "AND deadline <![CDATA[ <= ]]> #{to} " +
+            "</if>" +
             "</script>")
     List<Task> getTasksByIdField(@Param("split") String split, @Param("fieldName") String fieldName, @Param("value") Long value,
                                  @Param("split2") String split2, @Param("fieldName2") String fieldName2, @Param("value2") Long value2,
                                  @Param("split3") String split3, @Param("fieldName3") String fieldName3, @Param("value3") Long value3,
                                  @Param("split4") String split4, @Param("fieldName4") String fieldName4, @Param("value4") Long value4,
                                  @Param("split5") String split5, @Param("fieldName5") String fieldName5, @Param("value5") Long value5,
-                                 @Param("splitClosed") String splitClosed, @Param("isClosed") Boolean isClosed);
+                                 @Param("splitClosed") String splitClosed, @Param("isClosed") Boolean isClosed,
+                                 @Param("from") String from, @Param("to") String to);
 
     @Select("SELECT id_task as taskId, " +
             "id_old_task as oldTaskId, " +
@@ -148,7 +156,7 @@ public interface TaskMapper {
     List<Task> getTasksByIdFieldAndStatus(@Param("fieldName") String fieldName, @Param("value") Long value,
                                           @Param("approveStatus") Long approveStatus);
 
-    List<Task> getUnfinishedAndUnNotifiedTasks();
+//    List<Task> getUnfinishedAndUnNotifiedTasks();
 
     @Insert("INSERT INTO task " +
             "(id_old_task, " +

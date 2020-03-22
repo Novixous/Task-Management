@@ -6,11 +6,9 @@ import java.io.Serializable;
 import java.time.Instant;
 
 public class TaskModel implements Serializable {
-    public static final int SHOW_FORM_CREATE = 0;
-    public static final int SHOW_CARD_TASK = 1;
-    public static final int SHOW_UPDATE_TASK = 2;
-    public static final int SHOW_REVIEW_TASK = 3;
-    public static final int SHOW_TASK_TO_APPROVE = 4;
+    public static final int TASK_CARD = 1;
+    public static final int SEARCH_CARD = 0;
+    public static final int SHOW_FORM_CREATE = 2;
     public int type;
 
     @SerializedName("taskId")
@@ -126,10 +124,6 @@ public class TaskModel implements Serializable {
         this.groupId = groupId;
     }
 
-
-    public static int getShowFormCreate() {
-        return SHOW_FORM_CREATE;
-    }
 
     public int getType() {
         return type;

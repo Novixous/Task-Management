@@ -10,6 +10,8 @@ import com.task.management.server.taskmanagementserver.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,14 +35,18 @@ public class TaskController {
                                                            @RequestParam(name = "split3", required = false) String split3, @RequestParam(name = "fieldName3", required = false) String fieldName3, @RequestParam(name = "value3", required = false) Long value3,
                                                            @RequestParam(name = "split4", required = false) String split4, @RequestParam(name = "fieldName4", required = false) String fieldName4, @RequestParam(name = "value4", required = false) Long value4,
                                                            @RequestParam(name = "split5", required = false) String split5, @RequestParam(name = "fieldName5", required = false) String fieldName5, @RequestParam(name = "value5", required = false) Long value5,
-                                                           @RequestParam(name = "splitClosed", required = false) String splitClosed, @RequestParam(name = "isClosed", required = false) Boolean isClosed) {
+                                                           @RequestParam(name = "splitClosed", required = false) String splitClosed, @RequestParam(name = "isClosed", required = false) Boolean isClosed,
+                                                           @RequestParam(name = "from", required = false) String from, @RequestParam(name = "to", required = false) String to) {
         HashMap<String, Object> result = new HashMap<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+
         List<TaskResponse> tasks = TimeUtil.convertTaskToTaskResponse(taskMapper.getTasksByIdField(split, fieldName, value,
                 split2, fieldName2, value2,
                 split3, fieldName3, value3,
                 split4, fieldName4, value4,
                 split5, fieldName5, value5,
-                splitClosed, isClosed));
+                splitClosed, isClosed, from, to));
         HashMap<Long, String> assignee = new HashMap<>();
         for (TaskResponse task : tasks) {
             if (!assignee.containsKey(task.getAssignee())) {

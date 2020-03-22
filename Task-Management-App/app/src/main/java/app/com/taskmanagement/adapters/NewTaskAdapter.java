@@ -191,6 +191,11 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return 2;
+    }
+
+    @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         //              Task Name if from clone
         ((TaskFormHolder) holder).valueTaskname.setText(taskModel.getTaskName() != null ? taskModel.getTaskName() : "");

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnFrom"
+            android:layout_margin="2.5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="From" />
+
+        <Button
+            android:id="@+id/btnTo"
+            android:layout_margin="2.5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="To" />
+        <Spinner
+            android:id="@+id/spinnerStatus"
+            android:layout_margin="2.5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/test" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search" />
+
+        <Button
+            android:id="@+id/btnReset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reset" />
+    </LinearLayout>
+
+
+</LinearLayout>
