@@ -20,13 +20,13 @@ import app.com.taskmanagement.model.AccountModel;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyAccountFragment extends Fragment {
+public class AccountDetailFragment extends Fragment {
     ArrayList<AccountModel> gridViewModelArrayList;
     private RecyclerView recyclerView;
 
     private HashMap<Long, String> roleList;
 
-    public MyAccountFragment() {
+    public AccountDetailFragment() {
         // Required empty public constructor
     }
 
