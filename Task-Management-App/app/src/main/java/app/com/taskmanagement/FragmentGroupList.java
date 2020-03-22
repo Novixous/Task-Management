@@ -18,7 +18,6 @@ import app.com.taskmanagement.model.Group;
 
 
 public class FragmentGroupList extends Fragment {
-    ArrayList<Group> gridViewModelArrayList;
     private RecyclerView recyclerView;
     private Button btnCreate;
 

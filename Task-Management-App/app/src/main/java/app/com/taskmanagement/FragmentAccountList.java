@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import app.com.taskmanagement.adapters.CardAccountAdapter;
 import app.com.taskmanagement.model.AccountModel;
@@ -21,6 +22,11 @@ public class FragmentAccountList extends Fragment {
     ArrayList<AccountModel> gridViewModelArrayList;
     private RecyclerView recyclerView;
     private Button btnCreate;
+    private HashMap<Long, String> roleList;
+
+    public FragmentAccountList(HashMap<Long, String> roleList) {
+        this.roleList = roleList;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,7 +40,7 @@ public class FragmentAccountList extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_list_account, container, false);
         gridViewModelArrayList = new ArrayList();
         AccountModel gridViewModel = null;
-        gridViewModel = new AccountModel(1L,"Haha",1L,1L);
+        gridViewModel = new AccountModel(1L, "Haha", 1L, 1L);
         gridViewModelArrayList.add(gridViewModel);
 
         CardAccountAdapter cardAccountAdapter = new CardAccountAdapter(gridViewModelArrayList, this.getActivity());
@@ -48,7 +54,7 @@ public class FragmentAccountList extends Fragment {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,new FragmentCreateAccount()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new FragmentCreateAccount(roleList)).commit();
                 getActivity().setTitle("Create account");
             }
         });

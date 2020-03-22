@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 currentFragment = new FragmentGroupList();
                 break;
             case 6:
-                currentFragment = new FragmentAccountList();
+                currentFragment = new FragmentAccountList(roleList);
                 break;
             default:
                 break;

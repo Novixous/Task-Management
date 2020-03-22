@@ -20,17 +20,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import app.com.taskmanagement.FragmentGroupList;
-import app.com.taskmanagement.MyTaskFragment;
 import app.com.taskmanagement.R;
 import app.com.taskmanagement.model.Group;
-import app.com.taskmanagement.model.TaskModel;
 import app.com.taskmanagement.model.request.GroupRequest;
-import app.com.taskmanagement.model.request.TaskCreateRequest;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.PreferenceUtil;
 
@@ -67,6 +62,7 @@ public class CreateGroupAdapter extends RecyclerView.Adapter {
             public void onClick(View v) {
                 String groupName = ((CreateGroupHolder) holder).txtGroupName.getText().toString();
                 String groupDescription = ((CreateGroupHolder) holder).txtDesGroup.getText().toString();
+
                 if (!groupName.isEmpty() && !groupDescription.isEmpty()) {
                     Group group = new Group();
                     group.setCreator(PreferenceUtil.getAccountFromSharedPreferences(mContext.getApplicationContext()).getAccountId());
@@ -74,7 +70,7 @@ public class CreateGroupAdapter extends RecyclerView.Adapter {
                     group.setDescription(groupDescription);
                     createGroup(group);
                 } else {
-                    Toast.makeText(mContext, "Pleas input both group name and group description", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "Please input both group name and group description", Toast.LENGTH_SHORT).show();
                 }
 
             }

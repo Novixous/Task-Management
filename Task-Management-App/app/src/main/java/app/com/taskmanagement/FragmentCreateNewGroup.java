@@ -17,7 +17,6 @@ import app.com.taskmanagement.adapters.CreateGroupAdapter;
 import app.com.taskmanagement.model.Group;
 
 public class FragmentCreateNewGroup extends Fragment {
-    ArrayList<Group> gridViewModelArrayList;
     private RecyclerView recyclerView;
 
     @Override

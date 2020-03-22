@@ -10,17 +10,15 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
-import app.com.taskmanagement.adapters.CardGroupAdapter;
 import app.com.taskmanagement.adapters.CreateAccountAdapter;
-import app.com.taskmanagement.model.AccountModel;
-import app.com.taskmanagement.model.Group;
 
 public class FragmentCreateAccount extends Fragment {
+    private HashMap<Long, String> roleList;
 
-    public FragmentCreateAccount() {
-        // Required empty public constructor
+    public FragmentCreateAccount(HashMap<Long, String> roleList) {
+        this.roleList = roleList;
     }
 
     private RecyclerView recyclerView;
@@ -37,7 +35,7 @@ public class FragmentCreateAccount extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_recycler, container, false);
 
 
-        CreateAccountAdapter createAccountAdapter = new CreateAccountAdapter(this.getActivity());
+        CreateAccountAdapter createAccountAdapter = new CreateAccountAdapter(this.getActivity(), roleList);
         recyclerView = rootView.findViewById(R.id.viewRecycler);
         StaggeredGridLayoutManager lm =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);

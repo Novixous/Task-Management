@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import app.com.taskmanagement.adapters.CreateAccountAdapter;
 import app.com.taskmanagement.model.AccountModel;
@@ -22,6 +23,8 @@ import app.com.taskmanagement.model.AccountModel;
 public class MyAccountFragment extends Fragment {
     ArrayList<AccountModel> gridViewModelArrayList;
     private RecyclerView recyclerView;
+
+    private HashMap<Long, String> roleList;
 
     public MyAccountFragment() {
         // Required empty public constructor
@@ -38,7 +41,7 @@ public class MyAccountFragment extends Fragment {
         gridViewModel = new AccountModel(null,"",null,null);
         gridViewModelArrayList.add(gridViewModel);
 
-        CreateAccountAdapter createAccountAdapter = new CreateAccountAdapter(this.getActivity());
+        CreateAccountAdapter createAccountAdapter = new CreateAccountAdapter(this.getActivity(),roleList);
         recyclerView = rootView.findViewById(R.id.viewRecycler);
         StaggeredGridLayoutManager lm =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);

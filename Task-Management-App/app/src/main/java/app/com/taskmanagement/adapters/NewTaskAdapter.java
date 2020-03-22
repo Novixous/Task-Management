@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -100,10 +99,9 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
 
 
     public static class TaskFormHolder extends RecyclerView.ViewHolder {
-        TextView valueIDtask, valueNote, valueStartdate, valueEnddate, valueOldID, valueCreator, valueReviewer, valueDateReview;
-        EditText valueDescription, valueTaskname, valueReview, valueResult;
-        Spinner valueStatus, valueAssignee, valueGroup;
-        NumberPicker valueMark;
+        TextView valueIDtask, valueOldID, valueCreator;
+        EditText valueDescription, valueTaskname;
+        Spinner valueAssignee, valueGroup;
         Button valueDateDeadline, valueTimeDeadline;
         Button btnCreate;
 
@@ -121,20 +119,6 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
             this.btnCreate = (Button) itemView.findViewById(R.id.btnCreateTask);
         }
     }
-
-//    @Override
-//    public int getItemViewType(int position) {
-//
-//        switch (dataSet.get(position).type) {
-//            case 0:
-//                return TaskModel.SHOW_FORM_CREATE;
-//            case 1:
-//                return TaskModel.SHOW_CARD_TASK;
-//            case 2:
-//                return TaskModel.SHOW_UPDATE_TASK;
-//        }
-//        return 0;
-//    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

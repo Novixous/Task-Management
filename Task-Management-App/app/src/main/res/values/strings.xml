@@ -7,4 +7,8 @@
     <string name="Close">Close</string>
     <string name="BASE_URL">http://14.187.106.149:8080</string>
     <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+    <string-array name="activeArray">
+        <item>Active</item>
+        <item>Deactive</item>
+    </string-array>
 </resources>
