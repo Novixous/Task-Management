@@ -39,6 +39,21 @@ public interface AccountMapper {
             "FROM account where idaccount = #{id}")
     Account getAccountById(@Param("id") Long id);
 
+    @Select("SELECT idaccount as accountId, " +
+            "username as username, " +
+//            "password as password, " +
+            "firstname as firstName, " +
+            "lastname as lastName, " +
+            "fullname as fullName, " +
+            "phone as phone, " +
+            "email as email, " +
+            "address as address, " +
+            "role_id as roleId, " +
+            "group_id as groupId, " +
+            "deactivated as deactivated " +
+            "FROM account where username = #{username}")
+    Account getAccountByUsername(@Param("username") String username);
+
     @Select({
             "<script>" +
                     "SELECT idaccount as accountId, " +
@@ -164,7 +179,6 @@ public interface AccountMapper {
 
     @Select("SELECT idaccount FROM account WHERE group_id = #{groupId} AND role_id = 1")
     Long getManagerIdOfGroupByGroupId(@Param("groupId") Long groupId);
-
 
 
 }

@@ -58,12 +58,13 @@ public class NotificationService {
     }
 
     public String sendsPnsToDevices(NotificationRequestDto notificationRequestDto, List<String> tokens) {
+        if(tokens.size() == 0) return "None to send";
         MulticastMessage message = MulticastMessage.builder()
                 .setNotification(new Notification(notificationRequestDto.getTitle(), notificationRequestDto.getBody()))
                 .putData("content", notificationRequestDto.getTitle())
                 .putData("body", notificationRequestDto.getBody())
                 .putData("taskId", notificationRequestDto.getTaskToBeNotifiedDTO().getTaskId().toString())
-                .putData("oldTaskId", Optional.ofNullable(notificationRequestDto.getTaskToBeNotifiedDTO().getOldTaskId().toString()).orElse(""))
+                .putData("oldTaskId", notificationRequestDto.getTaskToBeNotifiedDTO().getOldTaskId() != null ? notificationRequestDto.getTaskToBeNotifiedDTO().getOldTaskId().toString() : "")
                 .putData("taskName", notificationRequestDto.getTaskToBeNotifiedDTO().getTaskName())
                 .putData("deadLine", notificationRequestDto.getTaskToBeNotifiedDTO().getDeadline().toString())
                 .addAllTokens(tokens)

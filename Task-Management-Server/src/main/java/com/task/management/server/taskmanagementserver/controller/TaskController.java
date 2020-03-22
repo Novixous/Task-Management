@@ -1,16 +1,23 @@
 package com.task.management.server.taskmanagementserver.controller;
 
+import com.task.management.server.taskmanagementserver.dto.NotificationRequestDto;
+import com.task.management.server.taskmanagementserver.dto.TaskToBeNotifiedDTO;
 import com.task.management.server.taskmanagementserver.mapper.AccountMapper;
 import com.task.management.server.taskmanagementserver.mapper.TaskMapper;
 import com.task.management.server.taskmanagementserver.model.Account;
 import com.task.management.server.taskmanagementserver.model.Task;
 import com.task.management.server.taskmanagementserver.model.request.TaskRequest;
 import com.task.management.server.taskmanagementserver.model.response.TaskResponse;
+import com.task.management.server.taskmanagementserver.scheduler.NotificationScheduledTasks;
+import com.task.management.server.taskmanagementserver.service.NotificationService;
 import com.task.management.server.taskmanagementserver.util.TimeUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,13 +27,16 @@ import java.util.List;
 @RestController
 @RequestMapping("task")
 public class TaskController {
-
+    private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM:HH:mm:ss");
     private final TaskMapper taskMapper;
     private final AccountMapper accountMapper;
+    private final NotificationService notificationService;
 
-    public TaskController(TaskMapper taskMapper, AccountMapper accountMapper) {
+    public TaskController(TaskMapper taskMapper, AccountMapper accountMapper, NotificationService notificationService) {
         this.taskMapper = taskMapper;
         this.accountMapper = accountMapper;
+        this.notificationService = notificationService;
     }
 
     @GetMapping("/getTaskListByFieldId")
@@ -82,5 +92,8 @@ public class TaskController {
         tasks.add(taskMapper.getTaskByTaskId(taskId));
         return TimeUtil.convertTaskToTaskResponse(tasks).get(0);
     }
+
+
+
 
 }

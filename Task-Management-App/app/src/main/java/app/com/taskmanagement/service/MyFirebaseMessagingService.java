@@ -1,12 +1,22 @@
 package app.com.taskmanagement.service;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import app.com.taskmanagement.MainActivity;
+import app.com.taskmanagement.R;
 import app.com.taskmanagement.util.PreferenceUtil;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -54,9 +64,30 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //        // Also if you intend on generating your own notifications as a result of a received FCM
 //        // message, here is where that should be initiated. See sendNotification method below.
 
+        showNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+
     }
 
-
+    void showNotification(String title, String message) {
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("YOUR_CHANNEL_ID",
+                    "YOUR_CHANNEL_NAME",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setDescription("YOUR_NOTIFICATION_CHANNEL_DISCRIPTION");
+            mNotificationManager.createNotificationChannel(channel);
+        }
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "YOUR_CHANNEL_ID")
+                .setSmallIcon(R.mipmap.ic_launcher) // notification icon
+                .setContentTitle(title) // title for notification
+                .setContentText(message)// message for notification
+                .setAutoCancel(true); // clear notification after click
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(pi);
+        mNotificationManager.notify(0, mBuilder.build());
+    }
 
     private void handleNow() {
         Log.d(TAG, "Short lived task is done.");

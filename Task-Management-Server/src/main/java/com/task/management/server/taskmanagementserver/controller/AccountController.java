@@ -37,6 +37,21 @@ public class AccountController {
     }
 
     /**
+     * @param username
+     * @return
+     */
+    @GetMapping("/getAccountByUsername")
+    public HashMap<String, Object> checkUsernameExisted(@RequestParam("username") String username) {
+        HashMap<String, Object> result = new HashMap<>();
+        Account account = accountMapper.getAccountByUsername(username);
+        if (account != null) {
+            result.put("errorMessage", null);
+            result.put("data", account);
+        }
+        return result;
+    }
+
+    /**
      * getAccounts by field name and field value
      *
      * @param fieldName
