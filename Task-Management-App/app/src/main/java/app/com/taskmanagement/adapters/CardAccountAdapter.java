@@ -22,6 +22,7 @@ public class CardAccountAdapter extends RecyclerView.Adapter {
     private OnItemClicked onItemClickedListener;
 
     public CardAccountAdapter(Context mContext, Fragment fragment) {
+        this.dataSet = new ArrayList<>();
         this.fragment = fragment;
         this.mContext = mContext;
     }
