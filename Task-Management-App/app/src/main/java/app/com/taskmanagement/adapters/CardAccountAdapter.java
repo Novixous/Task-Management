@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -16,11 +17,25 @@ import app.com.taskmanagement.model.AccountModel;
 
 public class CardAccountAdapter extends RecyclerView.Adapter {
     private ArrayList<AccountModel> dataSet;
+    Fragment fragment;
     Context mContext;
+    private OnItemClicked onItemClickedListener;
 
-    public CardAccountAdapter(ArrayList<AccountModel> dataSet, Context mContext) {
-        this.dataSet = dataSet;
+    public CardAccountAdapter(Context mContext, Fragment fragment) {
+        this.fragment = fragment;
         this.mContext = mContext;
+    }
+
+    public AccountModel getItem(int position) {
+        return dataSet.get(position);
+    }
+
+    public interface OnItemClicked {
+        void onClicked(int position);
+    }
+
+    public void setOnItemClickedListener(OnItemClicked onItemClickedListener) {
+        this.onItemClickedListener = onItemClickedListener;
     }
 
     public static class CardAccountHolder extends RecyclerView.ViewHolder {

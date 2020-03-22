@@ -19,7 +19,6 @@ import app.com.taskmanagement.model.AccountModel;
 
 
 public class FragmentAccountList extends Fragment {
-    ArrayList<AccountModel> gridViewModelArrayList;
     private RecyclerView recyclerView;
     private Button btnCreate;
     private HashMap<Long, String> roleList;
@@ -38,12 +37,18 @@ public class FragmentAccountList extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_list_account, container, false);
-        gridViewModelArrayList = new ArrayList();
-        AccountModel gridViewModel = null;
-        gridViewModel = new AccountModel(1L, "Haha", 1L, 1L);
-        gridViewModelArrayList.add(gridViewModel);
+        getActivity().setTitle("Account List");
 
-        CardAccountAdapter cardAccountAdapter = new CardAccountAdapter(gridViewModelArrayList, this.getActivity());
+        final CardAccountAdapter cardAccountAdapter = new CardAccountAdapter(this.getActivity(), this);
+        cardAccountAdapter.setOnItemClickedListener(new CardAccountAdapter.OnItemClicked() {
+            @Override
+            public void onClicked(int position) {
+                AccountModel accountModel = cardAccountAdapter.getItem(position);
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new AccountDetailFragment(accountModel))
+                        .addToBackStack(null).commit();
+                getActivity().setTitle("Group Detail");
+            }
+        });
         recyclerView = rootView.findViewById(R.id.accountlist_recycler);
         StaggeredGridLayoutManager lm =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);

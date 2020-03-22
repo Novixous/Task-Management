@@ -42,12 +42,8 @@ import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.SingletonRequestQueue;
 
 public class CreateAccountAdapter extends RecyclerView.Adapter {
-    public static final int MODE_MYACCOUNT = 0;
-    public static final int MODE_ACCOUNTDETAIL = 1;
-    public static final int MODE_CREATEACCOUNT = 2;
     private AccountModel accountModel;
     Context mContext;
-    int total_types;
     private Boolean dataLoaded;
     private List<Group> groupList;
     private HashMap<Long, String> roleList;
@@ -65,11 +61,12 @@ public class CreateAccountAdapter extends RecyclerView.Adapter {
 
     Integer[] not_show_on_create = {
             R.id.titleID,
-            R.id.txtId,
+            R.id.edtId,
             R.id.txtChangePwd,
             R.id.lineID,
             R.id.titleEmail,
-            R.id.txtEmail
+            R.id.edtEmail,
+            R.id.lineEmail
     };
 
     @NonNull
@@ -98,8 +95,8 @@ public class CreateAccountAdapter extends RecyclerView.Adapter {
         if (listMembers == null) {
             ArrayAdapter<String> groupAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, spinnerGroupItems);
             groupAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            ((CreateAccountHolder) holder).txtGroup.setAdapter(groupAdapter);
-            ((CreateAccountHolder) holder).txtGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            ((CreateAccountHolder) holder).spinnerGroup.setAdapter(groupAdapter);
+            ((CreateAccountHolder) holder).spinnerGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     accountModel.setGroupId(groupList.get(position).getGroupId());
@@ -115,11 +112,11 @@ public class CreateAccountAdapter extends RecyclerView.Adapter {
         final Collection<String> roleValue = roleList.values();
         ArrayList<String> listOfRole = new ArrayList<String>(roleValue);
         ArrayAdapter<String> roleAdapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, listOfRole);
-        ((CreateAccountHolder) holder).txtRole.setAdapter(roleAdapter);
-        ((CreateAccountHolder) holder).txtRole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        ((CreateAccountHolder) holder).spinnerRole.setAdapter(roleAdapter);
+        ((CreateAccountHolder) holder).spinnerRole.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String value = ((CreateAccountHolder) holder).txtRole.getItemAtPosition(position).toString();
+                String value = ((CreateAccountHolder) holder).spinnerRole.getItemAtPosition(position).toString();
                 BiMap<Long, String> statusBiMap = HashBiMap.create(roleList);
                 currentRole = statusBiMap.inverse().get(value).intValue();
             }
@@ -130,16 +127,16 @@ public class CreateAccountAdapter extends RecyclerView.Adapter {
             }
         });
         //Deactivate
-        ((CreateAccountHolder) holder).txtActive.setSelection(0);
+        ((CreateAccountHolder) holder).spinnerActive.setSelection(0);
 
         if (accountModel != null) {
             ((CreateAccountHolder) holder).btnAccountCreate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String fullname = ((CreateAccountHolder) holder).txtFullname.getText().toString();
-                    String username = ((CreateAccountHolder) holder).txtUsername.getText().toString().toLowerCase();
+                    String fullname = ((CreateAccountHolder) holder).edtFullname.getText().toString();
+                    String username = ((CreateAccountHolder) holder).edtUsername.getText().toString().toLowerCase();
                     String password = ((CreateAccountHolder) holder).edtPassword.getText().toString();
-                    String phone = ((CreateAccountHolder) holder).txtPhone.getText().toString();
+                    String phone = ((CreateAccountHolder) holder).edtPhone.getText().toString();
                     String mail = username + "@companydomain.com";
                     if (!fullname.isEmpty()
                             && !username.isEmpty()
@@ -167,20 +164,20 @@ public class CreateAccountAdapter extends RecyclerView.Adapter {
     }
 
     public static class CreateAccountHolder extends RecyclerView.ViewHolder {
-        TextView txtFullname, txtUsername, txtEmail, txtPhone, edtPassword;
-        Spinner txtRole, txtActive, txtGroup;
+        TextView edtFullname, edtUsername, edtEmail, edtPhone, edtPassword;
+        Spinner spinnerRole, spinnerActive, spinnerGroup;
         Button btnAccountCreate;
 
         public CreateAccountHolder(@NonNull View itemView) {
             super(itemView);
-            txtFullname = (EditText) itemView.findViewById(R.id.txtFullname);
+            edtFullname = (EditText) itemView.findViewById(R.id.edtFullname);
             edtPassword = (EditText) itemView.findViewById(R.id.edtPassword);
-            txtUsername = (EditText) itemView.findViewById(R.id.txtUsername);
-            txtEmail = (EditText) itemView.findViewById(R.id.txtEmail);
-            txtPhone = (EditText) itemView.findViewById(R.id.txtPhone);
-            txtRole = (Spinner) itemView.findViewById(R.id.txtRole);
-            txtActive = (Spinner) itemView.findViewById(R.id.txtActive);
-            txtGroup = (Spinner) itemView.findViewById(R.id.txtGroup);
+            edtUsername = (EditText) itemView.findViewById(R.id.edtUsername);
+            edtEmail = (EditText) itemView.findViewById(R.id.edtEmail);
+            edtPhone = (EditText) itemView.findViewById(R.id.edtPhone);
+            spinnerRole = (Spinner) itemView.findViewById(R.id.spinnerRole);
+            spinnerActive = (Spinner) itemView.findViewById(R.id.spinnerActive);
+            spinnerGroup = (Spinner) itemView.findViewById(R.id.spinnerGroup);
             btnAccountCreate = (Button) itemView.findViewById(R.id.btnAccountCreate);
         }
     }

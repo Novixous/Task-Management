@@ -49,7 +49,6 @@ public class GroupDetailFragment extends Fragment {
         edtGroupDescription.setText(group.getDescription());
         getGroupCreatorName(group.getCreator());
 
-
         return rootView;
     }
 
