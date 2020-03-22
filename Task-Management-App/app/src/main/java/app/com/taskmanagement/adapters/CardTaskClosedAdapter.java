@@ -43,7 +43,9 @@ import app.com.taskmanagement.util.PreferenceUtil;
 import app.com.taskmanagement.util.SingletonRequestQueue;
 import app.com.taskmanagement.util.TimeUtil;
 
-public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
+public class CardTaskClosedAdapter extends RecyclerView.Adapter {
+
+
     public static final int ROLE_USER = 0;
     public static final int ROLE_MANAGER = 1;
     public static final int ROLE_ADMIN = 2;
@@ -58,7 +60,7 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
     private AccountModel currentAccount;
     private int currentStatus;
 
-    public CardTaskFinishedAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
+    public CardTaskClosedAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
         this.approveList = approveList;
         this.roleList = roleList;
         this.statusList = statusList;
@@ -106,10 +108,10 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
         switch (viewType) {
             case TaskModel.TASK_CARD:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_card_task, parent, false);
-                return new ShowCardTaskHolder(view);
+                return new CardTaskFinishedAdapter.ShowCardTaskHolder(view);
             case TaskModel.SEARCH_CARD:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_card, parent, false);
-                return new SearchCardHolder(view);
+                return new CardTaskFinishedAdapter.SearchCardHolder(view);
         }
         return null;
     }
@@ -119,8 +121,8 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
         final TaskModel object = dataSet.get(position);
         switch (object.type) {
             case TaskModel.SEARCH_CARD:
-                final Button btnFrom = ((SearchCardHolder) holder).btnFrom;
-                final Button btnTo = ((SearchCardHolder) holder).btnTo;
+                final Button btnFrom = ((CardTaskFinishedAdapter.SearchCardHolder) holder).btnFrom;
+                final Button btnTo = ((CardTaskFinishedAdapter.SearchCardHolder) holder).btnTo;
                 final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 final Calendar newCalendar = Calendar.getInstance();
                 final DatePickerDialog pickDateFrom = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
@@ -135,7 +137,6 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onClick(View v) {
                         pickDateFrom.show();
-
                     }
                 });
                 final DatePickerDialog pickDateTo = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
@@ -150,24 +151,20 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onClick(View v) {
                         pickDateTo.show();
-
                     }
                 });
                 HashMap<Long, String> temp = new HashMap<>();
                 temp.put(Long.valueOf(-1), "None");
                 temp.putAll(statusList);
-                temp.remove(Long.valueOf(0));
-                temp.remove(Long.valueOf(1));
-                temp.remove(Long.valueOf(4));
                 final Collection<String> statusValues = temp.values();
                 ArrayList<String> listOfStatus = new ArrayList<String>(statusValues);
                 ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, listOfStatus);
-                ((SearchCardHolder) holder).spinnerStatus.setAdapter(statusAdapter);
-                ((SearchCardHolder) holder).spinnerStatus.setSelection(listOfStatus.indexOf(temp.get(Long.valueOf(currentStatus))));
-                ((SearchCardHolder) holder).spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                ((CardTaskFinishedAdapter.SearchCardHolder) holder).spinnerStatus.setAdapter(statusAdapter);
+                ((CardTaskFinishedAdapter.SearchCardHolder) holder).spinnerStatus.setSelection(listOfStatus.indexOf(temp.get(Long.valueOf(currentStatus))));
+                ((CardTaskFinishedAdapter.SearchCardHolder) holder).spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        String value = ((SearchCardHolder) holder).spinnerStatus.getItemAtPosition(position).toString();
+                        String value = ((CardTaskFinishedAdapter.SearchCardHolder) holder).spinnerStatus.getItemAtPosition(position).toString();
                         if (!value.equals("None")) {
                             BiMap<Long, String> statusBiMap = HashBiMap.create(statusList);
                             currentStatus = statusBiMap.inverse().get(value).intValue();
@@ -181,32 +178,32 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
 
                     }
                 });
-                ((SearchCardHolder) holder).btnSearch.setOnClickListener(new View.OnClickListener() {
+                ((CardTaskFinishedAdapter.SearchCardHolder) holder).btnSearch.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String from = null;
                         String to = null;
-                        if (!((SearchCardHolder) holder).btnFrom.getText().toString().isEmpty()) {
-                            from = ((SearchCardHolder) holder).btnFrom.getText().toString();
+                        if (!((CardTaskFinishedAdapter.SearchCardHolder) holder).btnFrom.getText().toString().isEmpty()) {
+                            from = ((CardTaskFinishedAdapter.SearchCardHolder) holder).btnFrom.getText().toString();
                         }
-                        if (!((SearchCardHolder) holder).btnTo.getText().toString().isEmpty()) {
-                            to = ((SearchCardHolder) holder).btnTo.getText().toString();
+                        if (!((CardTaskFinishedAdapter.SearchCardHolder) holder).btnTo.getText().toString().isEmpty()) {
+                            to = ((CardTaskFinishedAdapter.SearchCardHolder) holder).btnTo.getText().toString();
                         }
                         getFinishedTaskList(currentAccount.getRoleId(), from, to);
                     }
                 });
-                ((SearchCardHolder) holder).btnReset.setOnClickListener(new View.OnClickListener() {
+                ((CardTaskFinishedAdapter.SearchCardHolder) holder).btnReset.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         btnFrom.setText("");
                         btnTo.setText("");
-                        ((SearchCardHolder) holder).spinnerStatus.setSelection(0);
+                        ((CardTaskFinishedAdapter.SearchCardHolder) holder).spinnerStatus.setSelection(0);
                     }
                 });
                 break;
             case TaskModel.TASK_CARD:
                 String splitDeadline = object.getDeadline().toString();
-                ((ShowCardTaskHolder) holder).cardTask.setOnClickListener(new View.OnClickListener() {
+                ((CardTaskFinishedAdapter.ShowCardTaskHolder) holder).cardTask.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction()
@@ -216,14 +213,14 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
                                                         roleList,
                                                         statusList,
                                                         dataSet.get(position).getTaskId(),
-                                                        TaskDetailFragment.MODE_FINISHED)).addToBackStack(null).commit();
+                                                        TaskDetailFragment.MODE_CLOSED)).addToBackStack(null).commit();
 
                     }
                 });
-                ((ShowCardTaskHolder) holder).valueTaskName.setText(object.getTaskName());
-                ((ShowCardTaskHolder) holder).valueAssignee.setText(assigneeMap.get(object.getAssignee()));
-                ((ShowCardTaskHolder) holder).valueStatus.setText(statusList.get(object.getStatus()));
-                ((ShowCardTaskHolder) holder).valueDeadline.setText(splitDeadline.substring(0, 19).replace("T", "\n"));
+                ((CardTaskFinishedAdapter.ShowCardTaskHolder) holder).valueTaskName.setText(object.getTaskName());
+                ((CardTaskFinishedAdapter.ShowCardTaskHolder) holder).valueAssignee.setText(assigneeMap.get(object.getAssignee()));
+                ((CardTaskFinishedAdapter.ShowCardTaskHolder) holder).valueStatus.setText(statusList.get(object.getStatus()));
+                ((CardTaskFinishedAdapter.ShowCardTaskHolder) holder).valueDeadline.setText(splitDeadline.substring(0, 19).replace("T", "\n"));
                 break;
         }
     }
@@ -253,29 +250,29 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
         switch (roleId.intValue()) {
             case ROLE_USER:
                 if (from == null && to == null && currentStatus == -1) {
-                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(2) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(3) + "&splitClosed=)and&isClosed=false";
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&isClosed=true";
                 } else if (currentStatus == -1) {
-                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(2) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(3) + "&splitClosed=)and&isClosed=false" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&isClosed=true" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
                 } else {
-                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&fieldName3=status_id&value3=" + Long.valueOf(currentStatus) + "&isClosed=false" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&isClosed=true" + "&fieldName2=status_id&value2=" + Long.valueOf(currentStatus) + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
                 }
                 break;
             case ROLE_MANAGER:
                 if (from == null && to == null && currentStatus == -1) {
-                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=group_id&value=" + currentAccount.getGroupId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(2) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(3) + "&splitClosed=)and&isClosed=false";
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=group_id&value=" + currentAccount.getGroupId() + "&isClosed=true";
                 } else if (currentStatus == -1) {
-                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=group_id&value=" + currentAccount.getGroupId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(2) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(3) + "&splitClosed=)and&isClosed=false" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=group_id&value=" + currentAccount.getGroupId() + "&isClosed=true" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
                 } else {
-                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=group_id&value=" + currentAccount.getGroupId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&fieldName3=status_id&value3=" + Long.valueOf(currentStatus) + "&isClosed=false" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=group_id&value=" + currentAccount.getGroupId() + "&isClosed=true" + "&fieldName2=status_id&value2=" + Long.valueOf(currentStatus) + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
                 }
                 break;
             case ROLE_ADMIN:
                 if (from == null && to == null && currentStatus == -1) {
-                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=approve_id&value=" + Long.valueOf(1) + "&split2=and(&fieldName2=status_id&value2=" + Long.valueOf(2) + "&split3=or&fieldName3=status_id&value3=" + Long.valueOf(3) + "&splitClosed=)and&isClosed=false";
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?splitClosed=&isClosed=true";
                 } else if (currentStatus == -1) {
-                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=approve_id&value=" + Long.valueOf(1) + "&split2=and(&fieldName2=status_id&value2=" + Long.valueOf(2) + "&split3=or&fieldName3=status_id&value3=" + Long.valueOf(3) + "&splitClosed=)and&isClosed=false" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?splitClosed=&isClosed=true" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
                 } else {
-                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=approve_id&value=" + Long.valueOf(1) + "&fieldName2=status_id&value2=" + Long.valueOf(currentStatus) + "&isClosed=false" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=status_id&value=" + Long.valueOf(currentStatus) + "&isClosed=true" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
                 }
                 break;
         }
@@ -305,5 +302,4 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
         });
         requestQueue.add(gsonRequest);
     }
-
 }

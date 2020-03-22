@@ -38,7 +38,6 @@ public class UserTaskTabFragment extends Fragment {
 
     public static final String ARG_OBJECT = "object";
     public String tabTitle;
-    public ArrayList<TaskResponse> taskList = new ArrayList<>();
     HashMap<Long, String> approveList = new HashMap<>();
     HashMap<Long, String> roleList = new HashMap<>();
     HashMap<Long, String> statusList = new HashMap<>();
@@ -60,10 +59,6 @@ public class UserTaskTabFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Bundle args = getArguments();
-//        ((TextView) view.findViewById(R.id.text1))
-//                .setText(Integer.toString(args.getInt(ARG_OBJECT)));
-        TaskModel gridViewModel;
         RecyclerView.Adapter cardTaskAdapter;
         StaggeredGridLayoutManager lm;
         switch (tabTitle) {
@@ -90,36 +85,7 @@ public class UserTaskTabFragment extends Fragment {
                 recyclerView.setLayoutManager(lm);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(cardTaskAdapter);
-                getTaskList("assignee", PreferenceUtil.getAccountFromSharedPreferences(getActivity()).getAccountId());
                 break;
         }
-    }
-
-    private void getTaskList(String fieldName, Long value) {
-        taskList.clear();
-        RequestQueue mRequestQueue = SingletonRequestQueue.getInstance(getActivity().getApplicationContext()).getRequestQueue();
-        String url = String.format(getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=%s&value=%d", fieldName, value);
-
-        HashMap<String, String> headers = new HashMap<>();
-        headers.put("Content-Type", "application/x-www-form-urlencoded; charset=utf-8");
-
-        GsonRequest<TaskList> gsonRequest = new GsonRequest<>(url, TaskList.class, headers, new Response.Listener<TaskList>() {
-            @Override
-            public void onResponse(TaskList response) {
-                taskList.addAll(response.getTaskList());
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                if (error instanceof NetworkError) {
-                    Toast.makeText(getActivity().getApplicationContext(), "No network available", Toast.LENGTH_LONG).show();
-                } else {
-                    if (getContext() != null)
-                        Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        mRequestQueue.add(gsonRequest);
     }
 }

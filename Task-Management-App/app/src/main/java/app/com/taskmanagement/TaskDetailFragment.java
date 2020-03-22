@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import app.com.taskmanagement.adapters.DetailTaskClosedAdapter;
 import app.com.taskmanagement.adapters.DetailTaskFinishedAdapter;
 import app.com.taskmanagement.adapters.DetailTaskPendingAdapter;
 import app.com.taskmanagement.adapters.DetailTodoAdapter;
@@ -28,6 +29,7 @@ public class TaskDetailFragment extends Fragment {
     public static final int MODE_PENDING = 0;
     public static final int MODE_TODO = 1;
     public static final int MODE_FINISHED = 2;
+    public static final int MODE_CLOSED = 3;
 
     private ArrayList<TaskModel> gridViewModelArrayList;
     private HashMap<Long, String> approveList;
@@ -66,6 +68,9 @@ public class TaskDetailFragment extends Fragment {
                 break;
             case MODE_FINISHED:
                 detailTaskAdapter = new DetailTaskFinishedAdapter(this.getActivity(), taskId, approveList, roleList, statusList);
+                break;
+            case MODE_CLOSED:
+                detailTaskAdapter = new DetailTaskClosedAdapter(this.getActivity(), taskId, approveList, roleList, statusList);
                 break;
         }
         recyclerView = rootView.findViewById(R.id.viewRecycler);

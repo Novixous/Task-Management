@@ -30,7 +30,7 @@ public class TaskController {
     }
 
     @GetMapping("/getTaskListByFieldId")
-    public HashMap<String, Object> getTaskListByAssigneeId(@RequestParam(name = "split", required = false) String split, @RequestParam("fieldName") String fieldName, @RequestParam("value") Long value,
+    public HashMap<String, Object> getTaskListByAssigneeId(@RequestParam(name = "split", required = false) String split, @RequestParam(name = "fieldName", required = false) String fieldName, @RequestParam(name = "value", required = false) Long value,
                                                            @RequestParam(name = "split2", required = false) String split2, @RequestParam(name = "fieldName2", required = false) String fieldName2, @RequestParam(name = "value2", required = false) Long value2,
                                                            @RequestParam(name = "split3", required = false) String split3, @RequestParam(name = "fieldName3", required = false) String fieldName3, @RequestParam(name = "value3", required = false) Long value3,
                                                            @RequestParam(name = "split4", required = false) String split4, @RequestParam(name = "fieldName4", required = false) String fieldName4, @RequestParam(name = "value4", required = false) Long value4,

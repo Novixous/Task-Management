@@ -97,12 +97,16 @@ public class MainActivity extends AppCompatActivity {
                 currentFragment = new SettingsFragment();
                 break;
             case 4:
+                deleteTokenFromServer();
                 break;
             case 5:
                 currentFragment = new FragmentGroupList();
                 break;
             case 6:
                 currentFragment = new FragmentAccountList(roleList);
+                break;
+            case 7:
+                currentFragment = new ClosedTaskListFragment("Archived tasks", approveList, roleList, statusList);
                 break;
             default:
                 break;
@@ -156,12 +160,13 @@ public class MainActivity extends AppCompatActivity {
             case "Settings":
                 return 3;
             case "Logout":
-                deleteTokenFromServer();
                 return 4;
             case "Group List":
                 return 5;
             case "Account List":
                 return 6;
+            case "Archived":
+                return 7;
             default:
                 return -1;
         }

@@ -38,11 +38,13 @@ public interface TaskMapper {
             "edited_by as editedBy, " +
             "edited_at as editedAt, " +
             "isClosed as isClosed " +
-            "FROM task WHERE " +
+            "FROM task " +
             "<if test='split != null'>" +
             " ${split} " +
-            "</if>"+
-            "${fieldName} = #{value} " +
+            "</if>" +
+            "<if test='fieldName != null and value != null'>" +
+            "WHERE ${fieldName} = #{value} " +
+            "</if>" +
             "<if test='fieldName2 != null and value2 != null'>" +
             "<if test='split2 != null'>" +
             " ${split2} " +
@@ -80,6 +82,9 @@ public interface TaskMapper {
             "${fieldName5} = #{value5} " +
             "</if>" +
             "<if test='isClosed != null'>" +
+            "<if test='fieldName == null'>" +
+            "WHERE " +
+            "</if>" +
             "<if test='splitClosed != null'>" +
             " ${splitClosed} " +
             "</if>" +

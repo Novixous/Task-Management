@@ -142,7 +142,6 @@ public class CardTaskPendingAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onClick(View v) {
                         pickDateFrom.show();
-                        pickDateFrom.getDatePicker().setMinDate(System.currentTimeMillis());
                     }
                 });
                 final DatePickerDialog pickDateTo = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
@@ -157,7 +156,6 @@ public class CardTaskPendingAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onClick(View v) {
                         pickDateTo.show();
-                        pickDateTo.getDatePicker().setMinDate(System.currentTimeMillis());
                     }
                 });
                 HashMap<Long, String> temp = new HashMap<>();
