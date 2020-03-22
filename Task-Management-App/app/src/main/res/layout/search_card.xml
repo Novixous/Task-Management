@@ -12,23 +12,23 @@
 
         <Button
             android:id="@+id/btnFrom"
-            android:layout_margin="2.5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="2.5dp"
             android:hint="From" />
 
         <Button
             android:id="@+id/btnTo"
-            android:layout_margin="2.5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="2.5dp"
             android:hint="To" />
+
         <Spinner
             android:id="@+id/spinnerStatus"
-            android:layout_margin="2.5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:entries="@array/test" />
+            android:layout_margin="2.5dp" />
     </LinearLayout>
 
     <LinearLayout
