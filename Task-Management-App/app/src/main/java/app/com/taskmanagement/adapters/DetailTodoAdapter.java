@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,11 +71,11 @@ public class DetailTodoAdapter extends RecyclerView.Adapter {
     public static final int ROLE_ADMIN = 2;
     private int currentStatus;
 
-    private static final Integer[] ID_NOT_SHOW_DETAIL_USER = {
+
+    private static final Integer[] ID_NOT_SHOW_GENERAL = {
+            R.id.btnClose,
             R.id.btnApprove,
             R.id.btnDecline,
-    };
-    private static final Integer[] ID_NOT_SHOW_GENERAL = {
             R.id.btnCreateTask,
             R.id.btnCloneTask,
             R.id.txtReviewer,
@@ -99,6 +100,8 @@ public class DetailTodoAdapter extends RecyclerView.Adapter {
 
     private AccountModel creator;
     private AccountModel assignee;
+    private AccountModel reviewer;
+    private String lastModifiedName;
     private HashMap<Long, String> approveList;
     private HashMap<Long, String> roleList;
     private HashMap<Long, String> statusList;
@@ -134,6 +137,16 @@ public class DetailTodoAdapter extends RecyclerView.Adapter {
         ImageButton btnImg;
         ImageView valueImgResolution;
         EditText valueResult;
+        TextView txtReviewer;
+        TextView valueReviewer;
+        TextView txtMark;
+        NumberPicker valueMark;
+        TextView txtDateReview;
+        TextView valueDateReview;
+        TextView txtReview;
+        EditText valueReview;
+        TextView valueModifiedBy, valueModifiedAt;
+        View lineReviewer, lineConfirm, lineReview;
 
         Button btnUpdate, btnApprove, btnDecline;
 
@@ -156,7 +169,20 @@ public class DetailTodoAdapter extends RecyclerView.Adapter {
             this.btnImg = (ImageButton) itemView.findViewById(R.id.btnImg);
             this.valueImgResolution = (ImageView) itemView.findViewById(R.id.valueImgResolution);
             this.valueResult = (EditText) itemView.findViewById(R.id.valueResult);
+            this.txtReviewer = (TextView) itemView.findViewById(R.id.txtReviewer);
+            this.valueReviewer = (TextView) itemView.findViewById(R.id.valueReviewer);
+            this.txtMark = (TextView) itemView.findViewById(R.id.txtMark);
+            this.valueMark = (NumberPicker) itemView.findViewById(R.id.valueMark);
+            this.txtDateReview = (TextView) itemView.findViewById(R.id.txtDateReview);
+            this.valueDateReview = (TextView) itemView.findViewById(R.id.valueDateReview);
+            this.txtReview = (TextView) itemView.findViewById(R.id.txtReview);
+            this.valueReview = (EditText) itemView.findViewById(R.id.valueReview);
+            this.valueModifiedBy = (TextView) itemView.findViewById(R.id.valueModifiedBy);
+            this.valueModifiedAt = (TextView) itemView.findViewById(R.id.valueModifedAt);
 
+            this.lineReviewer = (View) itemView.findViewById(R.id.lineReviewer);
+            this.lineConfirm = (View) itemView.findViewById(R.id.lineConfirm);
+            this.lineReview = (View) itemView.findViewById(R.id.lineReview);
 
             this.btnUpdate = (Button) itemView.findViewById(R.id.btnUpdateTask);
             this.btnApprove = (Button) itemView.findViewById(R.id.btnApprove);
@@ -176,13 +202,13 @@ public class DetailTodoAdapter extends RecyclerView.Adapter {
         }
         switch (currentAccount.getRoleId().intValue()) {
             case ROLE_USER:
-                for (int i = 0; i < ID_NOT_SHOW_DETAIL_USER.length; i++) {
-                    view.findViewById(ID_NOT_SHOW_DETAIL_USER[i]).setVisibility(View.GONE);
-                }
+
                 break;
             case ROLE_MANAGER:
+
                 break;
             case ROLE_ADMIN:
+
                 break;
         }
         return new TaskFormHolder(view);
@@ -210,18 +236,25 @@ public class DetailTodoAdapter extends RecyclerView.Adapter {
             valueDeadline.setText(LocalDateTime.ofInstant(taskModel.getDeadline(), ZoneId.of("GMT")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             valueTimeDeadline.setText(LocalDateTime.ofInstant(taskModel.getDeadline(), ZoneId.of("GMT")).format(DateTimeFormatter.ofPattern("HH:mm")));
 //                  Set status
-            HashMap<Long, String> temp = statusList;
-            temp.remove(Long.valueOf(4));
-            if (taskModel.getStatus().intValue() == 0)
+            HashMap<Long, String> temp = new HashMap<>(statusList);
+
+            if (taskModel.getStatus().intValue() == 0) {
                 temp.remove(Long.valueOf(2));
-            if(taskModel.getStatus().intValue()== 1){
+                temp.remove(Long.valueOf(4));
+            }
+            if (taskModel.getStatus().intValue() == 1) {
                 temp.remove(Long.valueOf(0));
+                temp.remove(Long.valueOf(4));
+            }
+            if (taskModel.getStatus().intValue() == 4) {
+                temp.remove(Long.valueOf(0));
+                temp.remove(Long.valueOf(1));
             }
             final Collection<String> statusValues = temp.values();
             ArrayList<String> listOfStatus = new ArrayList<String>(statusValues);
             ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, listOfStatus);
             ((TaskFormHolder) holder).valueStatus.setAdapter(statusAdapter);
-            ((TaskFormHolder) holder).valueStatus.setSelection(listOfStatus.indexOf(temp.get(taskModel.getStatus().intValue())));
+            ((TaskFormHolder) holder).valueStatus.setSelection(listOfStatus.indexOf(temp.get(taskModel.getStatus())));
             ((TaskFormHolder) holder).valueStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -235,6 +268,14 @@ public class DetailTodoAdapter extends RecyclerView.Adapter {
 
                 }
             });
+            if (currentAccount.getRoleId() > 0 && !taskModel.getAssignee().equals(currentAccount.getAccountId())) {
+                ((TaskFormHolder) holder).valueStatus.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        return true;
+                    }
+                });
+            }
 //                  Set note
             String note = "";
             if (taskModel.getEndTime() == null) {
@@ -273,6 +314,9 @@ public class DetailTodoAdapter extends RecyclerView.Adapter {
             ((TaskFormHolder) holder).valueDateEnd.setText(taskModel.getEndTime() != null ? DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm").format(taskModel.getEndTime().atZone(ZoneId.of("GMT"))) : "");
 
             //                  Set select img listener
+            if (currentAccount.getRoleId() > 0 && !taskModel.getAssignee().equals(currentAccount.getAccountId())) {
+                ((TaskFormHolder) holder).btnImg.setEnabled(false);
+            }
             if (!taskModel.getStatus().equals(Long.valueOf(0))) {
                 ((TaskFormHolder) holder).btnImg.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -292,11 +336,49 @@ public class DetailTodoAdapter extends RecyclerView.Adapter {
                 ((TaskFormHolder) holder).valueImgResolution.setImageBitmap(imageResolution);
             }
             //                  Result
+            if (currentAccount.getRoleId() > 0 && !taskModel.getAssignee().equals(currentAccount.getAccountId())) {
+                ((TaskFormHolder) holder).valueResult.setEnabled(false);
+            }
+            if (taskModel.getStatus().equals(Long.valueOf(4))) {
+                ((TaskFormHolder) holder).txtReviewer.setVisibility(View.VISIBLE);
+                ((TaskFormHolder) holder).valueReviewer.setVisibility(View.VISIBLE);
+                ((TaskFormHolder) holder).lineReviewer.setVisibility(View.VISIBLE);
+                ((TaskFormHolder) holder).txtMark.setVisibility(View.VISIBLE);
+                ((TaskFormHolder) holder).valueMark.setVisibility(View.VISIBLE);
+                ((TaskFormHolder) holder).valueMark.setEnabled(false);
+                ((TaskFormHolder) holder).txtDateReview.setVisibility(View.VISIBLE);
+                ((TaskFormHolder) holder).valueDateReview.setVisibility(View.VISIBLE);
+                ((TaskFormHolder) holder).lineConfirm.setVisibility(View.VISIBLE);
+                ((TaskFormHolder) holder).txtReview.setVisibility(View.VISIBLE);
+                ((TaskFormHolder) holder).valueReview.setVisibility(View.VISIBLE);
+                ((TaskFormHolder) holder).valueReview.setEnabled(false);
+                ((TaskFormHolder) holder).lineReview.setVisibility(View.VISIBLE);
+                //                  Reviewer
+                ((TaskFormHolder) holder).valueReviewer.setText(reviewer != null ? reviewer.getFullName() : "");
+                //                  Mark
+
+                ((TaskFormHolder) holder).valueMark.setMinValue(0);
+                ((TaskFormHolder) holder).valueMark.setMaxValue(10);
+                if (taskModel.getMark() != null) {
+                    ((TaskFormHolder) holder).valueMark.setValue(taskModel.getMark().intValue());
+                }
+                //                  Date reviewed
+                ((TaskFormHolder) holder).valueDateReview.setText(taskModel.getReviewTime() != null ? DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm").format(taskModel.getReviewTime().atZone(ZoneId.of("GMT"))) : "");
+                //                  Review content
+                ((TaskFormHolder) holder).valueReview.setText(taskModel.getManagerComment() != null ? taskModel.getManagerComment() : "");
+            }
             if (taskModel.getStatus().equals(Long.valueOf(0))) {
                 ((TaskFormHolder) holder).valueResult.setEnabled(false);
             } else {
                 ((TaskFormHolder) holder).valueResult.setText(taskModel.getResult() != null ? taskModel.getResult() : "");
             }
+            if (currentAccount.getRoleId() > 0 && !taskModel.getAssignee().equals(currentAccount.getAccountId())) {
+                ((TaskFormHolder) holder).btnUpdate.setVisibility(View.GONE);
+            }
+            //                  last modified
+            ((TaskFormHolder) holder).valueModifiedBy.setText(lastModifiedName);
+            ((TaskFormHolder) holder).valueModifiedAt.setText(DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm").format(taskModel.getEditedAt().atZone(ZoneId.of("GMT"))));
+
             ((TaskFormHolder) holder).btnUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -304,6 +386,7 @@ public class DetailTodoAdapter extends RecyclerView.Adapter {
                     taskUpdate.setTaskId(taskModel.getTaskId());
                     taskUpdate.setStatus(Long.valueOf(currentStatus));
                     taskUpdate.setResult(((TaskFormHolder) holder).valueResult.getText().toString());
+                    taskUpdate.setEditedBy(currentAccount.getAccountId());
                     if (imageResolution != null) {
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                         imageResolution.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
@@ -378,6 +461,50 @@ public class DetailTodoAdapter extends RecyclerView.Adapter {
             @Override
             public void onResponse(LoginResponse response) {
                 assignee = response.account;
+                getLastModifiedById(taskModel.getEditedBy());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Connection Time Out", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(gsonRequest);
+    }
+
+    public void getLastModifiedById(Long accountId) {
+        RequestQueue requestQueue = SingletonRequestQueue.getInstance(mContext.getApplicationContext()).getRequestQueue();
+        HashMap<String, String> headers = new HashMap<>();
+        String url = mContext.getResources().getString(R.string.BASE_URL) + "/account?id=" + accountId;
+        GsonRequest<LoginResponse> gsonRequest = new GsonRequest<>(url, LoginResponse.class, headers, new Response.Listener<LoginResponse>() {
+            @Override
+            public void onResponse(LoginResponse response) {
+                lastModifiedName = response.account.getFullName();
+                if (taskModel.getStatus().equals(Long.valueOf(4))) {
+                    getReviewerById(taskModel.getReviewerId());
+                } else {
+                    dataLoaded = true;
+                    notifyDataSetChanged();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Connection Time Out", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(gsonRequest);
+    }
+
+    public void getReviewerById(Long accountId) {
+        RequestQueue requestQueue = SingletonRequestQueue.getInstance(mContext.getApplicationContext()).getRequestQueue();
+        HashMap<String, String> headers = new HashMap<>();
+        String url = mContext.getResources().getString(R.string.BASE_URL) + "/account?id=" + accountId;
+        GsonRequest<LoginResponse> gsonRequest = new GsonRequest<>(url, LoginResponse.class, headers, new Response.Listener<LoginResponse>() {
+            @Override
+            public void onResponse(LoginResponse response) {
+                reviewer = response.account;
                 dataLoaded = true;
                 notifyDataSetChanged();
             }
@@ -404,8 +531,7 @@ public class DetailTodoAdapter extends RecyclerView.Adapter {
             @Override
             public void onResponse(Integer response) {
                 Toast.makeText(mContext.getApplicationContext(), "Update successfully!", Toast.LENGTH_LONG);
-                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new MyTaskFragment(approveList, roleList, statusList)).commit();
-                ((AppCompatActivity) mContext).setTitle("My Task");
+                ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
             }
         }, new Response.ErrorListener() {
             @Override

@@ -1,26 +1,43 @@
 package app.com.taskmanagement.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import app.com.taskmanagement.FragmentGroupList;
+import app.com.taskmanagement.MyTaskFragment;
 import app.com.taskmanagement.R;
 import app.com.taskmanagement.model.Group;
+import app.com.taskmanagement.model.TaskModel;
+import app.com.taskmanagement.model.request.GroupRequest;
+import app.com.taskmanagement.model.request.TaskCreateRequest;
+import app.com.taskmanagement.util.GsonRequest;
+import app.com.taskmanagement.util.PreferenceUtil;
 
 public class CreateGroupAdapter extends RecyclerView.Adapter {
-    private ArrayList<Group> dataSet;
     Context mContext;
 
-    public CreateGroupAdapter(ArrayList<Group> dataSet, Context mContext) {
-        this.dataSet = dataSet;
+    public CreateGroupAdapter(Context mContext) {
         this.mContext = mContext;
     }
 
@@ -30,9 +47,8 @@ public class CreateGroupAdapter extends RecyclerView.Adapter {
 
         public CreateGroupHolder(@NonNull View itemView) {
             super(itemView);
-            this.txtGroupName = (EditText) itemView.findViewById(R.id.edtNameGroup);
-            this.txtDesGroup = (EditText) itemView.findViewById(R.id.edtDesGroup);
-            this.txtCreator = (EditText) itemView.findViewById(R.id.edtCreatorGroup);
+            this.txtGroupName = (EditText) itemView.findViewById(R.id.edtGroupName);
+            this.txtDesGroup = (EditText) itemView.findViewById(R.id.edtGroupDescription);
             this.btnCreate = (Button) itemView.findViewById(R.id.btnCreateGroup);
         }
     }
@@ -45,16 +61,52 @@ public class CreateGroupAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        final Group object = dataSet.get(position);
-        if (object != null) {
-            ((CreateGroupHolder) holder).txtGroupName.setText(object.getGroupName());
-            ((CreateGroupHolder) holder).txtDesGroup.setText(object.getDescription());
-        }
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, int position) {
+        ((CreateGroupHolder) holder).btnCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String groupName = ((CreateGroupHolder) holder).txtGroupName.getText().toString();
+                String groupDescription = ((CreateGroupHolder) holder).txtDesGroup.getText().toString();
+                if (!groupName.isEmpty() && !groupDescription.isEmpty()) {
+                    Group group = new Group();
+                    group.setCreator(PreferenceUtil.getAccountFromSharedPreferences(mContext.getApplicationContext()).getAccountId());
+                    group.setGroupName(groupName);
+                    group.setDescription(groupDescription);
+                    createGroup(group);
+                } else {
+                    Toast.makeText(mContext, "Pleas input both group name and group description", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return dataSet.size();
+        return 1;
+    }
+
+    public void createGroup(Group group) {
+        String url = String.format(mContext.getResources().getString(R.string.BASE_URL) + "/group");
+        HashMap<String, String> header = new HashMap<>();
+        header.put("Content-Type", "application/json");
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext.getApplicationContext());
+        Gson gson = new Gson();
+        GroupRequest groupRequest = new GroupRequest();
+        groupRequest.setData(group);
+        String body = gson.toJson(groupRequest);
+        GsonRequest<Integer> taskResponseCreateRequest = new GsonRequest<>(Request.Method.POST, url, Integer.class, header, body, new Response.Listener<Integer>() {
+            @Override
+            public void onResponse(Integer response) {
+                ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
+                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new FragmentGroupList());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.println(Log.ERROR, "", "");
+            }
+        });
+        requestQueue.add(taskResponseCreateRequest);
     }
 }

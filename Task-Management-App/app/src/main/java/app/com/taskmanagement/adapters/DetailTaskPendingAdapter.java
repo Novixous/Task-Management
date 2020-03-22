@@ -67,6 +67,7 @@ public class DetailTaskPendingAdapter extends RecyclerView.Adapter {
             R.id.btnDecline,
     };
     private static final Integer[] ID_NOT_SHOW_GENERAL = {
+            R.id.btnClose,
             R.id.btnCreateTask,
             R.id.btnCloneTask,
             R.id.txtDateStart,
@@ -98,6 +99,7 @@ public class DetailTaskPendingAdapter extends RecyclerView.Adapter {
 
     private AccountModel creator;
     private AccountModel assignee;
+    private String lastModifiedName;
     private HashMap<Long, String> approveList;
     private HashMap<Long, String> roleList;
     private HashMap<Long, String> statusList;
@@ -123,6 +125,8 @@ public class DetailTaskPendingAdapter extends RecyclerView.Adapter {
         TextView valueNote, valueCreator;
         Spinner valueAssignee;
         EditText valueDescription;
+        TextView valueModifiedBy, valueModifiedAt;
+
         Button btnUpdate, btnApprove, btnDecline;
 
         public TaskFormHolder(@NonNull View itemView) {
@@ -138,7 +142,8 @@ public class DetailTaskPendingAdapter extends RecyclerView.Adapter {
             this.valueCreator = (TextView) itemView.findViewById(R.id.valueCreator);
             this.valueAssignee = (Spinner) itemView.findViewById(R.id.valueAssignee);
             this.valueDescription = (EditText) itemView.findViewById(R.id.valueDescription);
-
+            this.valueModifiedBy = (TextView) itemView.findViewById(R.id.valueModifiedBy);
+            this.valueModifiedAt = (TextView) itemView.findViewById(R.id.valueModifedAt);
 
             this.btnUpdate = (Button) itemView.findViewById(R.id.btnUpdateTask);
             this.btnApprove = (Button) itemView.findViewById(R.id.btnApprove);
@@ -266,18 +271,20 @@ public class DetailTaskPendingAdapter extends RecyclerView.Adapter {
             ((TaskFormHolder) holder).valueCreator.setText(creator.getFullName());
             //                  Set Description
             ((TaskFormHolder) holder).valueDescription.setText(taskModel.getDescription());
-
-
+            //                  last modified
+            ((TaskFormHolder) holder).valueModifiedBy.setText(lastModifiedName);
+            ((TaskFormHolder) holder).valueModifiedAt.setText(DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm").format(taskModel.getEditedAt().atZone(ZoneId.of("GMT"))));
 
             ((TaskFormHolder) holder).btnUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    TaskModel  taskUpdate= new TaskModel();
+                    TaskModel taskUpdate = new TaskModel();
                     taskUpdate.setTaskId(taskModel.getTaskId());
                     taskUpdate.setTaskName(((TaskFormHolder) holder).valueTaskName.getText().toString());
                     taskUpdate.setDate(((TaskFormHolder) holder).valueDateDeadline.getText().toString());
                     taskUpdate.setTime(((TaskFormHolder) holder).valueTimeDeadline.getText().toString());
                     taskUpdate.setDescription(((TaskFormHolder) holder).valueDescription.getText().toString());
+                    taskUpdate.setEditedBy(currentAccount.getAccountId());
                     updateTask(taskUpdate);
                 }
             });
@@ -287,6 +294,7 @@ public class DetailTaskPendingAdapter extends RecyclerView.Adapter {
                     TaskModel taskUpdate = new TaskModel();
                     taskUpdate.setTaskId(taskModel.getTaskId());
                     taskUpdate.setApprovedId(Long.valueOf(1));
+                    taskUpdate.setEditedBy(currentAccount.getAccountId());
                     updateTask(taskUpdate);
                 }
             });
@@ -297,6 +305,7 @@ public class DetailTaskPendingAdapter extends RecyclerView.Adapter {
                     taskUpdate.setTaskId(taskModel.getTaskId());
                     taskUpdate.setApprovedId(Long.valueOf(2));
                     taskUpdate.setClosed(true);
+                    taskUpdate.setEditedBy(currentAccount.getAccountId());
                     updateTask(taskUpdate);
                 }
             });
@@ -360,6 +369,25 @@ public class DetailTaskPendingAdapter extends RecyclerView.Adapter {
             @Override
             public void onResponse(LoginResponse response) {
                 assignee = response.account;
+                getLastModifiedById(taskModel.getEditedBy());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Connection Time Out", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(gsonRequest);
+    }
+
+    public void getLastModifiedById(Long accountId) {
+        RequestQueue requestQueue = SingletonRequestQueue.getInstance(mContext.getApplicationContext()).getRequestQueue();
+        HashMap<String, String> headers = new HashMap<>();
+        String url = mContext.getResources().getString(R.string.BASE_URL) + "/account?id=" + accountId;
+        GsonRequest<LoginResponse> gsonRequest = new GsonRequest<>(url, LoginResponse.class, headers, new Response.Listener<LoginResponse>() {
+            @Override
+            public void onResponse(LoginResponse response) {
+                lastModifiedName = response.account.getFullName();
                 dataLoaded = true;
                 notifyDataSetChanged();
             }
@@ -386,8 +414,7 @@ public class DetailTaskPendingAdapter extends RecyclerView.Adapter {
             @Override
             public void onResponse(Integer response) {
                 Toast.makeText(mContext.getApplicationContext(), "Update successfully!", Toast.LENGTH_LONG);
-                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new MyTaskFragment(approveList, roleList, statusList)).commit();
-                ((AppCompatActivity) mContext).setTitle("My Task");
+                ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
             }
         }, new Response.ErrorListener() {
             @Override

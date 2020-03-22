@@ -30,12 +30,8 @@ public class FragmentCreateNewGroup extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_recycler, container, false);
-        gridViewModelArrayList = new ArrayList();
-        Group gridViewModel = null;
-        gridViewModel = new Group(null,"","",1L);
-        gridViewModelArrayList.add(gridViewModel);
 
-        CreateGroupAdapter createGroupAdapter = new CreateGroupAdapter(gridViewModelArrayList, this.getActivity());
+        CreateGroupAdapter createGroupAdapter = new CreateGroupAdapter(this.getActivity());
         recyclerView = rootView.findViewById(R.id.viewRecycler);
         StaggeredGridLayoutManager lm =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);

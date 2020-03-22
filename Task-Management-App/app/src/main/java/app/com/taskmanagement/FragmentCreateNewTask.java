@@ -25,12 +25,21 @@ public class FragmentCreateNewTask extends Fragment {
     private HashMap<Long, String> approveList;
     private HashMap<Long, String> roleList;
     private HashMap<Long, String> statusList;
+    private TaskModel taskModel;
 
 
     public FragmentCreateNewTask(HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
         this.approveList = approveList;
         this.roleList = roleList;
         this.statusList = statusList;
+        this.taskModel = null;
+    }
+
+    public FragmentCreateNewTask(HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList, TaskModel taskModel) {
+        this.approveList = approveList;
+        this.roleList = roleList;
+        this.statusList = statusList;
+        this.taskModel = taskModel;
     }
 
     @Override
@@ -50,8 +59,12 @@ public class FragmentCreateNewTask extends Fragment {
         gridViewModel = new TaskModel(TaskModel.SHOW_FORM_CREATE);
 
         gridViewModelArrayList.add(gridViewModel);
-
-        NewTaskAdapter newTaskAdapter = new NewTaskAdapter(this.getActivity(), approveList, roleList, statusList);
+        NewTaskAdapter newTaskAdapter;
+        if (taskModel == null) {
+            newTaskAdapter = new NewTaskAdapter(this.getActivity(), approveList, roleList, statusList);
+        } else {
+            newTaskAdapter = new NewTaskAdapter(this.getActivity(), approveList, roleList, statusList, taskModel);
+        }
         recyclerView = rootView.findViewById(R.id.viewRecycler);
         StaggeredGridLayoutManager lm =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);

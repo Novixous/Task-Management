@@ -16,14 +16,15 @@ import app.com.taskmanagement.R;
 import app.com.taskmanagement.model.AccountModel;
 
 public class CreateAccountAdapter extends RecyclerView.Adapter {
-    private ArrayList<AccountModel> dataSet;
+    public static final int MODE_MYACCOUNT = 0;
+    public static final int MODE_ACCOUNTDETAIL = 1;
+    public static final int MODE_CREATEACCOUNT = 2;
+    private AccountModel accountModel;
     Context mContext;
     int total_types;
 
-    public CreateAccountAdapter(ArrayList<AccountModel> data, Context context) {
-        this.dataSet = data;
+    public CreateAccountAdapter(Context context) {
         this.mContext = context;
-        total_types = dataSet.size();
     }
 
     @NonNull
@@ -37,15 +38,15 @@ public class CreateAccountAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        final AccountModel object = dataSet.get(position);
-        if (object != null) {
-            ((CreateAccountHolder) holder).txtFullname.setText(object.getFullName());
-            ((CreateAccountHolder) holder).txtUsername.setText(object.getUsername());
-            ((CreateAccountHolder) holder).txtEmail.setText(object.getEmail());
-            ((CreateAccountHolder) holder).txtPhone.setText(object.getPhone());
-            ((CreateAccountHolder) holder).txtRole.setTag(object.getRoleId());
-            ((CreateAccountHolder) holder).txtActive.setTag(object.isDeactivated());
-            ((CreateAccountHolder)holder).txtGroup.setTag(object.getGroupId());
+
+        if (accountModel != null) {
+            ((CreateAccountHolder) holder).txtFullname.setText(accountModel.getFullName());
+            ((CreateAccountHolder) holder).txtUsername.setText(accountModel.getUsername());
+            ((CreateAccountHolder) holder).txtEmail.setText(accountModel.getEmail());
+            ((CreateAccountHolder) holder).txtPhone.setText(accountModel.getPhone());
+            ((CreateAccountHolder) holder).txtRole.setTag(accountModel.getRoleId());
+            ((CreateAccountHolder) holder).txtActive.setTag(accountModel.isDeactivated());
+            ((CreateAccountHolder) holder).txtGroup.setTag(accountModel.getGroupId());
         }
     }
 
@@ -67,7 +68,7 @@ public class CreateAccountAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return dataSet.size();
+        return 1;
     }
 
 

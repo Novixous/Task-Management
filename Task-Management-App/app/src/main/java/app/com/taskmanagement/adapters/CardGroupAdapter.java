@@ -1,35 +1,61 @@
 package app.com.taskmanagement.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import app.com.taskmanagement.R;
 import app.com.taskmanagement.model.Group;
+import app.com.taskmanagement.model.response.GroupResponse;
+import app.com.taskmanagement.util.GsonRequest;
+import app.com.taskmanagement.util.SingletonRequestQueue;
 
 public class CardGroupAdapter extends RecyclerView.Adapter {
     private ArrayList<Group> dataSet;
-    Context mContext;
+    private Fragment fragment;
+    private Context mContext;
+    private OnItemClicked onItemClickedListener;
 
-    public CardGroupAdapter(ArrayList<Group> dataSet, Context mContext) {
-        this.dataSet = dataSet;
-        this.mContext = mContext;
+    public void setOnItemClickedListener(OnItemClicked onItemClickedListener) {
+        this.onItemClickedListener = onItemClickedListener;
     }
 
-    public static class CardGroupHolder extends RecyclerView.ViewHolder {
-        TextView txtGroupName, txtDesGroup;
+    public CardGroupAdapter(Context mContext, Fragment fragment) {
+        this.dataSet = new ArrayList<>();
+        this.mContext = mContext;
+        this.fragment = fragment;
+        getGroupList();
+    }
 
-        public CardGroupHolder(@NonNull View itemView) {
+    public static class CardGroupHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        TextView txtGroupName, txtDesGroup;
+        OnItemClicked onItemClicked;
+
+        public CardGroupHolder(@NonNull View itemView, OnItemClicked onItemClicked) {
             super(itemView);
+            this.onItemClicked = onItemClicked;
             this.txtGroupName = (TextView) itemView.findViewById(R.id.txtGroupName);
             this.txtDesGroup = (TextView) itemView.findViewById(R.id.txtDesGroup);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onItemClicked.onClicked(getAdapterPosition());
         }
     }
 
@@ -38,7 +64,7 @@ public class CardGroupAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_group_fragment, parent, false);
-        return new CardGroupHolder(view);
+        return new CardGroupHolder(view, onItemClickedListener);
     }
 
     @Override
@@ -55,4 +81,33 @@ public class CardGroupAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return dataSet.size();
     }
+
+    public Group getItem(int position) {
+        return dataSet.get(position);
+    }
+
+    public interface OnItemClicked {
+        void onClicked(int position);
+    }
+
+    public void getGroupList() {
+        String url = String.format(mContext.getResources().getString(R.string.BASE_URL) + "/groups");
+        HashMap<String, String> header = new HashMap<>();
+        RequestQueue requestQueue = SingletonRequestQueue.getInstance(mContext).getRequestQueue();
+        GsonRequest<GroupResponse> userListReponseGsonRequest = new GsonRequest<>(url, GroupResponse.class, header, new Response.Listener<GroupResponse>() {
+            @Override
+            public void onResponse(GroupResponse response) {
+                dataSet = new ArrayList<>();
+                dataSet.addAll(response.getData());
+                notifyDataSetChanged();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.println(Log.ERROR, "", "");
+            }
+        });
+        requestQueue.add(userListReponseGsonRequest);
+    }
+
 }

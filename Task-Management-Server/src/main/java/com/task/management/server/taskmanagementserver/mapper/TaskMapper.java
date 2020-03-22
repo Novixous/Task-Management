@@ -26,7 +26,7 @@ public interface TaskMapper {
             "img_solution as imgResolutionUrl, " +
             "result as result, " +
             "start_date as startTime, " +
-            "end_date as endDate, " +
+            "end_date as endTime, " +
             "comment_manager as managerComment, " +
             "mark as mark, " +
             "reviewer as reviewerId, " +
@@ -107,7 +107,7 @@ public interface TaskMapper {
             "img_solution as imgResolutionUrl, " +
             "result as result, " +
             "start_date as startTime, " +
-            "end_date as endDate, " +
+            "end_date as endTime, " +
             "comment_manager as managerComment, " +
             "mark as mark, " +
             "reviewer as reviewerId, " +
@@ -133,7 +133,7 @@ public interface TaskMapper {
             "img_solution as imgResolutionUrl, " +
             "result as result, " +
             "start_date as startTime, " +
-            "end_date as endDate, " +
+            "end_date as endTime, " +
             "comment_manager as managerComment, " +
             "mark as mark, " +
             "reviewer as reviewerId, " +

@@ -38,7 +38,7 @@ public class MyAccountFragment extends Fragment {
         gridViewModel = new AccountModel(null,"",null,null);
         gridViewModelArrayList.add(gridViewModel);
 
-        CreateAccountAdapter createAccountAdapter = new CreateAccountAdapter(gridViewModelArrayList, this.getActivity());
+        CreateAccountAdapter createAccountAdapter = new CreateAccountAdapter(this.getActivity());
         recyclerView = rootView.findViewById(R.id.viewRecycler);
         StaggeredGridLayoutManager lm =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);

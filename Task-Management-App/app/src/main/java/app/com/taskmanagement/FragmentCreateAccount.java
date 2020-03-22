@@ -23,7 +23,6 @@ public class FragmentCreateAccount extends Fragment {
         // Required empty public constructor
     }
 
-    ArrayList<AccountModel> gridViewModelArrayList;
     private RecyclerView recyclerView;
 
     @Override
@@ -36,12 +35,9 @@ public class FragmentCreateAccount extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_recycler, container, false);
-        gridViewModelArrayList = new ArrayList();
-        AccountModel gridViewModel = null;
-        gridViewModel = new AccountModel(1L,"thuct","Cao Thu", "090000000","abc@gmail.com",false,2L,1L);
-        gridViewModelArrayList.add(gridViewModel);
 
-        CreateAccountAdapter createAccountAdapter = new CreateAccountAdapter(gridViewModelArrayList, this.getActivity());
+
+        CreateAccountAdapter createAccountAdapter = new CreateAccountAdapter(this.getActivity());
         recyclerView = rootView.findViewById(R.id.viewRecycler);
         StaggeredGridLayoutManager lm =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);

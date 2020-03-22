@@ -114,13 +114,13 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
         HashMap<String, String> headers = new HashMap<>();
         String url = "";
         switch (roleId.intValue()) {
-            case 0:
-                url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(0) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(1) + "&split5=or&fieldName5=status_id=" + Long.valueOf(4) + "&splitClosed=)and&isClosed=false";
+            case ROLE_USER:
+                url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(0) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(1) + "&split5=or&fieldName5=status_id&value5=" + Long.valueOf(4) + "&splitClosed=)and&isClosed=false";
                 break;
-            case 1:
-                url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=group_id&value=" + currentAccount.getGroupId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(0) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(1) + "&split5=or&fieldName5=status_id=" + Long.valueOf(4) + "&splitClosed=)and&isClosed=false";
+            case ROLE_MANAGER:
+                url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=group_id&value=" + currentAccount.getGroupId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(0) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(1) + "&split5=or&fieldName5=status_id&value5=" + Long.valueOf(4) + "&splitClosed=)and&isClosed=false";
                 break;
-            case 2:
+            case ROLE_ADMIN:
                 url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=approve_id&value=" + Long.valueOf(1) + "&split2=and(&fieldName2=status_id&value2=" + Long.valueOf(0) + "&split3=or&fieldName3=status_id&value3=" + Long.valueOf(1) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(4) + "&splitClosed=)and&isClosed=false";
                 break;
         }

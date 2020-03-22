@@ -78,17 +78,26 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public NewTaskAdapter(Context context, AccountModel assignee, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
+    public NewTaskAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList, TaskModel taskModel) {
         this.approveList = approveList;
         this.roleList = roleList;
         this.statusList = statusList;
         this.mContext = context;
         this.taskModel = new TaskModel();
+        this.taskModel.setOldTaskId(taskModel.getTaskId());
+        this.taskModel.setTaskName(taskModel.getTaskName());
+        this.taskModel.setDescription(taskModel.getDescription());
         currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
-        this.assignee = assignee;
+        this.assignee = null;
         this.groupList = null;
         dataLoaded = false;
+        if (!currentAccount.getRoleId().equals(Long.valueOf(2))) {
+            getUserList(currentAccount.getGroupId());
+        } else {
+            getGroups();
+        }
     }
+
 
     public static class TaskFormHolder extends RecyclerView.ViewHolder {
         TextView valueIDtask, valueNote, valueStartdate, valueEnddate, valueOldID, valueCreator, valueReviewer, valueDateReview;
@@ -131,6 +140,7 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         Integer[] id_not_show_create_task = {
+                R.id.lastModifedContainer,
                 R.id.txtStatus,
                 R.id.valueStatus,
                 R.id.txtNote,
@@ -167,7 +177,8 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
                 R.id.txtIdOldTask,
                 R.id.valueIDOldTask,
                 R.id.lineID,
-                R.id.btnCloneTask
+                R.id.btnCloneTask,
+                R.id.btnClose
         };
 
 
@@ -197,6 +208,11 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+        //              Task Name if from clone
+        ((TaskFormHolder) holder).valueTaskname.setText(taskModel.getTaskName() != null ? taskModel.getTaskName() : "");
+        //              Task description if from clone
+        ((TaskFormHolder) holder).valueDescription.setText(taskModel.getDescription() != null ? taskModel.getDescription() : "");
+
 //                    -Choose date and time of deadline-
         final Button valueDeadline = ((TaskFormHolder) holder).valueDateDeadline;
         final Button valueTimeDeadline = ((TaskFormHolder) holder).valueTimeDeadline;
@@ -369,7 +385,7 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
             @Override
             public void onResponse(Integer response) {
                 Toast.makeText(mContext, "Create successfully!", Toast.LENGTH_LONG);
-                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new MyTaskFragment(approveList,roleList,statusList)).commit();
+                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new MyTaskFragment(approveList, roleList, statusList)).commit();
                 ((AppCompatActivity) mContext).setTitle("My Task");
             }
         }, new Response.ErrorListener() {

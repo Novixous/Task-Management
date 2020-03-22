@@ -32,12 +32,18 @@ public class FragmentGroupList extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_list_group, container, false);
-        gridViewModelArrayList = new ArrayList();
-        Group gridViewModel = null;
-        gridViewModel = new Group(1L, "Haha", "hihihi", 1L);
-        gridViewModelArrayList.add(gridViewModel);
+        getActivity().setTitle("Group List");
 
-        CardGroupAdapter cardGroupAdapter = new CardGroupAdapter(gridViewModelArrayList, this.getActivity());
+        final CardGroupAdapter cardGroupAdapter = new CardGroupAdapter(this.getActivity(), this);
+        cardGroupAdapter.setOnItemClickedListener(new CardGroupAdapter.OnItemClicked() {
+            @Override
+            public void onClicked(int position) {
+                Group group = cardGroupAdapter.getItem(position);
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new GroupDetailFragment(group))
+                        .addToBackStack(null).commit();
+                getActivity().setTitle("Group Detail");
+            }
+        });
         recyclerView = rootView.findViewById(R.id.grouplist_recycler);
         StaggeredGridLayoutManager lm =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
@@ -48,7 +54,7 @@ public class FragmentGroupList extends Fragment {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,new FragmentCreateNewGroup()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new FragmentCreateNewGroup()).addToBackStack(null).commit();
                 getActivity().setTitle("Create group");
             }
         });

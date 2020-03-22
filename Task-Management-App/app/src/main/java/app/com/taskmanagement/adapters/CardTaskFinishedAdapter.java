@@ -70,49 +70,35 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
         }
     }
 
-    @Override
-    public int getItemViewType(int position) {
-
-        switch (dataSet.get(position).type) {
-            case 0:
-                return TaskModel.SHOW_FORM_CREATE;
-            case 1:
-                return TaskModel.SHOW_CARD_TASK;
-            case 2:
-                return TaskModel.SHOW_UPDATE_TASK;
-        }
-        return 0;
-    }
-
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view;
-        switch (viewType) {
-            case TaskModel.SHOW_CARD_TASK:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_card_task, parent, false);
-                return new ShowCardTaskHolder(view);
-        }
-        return null;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_card_task, parent, false);
+        return new ShowCardTaskHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         final TaskModel object = dataSet.get(position);
-        if (object != null) {
-            String splitDeadline = object.getDeadline().toString();
-            ((ShowCardTaskHolder) holder).cardTask.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new TaskDetailFragment(approveList  , roleList, statusList, dataSet.get(position).getTaskId(), TaskDetailFragment.MODE_FINISHED)).addToBackStack(null).commit();
+        String splitDeadline = object.getDeadline().toString();
+        ((ShowCardTaskHolder) holder).cardTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_frame,
+                                new TaskDetailFragment
+                                        (approveList,
+                                                roleList,
+                                                statusList,
+                                                dataSet.get(position).getTaskId(),
+                                                TaskDetailFragment.MODE_FINISHED)).addToBackStack(null).commit();
 
-                }
-            });
-            ((ShowCardTaskHolder) holder).valueTaskName.setText(object.getTaskName());
-            ((ShowCardTaskHolder) holder).valueAssignee.setText(object.getAssignee().toString());
-            ((ShowCardTaskHolder) holder).valueStatus.setText(object.getStatus().toString());
-            ((ShowCardTaskHolder) holder).valueDeadline.setText(splitDeadline.substring(0, 19).replace("T", "\n"));
-        }
+            }
+        });
+        ((ShowCardTaskHolder) holder).valueTaskName.setText(object.getTaskName());
+        ((ShowCardTaskHolder) holder).valueAssignee.setText(assigneeMap.get(object.getAssignee()));
+        ((ShowCardTaskHolder) holder).valueStatus.setText(statusList.get(object.getStatus()));
+        ((ShowCardTaskHolder) holder).valueDeadline.setText(splitDeadline.substring(0, 19).replace("T", "\n"));
     }
 
     @Override
@@ -126,14 +112,14 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
         HashMap<String, String> headers = new HashMap<>();
         String url = "";
         switch (roleId.intValue()) {
-            case 0:
+            case ROLE_USER:
                 url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(2) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(3) + "&splitClosed=)and&isClosed=false";
                 break;
-            case 1:
+            case ROLE_MANAGER:
                 url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=group_id&value=" + currentAccount.getGroupId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(2) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(3) + "&splitClosed=)and&isClosed=false";
                 break;
-            case 2:
-                url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=approve_id&value=" + Long.valueOf(1) + "&split2=and(&fieldName2=status_id&value2=" + Long.valueOf(2) + "&split3=or&fieldName3=status_id&value3=" + Long.valueOf(3) +  "&splitClosed=)and&isClosed=false";
+            case ROLE_ADMIN:
+                url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=approve_id&value=" + Long.valueOf(1) + "&split2=and(&fieldName2=status_id&value2=" + Long.valueOf(2) + "&split3=or&fieldName3=status_id&value3=" + Long.valueOf(3) + "&splitClosed=)and&isClosed=false";
                 break;
         }
 

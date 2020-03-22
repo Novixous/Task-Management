@@ -110,7 +110,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (currentFragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
+            for (int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {
+                fragmentManager.popBackStack();
+            }
             fragmentManager.beginTransaction().replace(R.id.content_frame, currentFragment).commit();
+
             drawerLayout.closeDrawers();
             setTitle(title);
 
