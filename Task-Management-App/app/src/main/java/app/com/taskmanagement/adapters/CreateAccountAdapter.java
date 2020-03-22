@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,6 +37,7 @@ import app.com.taskmanagement.model.AccountModel;
 import app.com.taskmanagement.model.Group;
 import app.com.taskmanagement.model.request.AccountRequest;
 import app.com.taskmanagement.model.response.GroupResponse;
+import app.com.taskmanagement.model.response.LoginResponse;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.SingletonRequestQueue;
 
@@ -65,7 +67,9 @@ public class CreateAccountAdapter extends RecyclerView.Adapter {
             R.id.titleID,
             R.id.txtId,
             R.id.txtChangePwd,
-            R.id.lineID
+            R.id.lineID,
+            R.id.titleEmail,
+            R.id.txtEmail
     };
 
     @NonNull
@@ -132,18 +136,31 @@ public class CreateAccountAdapter extends RecyclerView.Adapter {
             ((CreateAccountHolder) holder).btnAccountCreate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Fullname
-                    accountModel.setFullName(((CreateAccountHolder) holder).txtFullname.getText().toString());
-                    //Username
-                    accountModel.setUsername(((CreateAccountHolder) holder).txtUsername.getText().toString());
-                    //Password
-                    accountModel.setPassword(((CreateAccountHolder) holder).edtPassword.getText().toString());
-                    //Phone
-                    accountModel.setPhone(((CreateAccountHolder) holder).txtPhone.getText().toString());
-                    //Email
-                    accountModel.setEmail(((CreateAccountHolder) holder).txtEmail.getText().toString());
-                    accountModel.setRoleId(Long.valueOf(currentRole));
-                    createAccount(accountModel);
+                    String fullname = ((CreateAccountHolder) holder).txtFullname.getText().toString();
+                    String username = ((CreateAccountHolder) holder).txtUsername.getText().toString().toLowerCase();
+                    String password = ((CreateAccountHolder) holder).edtPassword.getText().toString();
+                    String phone = ((CreateAccountHolder) holder).txtPhone.getText().toString();
+                    String mail = username + "@companydomain.com";
+                    if (!fullname.isEmpty()
+                            && !username.isEmpty()
+                            && !password.isEmpty()
+                            && !phone.isEmpty()
+                            && !mail.isEmpty()) {
+                        //Fullname
+                        accountModel.setFullName(fullname);
+                        //Username
+                        accountModel.setUsername(username);
+                        //Password
+                        accountModel.setPassword(password);
+                        //Phone
+                        accountModel.setPhone(phone);
+                        //Email
+                        accountModel.setEmail(mail);
+                        accountModel.setRoleId(Long.valueOf(currentRole));
+                        getUsername(accountModel.getUsername());
+                    } else {
+                        Toast.makeText(mContext, "Please input all information!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
@@ -171,6 +188,28 @@ public class CreateAccountAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return 1;
+    }
+
+    public void getUsername(String username) {
+        RequestQueue requestQueue = SingletonRequestQueue.getInstance(mContext.getApplicationContext()).getRequestQueue();
+        HashMap<String, String> headers = new HashMap<>();
+        String url = mContext.getResources().getString(R.string.BASE_URL) + "/getAccountByUsername?username=" + username;
+        GsonRequest<LoginResponse> gsonRequest = new GsonRequest<>(url, LoginResponse.class, headers, new Response.Listener<LoginResponse>() {
+            @Override
+            public void onResponse(LoginResponse response) {
+                if (response.account == null) {
+                    createAccount(accountModel);
+                } else {
+                    Toast.makeText(mContext, "AAA", Toast.LENGTH_LONG).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Connection Time Out", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(gsonRequest);
     }
 
     public void createAccount(AccountModel accountModel) {
