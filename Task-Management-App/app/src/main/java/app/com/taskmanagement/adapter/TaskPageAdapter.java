@@ -15,8 +15,8 @@ public class TaskPageAdapter extends FragmentPagerAdapter {
     HashMap<Long, String> statusList = new HashMap<>();
     private String[] tabTitles = new String[]{
             "Pending",
-            "Todo",
-            "Finished"
+            "Ongoing",
+            "Finishing"
     };
 
     public TaskPageAdapter(@NonNull FragmentManager fm, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {

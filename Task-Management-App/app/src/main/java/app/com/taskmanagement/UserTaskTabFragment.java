@@ -62,7 +62,7 @@ public class UserTaskTabFragment extends Fragment {
         RecyclerView.Adapter cardTaskAdapter;
         StaggeredGridLayoutManager lm;
         switch (tabTitle) {
-            case "Todo":
+            case "Ongoing":
                 cardTaskAdapter = new CardTaskTodoAdapter(this.getActivity(), approveList, roleList, statusList);
                 recyclerView = view.findViewById(R.id.tabShowCard);
                 lm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
@@ -70,7 +70,7 @@ public class UserTaskTabFragment extends Fragment {
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(cardTaskAdapter);
                 break;
-            case "Finished":
+            case "Finishing":
                 cardTaskAdapter = new CardTaskFinishedAdapter(this.getActivity(), approveList, roleList, statusList);
                 recyclerView = view.findViewById(R.id.tabShowCard);
                 lm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
