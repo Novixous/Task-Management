@@ -40,11 +40,13 @@ import java.util.HashMap;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
+import app.com.taskmanagement.model.AccountModel;
 import app.com.taskmanagement.model.Approve;
 import app.com.taskmanagement.model.Role;
 import app.com.taskmanagement.model.Status;
 import app.com.taskmanagement.model.request.TokenRequestModel;
 import app.com.taskmanagement.model.response.InitialResponse;
+import app.com.taskmanagement.model.response.LoginResponse;
 import app.com.taskmanagement.util.DialogUtil;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.PreferenceUtil;
@@ -91,6 +93,13 @@ public class MainActivity extends AppCompatActivity {
         selectItem(0, "My Task");
 
         navigationView = (NavigationView) findViewById(R.id.nv);
+        if (PreferenceUtil.getAccountFromSharedPreferences(this.getApplicationContext()).getRoleId().equals(Long.valueOf(2))) {
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.navigation_menu_admin);
+        }
+        if (PreferenceUtil.getAccountFromSharedPreferences(this.getApplicationContext()).getRoleId().equals(Long.valueOf(0))) {
+            toolbar.findViewById(R.id.tool_bar_qr_btn).setVisibility(View.GONE);
+        }
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -353,8 +362,35 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == BARCODE_READER_ACTIVITY_REQUEST && data != null) {
             Barcode barcode = data.getParcelableExtra(BarcodeReaderActivity.KEY_CAPTURED_BARCODE);
-            Toast.makeText(this, barcode.rawValue, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, barcode.rawValue, Toast.LENGTH_SHORT).show();
+            gotoAccountDetail(Long.valueOf(barcode.rawValue));
+
         }
 
+    }
+
+    public void gotoAccountDetail(Long accountId) {
+
+        RequestQueue requestQueue = SingletonRequestQueue.getInstance(getApplicationContext()).getRequestQueue();
+        HashMap<String, String> headers = new HashMap<>();
+        String url = getResources().getString(R.string.BASE_URL) + "/account?id=" + accountId;
+        GsonRequest<LoginResponse> gsonRequest = new GsonRequest<>(url, LoginResponse.class, headers, new Response.Listener<LoginResponse>() {
+            @Override
+            public void onResponse(LoginResponse response) {
+                AccountModel accountModel = response.account;
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                for (int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {
+                    fragmentManager.popBackStack();
+                }
+                MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
+                        new FragmentAccountDetail(accountModel, roleList)).addToBackStack(null).commit();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this, "Connection Time Out", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(gsonRequest);
     }
 }

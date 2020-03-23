@@ -61,6 +61,9 @@ public class FragmentAccountDetail extends Fragment {
         if (accountModel == null) {
             this.accountModel = PreferenceUtil.getAccountFromSharedPreferences(getActivity().getApplicationContext());
         }
+        rootView.findViewById(R.id.txtPassword).setVisibility(View.GONE);
+        rootView.findViewById(R.id.txtPassword).setVisibility(View.GONE);
+        rootView.findViewById(R.id.txtPassword).setVisibility(View.GONE);
         edtId = rootView.findViewById(R.id.edtId);
         edtId.setText(accountModel.getAccountId().toString());
         edtFullname = rootView.findViewById(R.id.edtFullname);

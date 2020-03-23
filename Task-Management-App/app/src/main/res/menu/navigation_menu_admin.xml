@@ -24,10 +24,10 @@
         android:id="@+id/account"
         android:icon="@drawable/ic_person_black_24dp"
         android:title="My Account" />
-    <item
-        android:id="@+id/settings"
-        android:icon="@drawable/ic_settings_black_24dp"
-        android:title="Settings" />
+<!--    <item-->
+<!--        android:id="@+id/settings"-->
+<!--        android:icon="@drawable/ic_settings_black_24dp"-->
+<!--        android:title="Settings" />-->
     <item
         android:id="@+id/logout"
         android:icon="@drawable/ic_exit_to_app_black_24dp"
