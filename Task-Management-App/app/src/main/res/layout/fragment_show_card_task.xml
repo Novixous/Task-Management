@@ -10,14 +10,12 @@
         android:layout_margin="5dp"
         android:background="@drawable/border_card_task"
         android:clickable="true"
-        android:orientation="horizontal"
-        android:weightSum="1">
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:layout_weight="0.7"
             android:orientation="vertical">
 
             <TextView
@@ -25,8 +23,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:maxLines="2"
-                android:text="Task NameTask NameTask NameTask NameTask NameTask NameTask Name"
+                android:singleLine="true"
+                android:text="Task NameTask NameTask"
                 android:textSize="20dp"
                 android:textStyle="bold" />
 
@@ -42,19 +40,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:lines="1"
                 android:gravity="center"
-                android:textColor="@color/green"
-                android:textStyle="bold"
+                android:lines="1"
                 android:text="Cao Thanh Thu"
-                android:textSize="18dp" />
+                android:textColor="@color/green"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
         </LinearLayout>
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
-            android:layout_weight="0.3"
             android:background="@drawable/br_vertical"
             android:orientation="vertical">
 
@@ -64,6 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
+                android:singleLine="true"
                 android:text="Done"
                 android:textSize="18dp"
                 android:textStyle="bold" />
@@ -89,5 +88,4 @@
 
         </LinearLayout>
     </LinearLayout>
-
 </RelativeLayout>
