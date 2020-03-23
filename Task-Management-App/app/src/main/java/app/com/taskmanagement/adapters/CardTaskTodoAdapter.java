@@ -57,6 +57,7 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
 
     private AccountModel currentAccount;
     private int currentStatus;
+    private int currentUser;
 
 
     public CardTaskTodoAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
@@ -68,6 +69,7 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
         this.mContext = context;
         currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
         this.currentStatus = -1;
+        this.currentUser = -1;
         getTodoTaskList(currentAccount.getRoleId(), null, null);
     }
 
@@ -87,7 +89,7 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
 
     public static class SearchCardHolder extends RecyclerView.ViewHolder {
         Button btnFrom, btnTo, btnSearch, btnReset;
-        Spinner spinnerStatus;
+        Spinner spinnerStatus, spinnerUser;
 
 
         public SearchCardHolder(@NonNull View itemView) {
@@ -97,6 +99,7 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
             this.btnSearch = itemView.findViewById(R.id.btnSearch);
             this.btnReset = itemView.findViewById(R.id.btnReset);
             this.spinnerStatus = itemView.findViewById(R.id.spinnerStatus);
+            this.spinnerUser = itemView.findViewById(R.id.spinnerUser);
         }
     }
 
@@ -110,6 +113,9 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
                 return new ShowCardTaskHolder(view);
             case TaskModel.SEARCH_CARD:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_card, parent, false);
+                if (currentAccount.getRoleId().equals(Long.valueOf(0))) {
+                    view.findViewById(R.id.spinnerUser).setVisibility(View.GONE);
+                }
                 return new SearchCardHolder(view);
         }
         return null;
@@ -182,6 +188,34 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
 
                     }
                 });
+                //user spinner
+                //user spinner
+                HashMap<Long, String> tempUser = new HashMap<>();
+                tempUser.put(Long.valueOf(-1), "None");
+                tempUser.putAll(assigneeMap);
+                final Collection<String> userValues = tempUser.values();
+                ArrayList<String> listOfUsers = new ArrayList<String>(userValues);
+                ArrayAdapter<String> userAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, listOfUsers);
+                ((SearchCardHolder) holder).spinnerUser.setAdapter(userAdapter);
+                ((SearchCardHolder) holder).spinnerUser.setSelection(listOfUsers.indexOf(tempUser.get(Long.valueOf(currentUser))));
+                ((SearchCardHolder) holder).spinnerUser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        String value = ((SearchCardHolder) holder).spinnerUser.getItemAtPosition(position).toString();
+                        if (!value.equals("None")) {
+                            BiMap<Long, String> userBimap = HashBiMap.create(assigneeMap);
+                            currentUser = userBimap.inverse().get(value).intValue();
+                        } else {
+                            currentUser = -1;
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
                 ((SearchCardHolder) holder).btnSearch.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -294,6 +328,15 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
                 for (TaskModel task : taskModels) {
                     task.setType(TaskModel.TASK_CARD);
                     dataSet.add(task);
+                }
+                if (currentUser != -1) {
+                    for (int i = dataSet.size() - 1; i >= 0; i--) {
+                        if (dataSet.get(i).getAssignee() != null) {
+                            if (!dataSet.get(i).getAssignee().equals(Long.valueOf(currentUser))) {
+                                dataSet.remove(i);
+                            }
+                        }
+                    }
                 }
                 assigneeMap.putAll(response.getAssigneeList());
                 notifyDataSetChanged();

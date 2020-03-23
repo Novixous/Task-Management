@@ -59,6 +59,7 @@ public class CardTaskClosedAdapter extends RecyclerView.Adapter {
 
     private AccountModel currentAccount;
     private int currentStatus;
+    private int currentUser;
 
     public CardTaskClosedAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
         this.approveList = approveList;
@@ -88,7 +89,7 @@ public class CardTaskClosedAdapter extends RecyclerView.Adapter {
 
     public static class SearchCardHolder extends RecyclerView.ViewHolder {
         Button btnFrom, btnTo, btnSearch, btnReset;
-        Spinner spinnerStatus;
+        Spinner spinnerStatus, spinnerUser;
 
 
         public SearchCardHolder(@NonNull View itemView) {
@@ -98,6 +99,7 @@ public class CardTaskClosedAdapter extends RecyclerView.Adapter {
             this.btnSearch = itemView.findViewById(R.id.btnSearch);
             this.btnReset = itemView.findViewById(R.id.btnReset);
             this.spinnerStatus = itemView.findViewById(R.id.spinnerStatus);
+            this.spinnerUser = itemView.findViewById(R.id.spinnerUser);
         }
     }
 
@@ -108,10 +110,13 @@ public class CardTaskClosedAdapter extends RecyclerView.Adapter {
         switch (viewType) {
             case TaskModel.TASK_CARD:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_card_task, parent, false);
-                return new CardTaskFinishedAdapter.ShowCardTaskHolder(view);
+                return new ShowCardTaskHolder(view);
             case TaskModel.SEARCH_CARD:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_card, parent, false);
-                return new CardTaskFinishedAdapter.SearchCardHolder(view);
+                if (currentAccount.getRoleId().equals(Long.valueOf(0))) {
+                    view.findViewById(R.id.spinnerUser).setVisibility(View.GONE);
+                }
+                return new SearchCardHolder(view);
         }
         return null;
     }
@@ -121,8 +126,8 @@ public class CardTaskClosedAdapter extends RecyclerView.Adapter {
         final TaskModel object = dataSet.get(position);
         switch (object.type) {
             case TaskModel.SEARCH_CARD:
-                final Button btnFrom = ((CardTaskFinishedAdapter.SearchCardHolder) holder).btnFrom;
-                final Button btnTo = ((CardTaskFinishedAdapter.SearchCardHolder) holder).btnTo;
+                final Button btnFrom = ((SearchCardHolder) holder).btnFrom;
+                final Button btnTo = ((SearchCardHolder) holder).btnTo;
                 final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                 final Calendar newCalendar = Calendar.getInstance();
                 final DatePickerDialog pickDateFrom = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
@@ -153,18 +158,19 @@ public class CardTaskClosedAdapter extends RecyclerView.Adapter {
                         pickDateTo.show();
                     }
                 });
+                //status spiner
                 HashMap<Long, String> temp = new HashMap<>();
                 temp.put(Long.valueOf(-1), "None");
                 temp.putAll(statusList);
                 final Collection<String> statusValues = temp.values();
                 ArrayList<String> listOfStatus = new ArrayList<String>(statusValues);
                 ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, listOfStatus);
-                ((CardTaskFinishedAdapter.SearchCardHolder) holder).spinnerStatus.setAdapter(statusAdapter);
-                ((CardTaskFinishedAdapter.SearchCardHolder) holder).spinnerStatus.setSelection(listOfStatus.indexOf(temp.get(Long.valueOf(currentStatus))));
-                ((CardTaskFinishedAdapter.SearchCardHolder) holder).spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                ((SearchCardHolder) holder).spinnerStatus.setAdapter(statusAdapter);
+                ((SearchCardHolder) holder).spinnerStatus.setSelection(listOfStatus.indexOf(temp.get(Long.valueOf(currentStatus))));
+                ((SearchCardHolder) holder).spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        String value = ((CardTaskFinishedAdapter.SearchCardHolder) holder).spinnerStatus.getItemAtPosition(position).toString();
+                        String value = ((SearchCardHolder) holder).spinnerStatus.getItemAtPosition(position).toString();
                         if (!value.equals("None")) {
                             BiMap<Long, String> statusBiMap = HashBiMap.create(statusList);
                             currentStatus = statusBiMap.inverse().get(value).intValue();
@@ -178,32 +184,60 @@ public class CardTaskClosedAdapter extends RecyclerView.Adapter {
 
                     }
                 });
-                ((CardTaskFinishedAdapter.SearchCardHolder) holder).btnSearch.setOnClickListener(new View.OnClickListener() {
+                //user spinner
+                HashMap<Long, String> tempUser = new HashMap<>();
+                tempUser.put(Long.valueOf(-1), "None");
+                tempUser.putAll(assigneeMap);
+                final Collection<String> userValues = tempUser.values();
+                ArrayList<String> listOfUsers = new ArrayList<String>(userValues);
+                ArrayAdapter<String> userAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, listOfUsers);
+                ((SearchCardHolder) holder).spinnerUser.setAdapter(userAdapter);
+                ((SearchCardHolder) holder).spinnerUser.setSelection(listOfUsers.indexOf(tempUser.get(Long.valueOf(currentUser))));
+                ((SearchCardHolder) holder).spinnerUser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        String value = ((SearchCardHolder) holder).spinnerUser.getItemAtPosition(position).toString();
+                        if (!value.equals("None")) {
+                            BiMap<Long, String> userBimap = HashBiMap.create(assigneeMap);
+                            currentUser = userBimap.inverse().get(value).intValue();
+                        } else {
+                            currentUser = -1;
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+
+                ((SearchCardHolder) holder).btnSearch.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String from = null;
                         String to = null;
-                        if (!((CardTaskFinishedAdapter.SearchCardHolder) holder).btnFrom.getText().toString().isEmpty()) {
-                            from = ((CardTaskFinishedAdapter.SearchCardHolder) holder).btnFrom.getText().toString();
+                        if (!((SearchCardHolder) holder).btnFrom.getText().toString().isEmpty()) {
+                            from = ((SearchCardHolder) holder).btnFrom.getText().toString();
                         }
-                        if (!((CardTaskFinishedAdapter.SearchCardHolder) holder).btnTo.getText().toString().isEmpty()) {
-                            to = ((CardTaskFinishedAdapter.SearchCardHolder) holder).btnTo.getText().toString();
+                        if (!((SearchCardHolder) holder).btnTo.getText().toString().isEmpty()) {
+                            to = ((SearchCardHolder) holder).btnTo.getText().toString();
                         }
                         getFinishedTaskList(currentAccount.getRoleId(), from, to);
                     }
                 });
-                ((CardTaskFinishedAdapter.SearchCardHolder) holder).btnReset.setOnClickListener(new View.OnClickListener() {
+                ((SearchCardHolder) holder).btnReset.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         btnFrom.setText("");
                         btnTo.setText("");
-                        ((CardTaskFinishedAdapter.SearchCardHolder) holder).spinnerStatus.setSelection(0);
+                        ((SearchCardHolder) holder).spinnerStatus.setSelection(0);
+                        ((SearchCardHolder) holder).spinnerUser.setSelection(0);
                     }
                 });
                 break;
             case TaskModel.TASK_CARD:
                 String splitDeadline = object.getDeadline().toString();
-                ((CardTaskFinishedAdapter.ShowCardTaskHolder) holder).cardTask.setOnClickListener(new View.OnClickListener() {
+                ((ShowCardTaskHolder) holder).cardTask.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction()
@@ -217,10 +251,10 @@ public class CardTaskClosedAdapter extends RecyclerView.Adapter {
 
                     }
                 });
-                ((CardTaskFinishedAdapter.ShowCardTaskHolder) holder).valueTaskName.setText(object.getTaskName());
-                ((CardTaskFinishedAdapter.ShowCardTaskHolder) holder).valueAssignee.setText(assigneeMap.get(object.getAssignee()));
-                ((CardTaskFinishedAdapter.ShowCardTaskHolder) holder).valueStatus.setText(statusList.get(object.getStatus()));
-                ((CardTaskFinishedAdapter.ShowCardTaskHolder) holder).valueDeadline.setText(splitDeadline.substring(0, 19).replace("T", "\n"));
+                ((ShowCardTaskHolder) holder).valueTaskName.setText(object.getTaskName());
+                ((ShowCardTaskHolder) holder).valueAssignee.setText(assigneeMap.get(object.getAssignee()));
+                ((ShowCardTaskHolder) holder).valueStatus.setText(statusList.get(object.getStatus()));
+                ((ShowCardTaskHolder) holder).valueDeadline.setText(splitDeadline.substring(0, 19).replace("T", "\n"));
                 break;
         }
     }

@@ -1,14 +1,23 @@
 package app.com.taskmanagement;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -22,11 +31,15 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
+import com.notbytes.barcode_reader.BarcodeReaderActivity;
 
 import java.util.HashMap;
 
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
 import app.com.taskmanagement.model.Approve;
 import app.com.taskmanagement.model.Role;
 import app.com.taskmanagement.model.Status;
@@ -38,6 +51,7 @@ import app.com.taskmanagement.util.PreferenceUtil;
 import app.com.taskmanagement.util.SingletonRequestQueue;
 
 public class MainActivity extends AppCompatActivity {
+    public static final int BARCODE_READER_ACTIVITY_REQUEST = 1234;
     Fragment currentFragment;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
@@ -47,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
     private HashMap<Long, String> approveList = new HashMap<>();
     private HashMap<Long, String> roleList = new HashMap<>();
     private HashMap<Long, String> statusList = new HashMap<>();
+    private QRGEncoder qrgEncoder;
+    Bitmap qrBitmap;
     String newToken;
 
 
@@ -55,6 +71,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupToolbar();
+        ((ImageButton) toolbar.findViewById(R.id.tool_bar_qr_btn)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent launchIntent = BarcodeReaderActivity.getLaunchIntent(MainActivity.this, true, false);
+                startActivityForResult(launchIntent, BARCODE_READER_ACTIVITY_REQUEST);
+            }
+        });
         sendTokenToServer();
 
         getInitialValue();
@@ -77,6 +100,25 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        try {
+            WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
+            Display display = manager.getDefaultDisplay();
+            Point point = new Point();
+            display.getSize(point);
+            int width = point.x;
+            int height = point.y;
+            int smallerDimension = width < height ? width : height;
+            smallerDimension = smallerDimension * 3 / 4;
+            qrgEncoder = new QRGEncoder(PreferenceUtil.getAccountFromSharedPreferences(this.getApplicationContext()).getAccountId().toString(), null, QRGContents.Type.TEXT, smallerDimension);
+            // Getting QR-Code as Bitmap
+            qrBitmap = qrgEncoder.encodeAsBitmap();
+            // Setting Bitmap to ImageView
+            View header = navigationView.getHeaderView(0);
+            ImageView qrImageView = header.findViewById(R.id.nav_image_view);
+            qrImageView.setImageBitmap(qrBitmap);
+        } catch (Exception e) {
+            Log.v("Main Activity", e.toString());
+        }
 
 
     }
@@ -147,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
     public void setTitle(CharSequence title) {
         mTitle = title;
         getSupportActionBar().setTitle(mTitle);
+        ((TextView) toolbar.findViewById(R.id.tool_bar_title)).setText(mTitle);
     }
 
     public int getOrderFromMenu(String title) {
@@ -305,4 +348,19 @@ public class MainActivity extends AppCompatActivity {
         mRequestQueue.add(gsonRequest);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode != Activity.RESULT_OK) {
+            Toast.makeText(this, "error in  scanning", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (requestCode == BARCODE_READER_ACTIVITY_REQUEST && data != null) {
+            Barcode barcode = data.getParcelableExtra(BarcodeReaderActivity.KEY_CAPTURED_BARCODE);
+            Toast.makeText(this, barcode.rawValue, Toast.LENGTH_SHORT).show();
+        }
+
+    }
 }
