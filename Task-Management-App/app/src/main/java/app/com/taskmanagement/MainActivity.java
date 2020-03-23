@@ -215,12 +215,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void clickToChangePwd(View view) {
-        currentFragment = new FragmentChangePassword();
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, currentFragment).addToBackStack(null).commit();
-    }
-
-
     public static class FormCreateTaskFragment extends Fragment {
 
 
