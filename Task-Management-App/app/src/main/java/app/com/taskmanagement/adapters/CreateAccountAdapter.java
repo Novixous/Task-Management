@@ -60,10 +60,6 @@ public class CreateAccountAdapter extends RecyclerView.Adapter {
     }
 
     Integer[] not_show_on_create = {
-            R.id.titleID,
-            R.id.edtId,
-            R.id.txtChangePwd,
-            R.id.lineID,
             R.id.titleEmail,
             R.id.edtEmail,
             R.id.lineEmail
