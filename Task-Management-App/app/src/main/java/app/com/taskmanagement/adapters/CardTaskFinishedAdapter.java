@@ -328,6 +328,15 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
                     task.setType(TaskModel.TASK_CARD);
                     dataSet.add(task);
                 }
+                if (currentUser != -1) {
+                    for (int i = dataSet.size() - 1; i >= 0; i--) {
+                        if (dataSet.get(i).getAssignee() != null) {
+                            if (!dataSet.get(i).getAssignee().equals(Long.valueOf(currentUser))) {
+                                dataSet.remove(i);
+                            }
+                        }
+                    }
+                }
                 assigneeMap.putAll(response.getAssigneeList());
                 notifyDataSetChanged();
             }

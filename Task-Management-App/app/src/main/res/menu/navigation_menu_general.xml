@@ -3,7 +3,7 @@
     <item
         android:id="@+id/mytask"
         android:icon="@drawable/ic_assignment_black_24dp"
-        android:title="My Task" />
+        android:title="Tasks" />
     <item
         android:id="@+id/closedTask"
         android:icon="@drawable/ic_archive_black_24dp"

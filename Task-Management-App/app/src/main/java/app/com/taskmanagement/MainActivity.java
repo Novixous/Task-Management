@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
 
-        selectItem(0, "My Task");
+        selectItem(0, "Tasks");
 
         navigationView = (NavigationView) findViewById(R.id.nv);
         if (PreferenceUtil.getAccountFromSharedPreferences(this.getApplicationContext()).getRoleId().equals(Long.valueOf(2))) {
@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
 
     public int getOrderFromMenu(String title) {
         switch (title) {
-            case "My Task":
+            case "Tasks":
                 return 0;
             case "Create New Task":
                 return 1;

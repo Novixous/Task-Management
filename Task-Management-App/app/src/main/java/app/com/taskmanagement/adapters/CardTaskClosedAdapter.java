@@ -70,6 +70,7 @@ public class CardTaskClosedAdapter extends RecyclerView.Adapter {
         this.mContext = context;
         currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
         this.currentStatus = -1;
+        this.currentUser = -1;
         getFinishedTaskList(currentAccount.getRoleId(), null, null);
     }
 
@@ -324,6 +325,15 @@ public class CardTaskClosedAdapter extends RecyclerView.Adapter {
                 for (TaskModel task : taskModels) {
                     task.setType(TaskModel.TASK_CARD);
                     dataSet.add(task);
+                }
+                if (currentUser != -1) {
+                    for (int i = dataSet.size() - 1; i >= 0; i--) {
+                        if (dataSet.get(i).getAssignee() != null) {
+                            if (!dataSet.get(i).getAssignee().equals(Long.valueOf(currentUser))) {
+                                dataSet.remove(i);
+                            }
+                        }
+                    }
                 }
                 assigneeMap.putAll(response.getAssigneeList());
                 notifyDataSetChanged();
