@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 currentFragment = new FragmentCreateNewTask(approveList, roleList, statusList);
                 break;
             case 2:
-                currentFragment = new AccountDetailFragment(roleList);
+                currentFragment = new FragmentAccountDetail(roleList);
                 break;
             case 3:
                 currentFragment = new SettingsFragment();

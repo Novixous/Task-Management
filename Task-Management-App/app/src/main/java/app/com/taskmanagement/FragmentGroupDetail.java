@@ -25,11 +25,11 @@ import app.com.taskmanagement.util.SingletonRequestQueue;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GroupDetailFragment extends Fragment {
+public class FragmentGroupDetail extends Fragment {
     private Group group;
     private EditText edtGroupId, edtGroupName, edtGroupDescription, edtGroupCreator;
 
-    public GroupDetailFragment(Group group) {
+    public FragmentGroupDetail(Group group) {
         this.group = group;
     }
 
