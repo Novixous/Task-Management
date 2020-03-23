@@ -16,6 +16,7 @@ import java.util.HashMap;
 
 import app.com.taskmanagement.adapters.CardAccountAdapter;
 import app.com.taskmanagement.model.AccountModel;
+import app.com.taskmanagement.util.PreferenceUtil;
 
 
 public class FragmentAccountList extends Fragment {
@@ -44,7 +45,7 @@ public class FragmentAccountList extends Fragment {
             @Override
             public void onClicked(int position) {
                 AccountModel accountModel = cardAccountAdapter.getItem(position);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new AccountDetailFragment(accountModel))
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new AccountDetailFragment(PreferenceUtil.getAccountFromSharedPreferences(getActivity().getApplicationContext())))
                         .addToBackStack(null).commit();
                 getActivity().setTitle("Group Detail");
             }
