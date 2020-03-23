@@ -31,7 +31,7 @@ import app.com.taskmanagement.util.SingletonRequestQueue;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AccountDetailFragment extends Fragment {
+public class FragmentAccountDetail extends Fragment {
     private AccountModel accountModel;
     private EditText edtId, edtFullname, edtUsername, edtEmail, edtPhone;
     private Spinner spinnerActive, spinnerGroup, spinnerRole;
@@ -40,13 +40,13 @@ public class AccountDetailFragment extends Fragment {
 
     private HashMap<Long, String> roleList = new HashMap<>();
 
-    public AccountDetailFragment(AccountModel accountModel) {
+    public FragmentAccountDetail(AccountModel accountModel,HashMap<Long, String> roleList) {
         this.accountModel = accountModel;
+        this.roleList =roleList;
     }
 
 
-
-    public AccountDetailFragment(HashMap<Long, String> roleList) {
+    public FragmentAccountDetail(HashMap<Long, String> roleList) {
         this.roleList = roleList;
 
         // Required empty public constructor
@@ -58,7 +58,9 @@ public class AccountDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_account_detail, container, false);
-        this.accountModel = PreferenceUtil.getAccountFromSharedPreferences(getActivity().getApplicationContext());
+        if (accountModel == null) {
+            this.accountModel = PreferenceUtil.getAccountFromSharedPreferences(getActivity().getApplicationContext());
+        }
         edtId = rootView.findViewById(R.id.edtId);
         edtId.setText(accountModel.getAccountId().toString());
         edtFullname = rootView.findViewById(R.id.edtFullname);
@@ -90,6 +92,7 @@ public class AccountDetailFragment extends Fragment {
 
         return rootView;
     }
+
     public void getGroups() {
         String url = String.format(getActivity().getResources().getString(R.string.BASE_URL) + "/groups");
         HashMap<String, String> header = new HashMap<>();
@@ -99,8 +102,8 @@ public class AccountDetailFragment extends Fragment {
             public void onResponse(GroupResponse response) {
                 groupList = new ArrayList<>();
                 groupList.addAll(response.getData());
-                for (Group group: groupList){
-                    if(group.getGroupId().equals(accountModel.getGroupId())){
+                for (Group group : groupList) {
+                    if (group.getGroupId().equals(accountModel.getGroupId())) {
                         ArrayList<String> tempGroupList = new ArrayList<>();
                         tempGroupList.add(group.getGroupName());
                         ArrayAdapter<String> groupAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, tempGroupList);

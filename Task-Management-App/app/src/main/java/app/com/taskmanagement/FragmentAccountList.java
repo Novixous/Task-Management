@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import app.com.taskmanagement.adapters.CardAccountAdapter;
@@ -45,7 +44,8 @@ public class FragmentAccountList extends Fragment {
             @Override
             public void onClicked(int position) {
                 AccountModel accountModel = cardAccountAdapter.getItem(position);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new AccountDetailFragment(PreferenceUtil.getAccountFromSharedPreferences(getActivity().getApplicationContext())))
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
+                        new FragmentAccountDetail(accountModel, roleList))
                         .addToBackStack(null).commit();
                 getActivity().setTitle("Group Detail");
             }
@@ -60,7 +60,8 @@ public class FragmentAccountList extends Fragment {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new FragmentCreateAccount(roleList)).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
+                        new FragmentCreateAccount(roleList)).commit();
                 getActivity().setTitle("Create account");
             }
         });
