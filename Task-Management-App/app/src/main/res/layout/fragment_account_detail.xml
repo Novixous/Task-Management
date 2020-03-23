@@ -35,6 +35,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
+                    android:editable="false"
                     android:fontFamily="sans-serif-light"
                     android:inputType="textPersonName"
                     android:text=""
@@ -67,6 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
+                    android:editable="false"
                     android:fontFamily="sans-serif-light"
                     android:inputType="textCapWords"
                     android:text=""
@@ -98,6 +100,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
+                    android:editable="false"
                     android:fontFamily="sans-serif-light"
                     android:text=""
                     android:textColor="#000000"
@@ -156,6 +159,7 @@
                     android:id="@+id/spinnerGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:editable="false"
                     android:fontFamily="sans-serif-light"
                     android:text="Sim"
                     android:textColor="#000000"
@@ -187,6 +191,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
+                    android:editable="false"
                     android:fontFamily="sans-serif-light"
                     android:inputType="textEmailAddress"
                     android:text=""
@@ -219,6 +224,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
+                    android:editable="false"
                     android:fontFamily="sans-serif-light"
                     android:inputType="phone"
                     android:maxLength="10"
@@ -262,15 +268,6 @@
                     android:layout_marginTop="15dp"
                     android:background="@color/grey" />
             </LinearLayout>
-            <!--            <Button-->
-            <!--                android:id="@+id/btnAccountCreate"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_margin="10dp"-->
-            <!--                android:background="@drawable/background_button"-->
-            <!--                android:text="Create"-->
-            <!--                android:textColor="@color/white"-->
-            <!--                android:textStyle="bold" />-->
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
