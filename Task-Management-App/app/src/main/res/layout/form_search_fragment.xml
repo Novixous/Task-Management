@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:gravity="center_horizontal"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <TextView
@@ -17,8 +17,9 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato"
             android:text="Date: "
-            android:textColor="@color/black"
-            android:textSize="16dp" />
+            android:textColor="@color/nameCard"
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnFrom"
@@ -51,15 +52,17 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato"
             android:text="Status: "
-            android:textColor="@color/black"
-            android:textSize="16dp" />
+            android:textColor="@color/nameCard"
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/spinnerStatus"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="2.5dp"
-            android:fontFamily="@font/lato" />
+            android:fontFamily="@font/lato"
+            android:textSize="16dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -75,15 +78,17 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato"
             android:text="Assignee: "
-            android:textColor="@color/black"
-            android:textSize="16dp" />
+            android:textColor="@color/nameCard"
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/spinnerUser"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="2.5dp"
-            android:fontFamily="@font/lato" />
+            android:fontFamily="@font/lato"
+            android:textSize="16dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -102,9 +107,9 @@
 
         <Button
             android:id="@+id/btnReset"
-            android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:background="@drawable/button_decline"
             android:text="Reset"
             android:textColor="@color/white" />
