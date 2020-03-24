@@ -237,6 +237,7 @@ public class CardTaskPendingAdapter extends RecyclerView.Adapter {
                         btnFrom.setText("");
                         btnTo.setText("");
                         ((SearchCardHolder) holder).spinnerStatus.setSelection(0);
+                        ((SearchCardHolder) holder).spinnerUser.setSelection(0);
                     }
                 });
                 ((SearchCardHolder) holder).spinnerStatus.setVisibility(View.GONE);
