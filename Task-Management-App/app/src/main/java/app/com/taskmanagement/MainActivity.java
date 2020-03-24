@@ -4,18 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,8 +33,6 @@ import com.notbytes.barcode_reader.BarcodeReaderActivity;
 
 import java.util.HashMap;
 
-import androidmads.library.qrgenearator.QRGContents;
-import androidmads.library.qrgenearator.QRGEncoder;
 import app.com.taskmanagement.model.AccountModel;
 import app.com.taskmanagement.model.ApproveModel;
 import app.com.taskmanagement.model.RoleModel;
@@ -131,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 currentFragment = new GroupListFragment();
                 break;
             case 6:
-                currentFragment = new AccountListFragment(roleList);
+                currentFragment = new FragmentAccountList(roleList);
                 break;
             case 7:
                 currentFragment = new TaskClosedListFragment("Archived tasks", approveList, roleList, statusList);
