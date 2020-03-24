@@ -340,6 +340,14 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
                     taskUpdate.setReviewerId(currentAccount.getAccountId());
                     taskUpdate.setManagerComment(((TaskFormHolder) holder).valueReview.getText().toString());
                     taskUpdate.setEditedBy(currentAccount.getAccountId());
+                    taskUpdate.setResult(((TaskFormHolder) holder).valueResult.getText().toString());
+                    if (imageResolution != null) {
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        imageResolution.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                        byte[] byteArray = byteArrayOutputStream.toByteArray();
+                        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        taskUpdate.setImgResolutionUrl(encoded);
+                    }
                     updateTask(taskUpdate, false);
                 }
             });
@@ -357,6 +365,14 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
                         taskUpdate.setManagerComment(((TaskFormHolder) holder).valueReview.getText().toString());
                         taskUpdate.setEditedBy(currentAccount.getAccountId());
                         taskUpdate.setClosed(true);
+                        taskUpdate.setResult(((TaskFormHolder) holder).valueResult.getText().toString());
+                        if (imageResolution != null) {
+                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                            imageResolution.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                            byte[] byteArray = byteArrayOutputStream.toByteArray();
+                            String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                            taskUpdate.setImgResolutionUrl(encoded);
+                        }
                         updateTask(taskUpdate, true);
                         ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
                         ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new FragmentCreateNewTask(approveList, roleList, statusList, taskModel)).commit();
@@ -375,6 +391,14 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
                     taskUpdate.setManagerComment(((TaskFormHolder) holder).valueReview.getText().toString());
                     taskUpdate.setEditedBy(currentAccount.getAccountId());
                     taskUpdate.setClosed(true);
+                    taskUpdate.setResult(((TaskFormHolder) holder).valueResult.getText().toString());
+                    if (imageResolution != null) {
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        imageResolution.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                        byte[] byteArray = byteArrayOutputStream.toByteArray();
+                        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        taskUpdate.setImgResolutionUrl(encoded);
+                    }
                     updateTask(taskUpdate, false);
                 }
             });
@@ -516,7 +540,7 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
                     if (!isClone) {
                         ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
                     }
-                }else if(response.intValue() == -2){
+                } else if (response.intValue() == -2) {
                     Toast.makeText(mContext, "Please fill in review content.", Toast.LENGTH_LONG).show();
                 }
             }
