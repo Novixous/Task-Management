@@ -27,6 +27,10 @@ import java.util.List;
 @RestController
 @RequestMapping("task")
 public class TaskController {
+    public static final int DEADLINE_NULL = -2;
+    public static final int TASk_NAME_EMPTY = -3;
+    public static final int RESULT_REQUIRED = -1;
+    public static final int REVIEW_REQUIRED = -2;
     private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM:HH:mm:ss");
     private final TaskMapper taskMapper;
@@ -74,8 +78,19 @@ public class TaskController {
         List<TaskResponse> taskResponses = taskRequest.getData();
         List<Task> converted = TimeUtil.convertTaskResponseToTask(taskResponses);
         Task result = converted.get(0);
-        taskMapper.createTask(result);
-        return result.getTaskId().intValue();
+        if (result.getTaskName().isEmpty()) {
+            return TASk_NAME_EMPTY;
+        }
+        try {
+            taskMapper.createTask(result);
+            return result.getTaskId().intValue();
+        } catch (Exception e) {
+            if (e.getMessage().contains("Column 'deadline' cannot be null")) {
+                return DEADLINE_NULL;
+            } else {
+                return -1;
+            }
+        }
 
     }
 
@@ -83,6 +98,14 @@ public class TaskController {
     public int updateTask(@RequestBody TaskRequest taskRequest) {
         List<TaskResponse> taskResponses = taskRequest.getData();
         List<Task> converted = TimeUtil.convertTaskResponseToTask(taskResponses);
+        if ((converted.get(0).getStatus().equals(Long.valueOf(2)) || converted.get(0).getStatus().equals(Long.valueOf(3))) && (converted.get(0).getResult().isEmpty() || converted.get(0).getImgResolutionUrl().isEmpty())) {
+            return RESULT_REQUIRED;
+        }
+        if (converted.get(0).getIsClosed() != null) {
+            if ((converted.get(0).getStatus().equals(Long.valueOf(4)) || converted.get(0).getIsClosed()) && converted.get(0).getManagerComment().isEmpty()) {
+                return REVIEW_REQUIRED;
+            }
+        }
         return taskMapper.updateTask(converted.get(0));
     }
 
@@ -92,8 +115,6 @@ public class TaskController {
         tasks.add(taskMapper.getTaskByTaskId(taskId));
         return TimeUtil.convertTaskToTaskResponse(tasks).get(0);
     }
-
-
 
 
 }

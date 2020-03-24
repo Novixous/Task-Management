@@ -373,9 +373,17 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
         GsonRequest<Integer> taskResponseCreateRequest = new GsonRequest<>(Request.Method.POST, url, Integer.class, header, body, new Response.Listener<Integer>() {
             @Override
             public void onResponse(Integer response) {
-                Toast.makeText(mContext, "Create successfully!", Toast.LENGTH_LONG);
-                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new MyTaskFragment(approveList, roleList, statusList)).commit();
-                ((AppCompatActivity) mContext).setTitle("My Task");
+                if (response.intValue() >= 0) {
+                    Toast.makeText(mContext, "Create successfully!", Toast.LENGTH_LONG);
+                    ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new MyTaskFragment(approveList, roleList, statusList)).commit();
+                    ((AppCompatActivity) mContext).setTitle("My Task");
+                } else if (response.intValue() == -2) {
+                    Toast.makeText(mContext, "Please input both date and time of deadline!", Toast.LENGTH_LONG).show();
+                } else if (response.intValue() == -3) {
+                    Toast.makeText(mContext, "Task name must not be blank", Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(mContext, "Error creating task", Toast.LENGTH_SHORT).show();
+                }
             }
         }, new Response.ErrorListener() {
             @Override

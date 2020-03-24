@@ -86,8 +86,18 @@ public class AccountController {
      * @param account
      */
     @PostMapping("/account")
-    public void createAccount(@RequestBody Account account) {
-        accountMapper.createAccount(account);
+    public int createAccount(@RequestBody Account account) {
+        try {
+            accountMapper.createAccount(account);
+            return 1;
+        } catch (Exception e) {
+            if (e.getMessage().contains("There is aldready a manager")) {
+                return 0;
+            } else {
+                return -1;
+            }
+        }
+
     }
 
     /**

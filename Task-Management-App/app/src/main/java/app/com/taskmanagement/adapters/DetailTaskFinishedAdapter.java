@@ -511,9 +511,13 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
         GsonRequest<Integer> taskResponseCreateRequest = new GsonRequest<>(Request.Method.PUT, url, Integer.class, header, body, new Response.Listener<Integer>() {
             @Override
             public void onResponse(Integer response) {
-                Toast.makeText(mContext.getApplicationContext(), "Update successfully!", Toast.LENGTH_LONG);
-                if (!isClone) {
-                    ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
+                if (response.intValue() > 0) {
+                    Toast.makeText(mContext.getApplicationContext(), "Update successfully!", Toast.LENGTH_LONG);
+                    if (!isClone) {
+                        ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
+                    }
+                }else if(response.intValue() == -2){
+                    Toast.makeText(mContext, "Please fill in review content.", Toast.LENGTH_LONG).show();
                 }
             }
         }, new Response.ErrorListener() {

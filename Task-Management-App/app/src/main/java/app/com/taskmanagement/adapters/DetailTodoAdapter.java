@@ -530,8 +530,12 @@ public class DetailTodoAdapter extends RecyclerView.Adapter {
         GsonRequest<Integer> taskResponseCreateRequest = new GsonRequest<>(Request.Method.PUT, url, Integer.class, header, body, new Response.Listener<Integer>() {
             @Override
             public void onResponse(Integer response) {
-                Toast.makeText(mContext.getApplicationContext(), "Update successfully!", Toast.LENGTH_LONG);
-                ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
+                if (response.intValue() > 0) {
+                    Toast.makeText(mContext.getApplicationContext(), "Update successfully!", Toast.LENGTH_LONG);
+                    ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
+                }else if(response.intValue() == -1){
+                    Toast.makeText(mContext, "Please fill in both result and select evidence image", Toast.LENGTH_SHORT).show();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
