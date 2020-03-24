@@ -29,10 +29,10 @@ import app.com.taskmanagement.model.request.GroupRequest;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.PreferenceUtil;
 
-public class CreateGroupAdapter extends RecyclerView.Adapter {
+public class GroupCreateAdapter extends RecyclerView.Adapter {
     Context mContext;
 
-    public CreateGroupAdapter(Context mContext) {
+    public GroupCreateAdapter(Context mContext) {
         this.mContext = mContext;
     }
 

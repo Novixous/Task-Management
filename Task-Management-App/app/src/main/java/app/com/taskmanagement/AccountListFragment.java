@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.HashMap;
 
-import app.com.taskmanagement.adapters.CardAccountAdapter;
+import app.com.taskmanagement.adapters.AccountCardAdapter;
 import app.com.taskmanagement.model.AccountModel;
 
 
@@ -38,13 +38,13 @@ public class AccountListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_list_account, container, false);
         getActivity().setTitle("Account List");
 
-        final CardAccountAdapter cardAccountAdapter = new CardAccountAdapter(this.getActivity(), this);
-        cardAccountAdapter.setOnItemClickedListener(new CardAccountAdapter.OnItemClicked() {
+        final AccountCardAdapter accountCardAdapter = new AccountCardAdapter(this.getActivity(), this);
+        accountCardAdapter.setOnItemClickedListener(new AccountCardAdapter.OnItemClicked() {
             @Override
             public void onClicked(int position) {
-                AccountModel accountModel = cardAccountAdapter.getItem(position);
+                AccountModel accountModel = accountCardAdapter.getItem(position);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-                        new DetailAccountFragment(accountModel, roleList))
+                        new AccountDetailFragment(accountModel, roleList))
                         .addToBackStack(null).commit();
                 getActivity().setTitle("Group Detail");
             }
@@ -54,7 +54,7 @@ public class AccountListFragment extends Fragment {
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(lm);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(cardAccountAdapter);
+        recyclerView.setAdapter(accountCardAdapter);
         btnCreate = rootView.findViewById(R.id.btnCreateAccount);
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override

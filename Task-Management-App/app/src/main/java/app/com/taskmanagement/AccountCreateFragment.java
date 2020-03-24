@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.HashMap;
 
-import app.com.taskmanagement.adapters.CreateAccountAdapter;
+import app.com.taskmanagement.adapters.AccountCreateAdapter;
 
 public class AccountCreateFragment extends Fragment {
     private HashMap<Long, String> roleList;
@@ -35,13 +35,13 @@ public class AccountCreateFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_recycler, container, false);
 
 
-        CreateAccountAdapter createAccountAdapter = new CreateAccountAdapter(this.getActivity(), roleList);
+        AccountCreateAdapter accountCreateAdapter = new AccountCreateAdapter(this.getActivity(), roleList);
         recyclerView = rootView.findViewById(R.id.viewRecycler);
         StaggeredGridLayoutManager lm =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(lm);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(createAccountAdapter);
+        recyclerView.setAdapter(accountCreateAdapter);
         return rootView;
     }
 }

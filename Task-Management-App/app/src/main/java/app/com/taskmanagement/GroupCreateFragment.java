@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import app.com.taskmanagement.adapters.CreateGroupAdapter;
+import app.com.taskmanagement.adapters.GroupCreateAdapter;
 
 public class GroupCreateFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -26,13 +26,13 @@ public class GroupCreateFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_recycler, container, false);
 
-        CreateGroupAdapter createGroupAdapter = new CreateGroupAdapter(this.getActivity());
+        GroupCreateAdapter groupCreateAdapter = new GroupCreateAdapter(this.getActivity());
         recyclerView = rootView.findViewById(R.id.viewRecycler);
         StaggeredGridLayoutManager lm =
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(lm);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(createGroupAdapter);
+        recyclerView.setAdapter(groupCreateAdapter);
         return rootView;
     }
 }

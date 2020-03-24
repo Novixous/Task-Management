@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.HashMap;
 
-import app.com.taskmanagement.adapters.CardTaskFinishedAdapter;
-import app.com.taskmanagement.adapters.CardTaskPendingAdapter;
-import app.com.taskmanagement.adapters.CardTaskTodoAdapter;
+import app.com.taskmanagement.adapters.TaskCardFinishedAdapter;
+import app.com.taskmanagement.adapters.TaskCardPendingAdapter;
+import app.com.taskmanagement.adapters.TaskCardTodoAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,7 +50,7 @@ public class TaskTabFragment extends Fragment {
         StaggeredGridLayoutManager lm;
         switch (tabTitle) {
             case "Ongoing":
-                cardTaskAdapter = new CardTaskTodoAdapter(this.getActivity(), approveList, roleList, statusList);
+                cardTaskAdapter = new TaskCardTodoAdapter(this.getActivity(), approveList, roleList, statusList);
                 recyclerView = view.findViewById(R.id.tabShowCard);
                 lm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(lm);
@@ -58,7 +58,7 @@ public class TaskTabFragment extends Fragment {
                 recyclerView.setAdapter(cardTaskAdapter);
                 break;
             case "Finishing":
-                cardTaskAdapter = new CardTaskFinishedAdapter(this.getActivity(), approveList, roleList, statusList);
+                cardTaskAdapter = new TaskCardFinishedAdapter(this.getActivity(), approveList, roleList, statusList);
                 recyclerView = view.findViewById(R.id.tabShowCard);
                 lm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(lm);
@@ -66,7 +66,7 @@ public class TaskTabFragment extends Fragment {
                 recyclerView.setAdapter(cardTaskAdapter);
                 break;
             case "Pending":
-                cardTaskAdapter = new CardTaskPendingAdapter(this.getActivity(), approveList, roleList, statusList);
+                cardTaskAdapter = new TaskCardPendingAdapter(this.getActivity(), approveList, roleList, statusList);
                 recyclerView = view.findViewById(R.id.tabShowCard);
                 lm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(lm);

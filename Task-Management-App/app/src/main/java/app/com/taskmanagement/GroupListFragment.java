@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import app.com.taskmanagement.adapters.CardGroupAdapter;
+import app.com.taskmanagement.adapters.GroupCardAdapter;
 import app.com.taskmanagement.model.GroupModel;
 
 
@@ -31,11 +31,11 @@ public class GroupListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_list_group, container, false);
         getActivity().setTitle("Group List");
 
-        final CardGroupAdapter cardGroupAdapter = new CardGroupAdapter(this.getActivity(), this);
-        cardGroupAdapter.setOnItemClickedListener(new CardGroupAdapter.OnItemClicked() {
+        final GroupCardAdapter groupCardAdapter = new GroupCardAdapter(this.getActivity(), this);
+        groupCardAdapter.setOnItemClickedListener(new GroupCardAdapter.OnItemClicked() {
             @Override
             public void onClicked(int position) {
-                GroupModel groupModel = cardGroupAdapter.getItem(position);
+                GroupModel groupModel = groupCardAdapter.getItem(position);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
                         new GroupDetailFragment(groupModel))
                         .addToBackStack(null).commit();
@@ -47,7 +47,7 @@ public class GroupListFragment extends Fragment {
                 new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(lm);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(cardGroupAdapter);
+        recyclerView.setAdapter(groupCardAdapter);
         btnCreate = rootView.findViewById(R.id.btnCreateGroup);
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override

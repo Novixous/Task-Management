@@ -48,7 +48,7 @@ import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.PreferenceUtil;
 import app.com.taskmanagement.util.SingletonRequestQueue;
 
-public class NewTaskAdapter extends RecyclerView.Adapter {
+public class TaskCreateAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private TaskModel taskModel;
     private List<AccountModel> listMembers;
@@ -60,7 +60,7 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
     private HashMap<Long, String> roleList;
     private HashMap<Long, String> statusList;
 
-    public NewTaskAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
+    public TaskCreateAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
         this.approveList = approveList;
         this.roleList = roleList;
         this.statusList = statusList;
@@ -77,7 +77,7 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public NewTaskAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList, TaskModel taskModel) {
+    public TaskCreateAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList, TaskModel taskModel) {
         this.approveList = approveList;
         this.roleList = roleList;
         this.statusList = statusList;

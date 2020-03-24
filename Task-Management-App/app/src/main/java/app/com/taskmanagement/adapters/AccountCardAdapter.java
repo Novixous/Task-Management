@@ -24,13 +24,13 @@ import app.com.taskmanagement.model.response.UserListReponse;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.SingletonRequestQueue;
 
-public class CardAccountAdapter extends RecyclerView.Adapter {
+public class AccountCardAdapter extends RecyclerView.Adapter {
     private ArrayList<AccountModel> dataSet;
     Fragment fragment;
     Context mContext;
     private OnItemClicked onItemClickedListener;
 
-    public CardAccountAdapter(Context mContext, Fragment fragment) {
+    public AccountCardAdapter(Context mContext, Fragment fragment) {
         this.dataSet = new ArrayList<>();
         this.fragment = fragment;
         this.mContext = mContext;

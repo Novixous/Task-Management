@@ -1,23 +1,20 @@
 package app.com.taskmanagement.adapters;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,21 +26,21 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.google.gson.Gson;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
 import app.com.taskmanagement.R;
-import app.com.taskmanagement.TaskCreateFragment;
 import app.com.taskmanagement.model.AccountModel;
 import app.com.taskmanagement.model.TaskModel;
 import app.com.taskmanagement.model.request.TaskCreateRequest;
@@ -54,48 +51,56 @@ import app.com.taskmanagement.util.PreferenceUtil;
 import app.com.taskmanagement.util.SingletonRequestQueue;
 import app.com.taskmanagement.util.TimeUtil;
 
-public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
+public class TaskDetailPendingAdapter extends RecyclerView.Adapter {
     private Context mContext;
     public static final int ROLE_USER = 0;
     public static final int ROLE_MANAGER = 1;
     public static final int ROLE_ADMIN = 2;
-    private int currentStatus;
 
-
-    private static final Integer[] ID_NOT_SHOW_GENERAL = {
+    private static final Integer[] ID_NOT_SHOW_DETAIL_USER = {
             R.id.btnApprove,
             R.id.btnDecline,
-            R.id.btnCreateTask
     };
-    private static final Integer[] ID_NOT_EDITABLE_GENERAL = {
-            R.id.valueTaskName,
-            R.id.valueDescription,
-    };
-    private static final Integer[] ID_NOT_SHOW_USER = {
-            R.id.btnUpdateTask,
+    private static final Integer[] ID_NOT_SHOW_GENERAL = {
             R.id.btnClose,
-            R.id.btnCloneTask
+            R.id.btnCreateTask,
+            R.id.btnCloneTask,
+            R.id.txtDateStart,
+            R.id.valueDateStart,
+            R.id.txtDateEnd,
+            R.id.valueDateEnd,
+            R.id.lineDate,
+            R.id.txtImgResolution,
+            R.id.btnImg,
+            R.id.linePhoto,
+            R.id.txtResult,
+            R.id.valueResult,
+            R.id.lineResult,
+            R.id.txtReviewer,
+            R.id.valueReviewer,
+            R.id.lineReviewer,
+            R.id.txtMark,
+            R.id.valueMark,
+            R.id.txtDateReview,
+            R.id.valueDateReview,
+            R.id.lineConfirm,
+            R.id.txtReview,
+            R.id.valueReview,
+            R.id.lineReview
     };
-
 
     private TaskModel taskModel;
     private AccountModel currentAccount;
 
     private AccountModel creator;
     private AccountModel assignee;
-    private AccountModel reviewer;
     private String lastModifiedName;
     private HashMap<Long, String> approveList;
     private HashMap<Long, String> roleList;
     private HashMap<Long, String> statusList;
     private Boolean dataLoaded;
-    private Bitmap imageResolution;
 
-    public void setImageResolution(Bitmap imageResolution) {
-        this.imageResolution = imageResolution;
-    }
-
-    public DetailTaskFinishedAdapter(Context context, Long taskId, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
+    public TaskDetailPendingAdapter(Context context, Long taskId, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
         this.mContext = context;
         this.taskModel = new TaskModel();
         this.currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
@@ -115,19 +120,9 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
         TextView valueNote, valueCreator;
         Spinner valueAssignee;
         EditText valueDescription;
-        TextView valueDateStart, valueDateEnd;
-        ImageButton btnImg;
-        ImageView valueImgResolution;
-        EditText valueResult;
-        TextView valueReviewer;
-        NumberPicker valueMark;
-        TextView valueDateReview;
-        EditText valueReview;
-
         TextView valueModifiedBy, valueModifiedAt;
 
-
-        Button btnUpdate, btnApprove, btnDecline, btnClose, btnClone;
+        Button btnUpdate, btnApprove, btnDecline;
 
         public TaskFormHolder(@NonNull View itemView) {
             super(itemView);
@@ -142,25 +137,12 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
             this.valueCreator = (TextView) itemView.findViewById(R.id.valueCreator);
             this.valueAssignee = (Spinner) itemView.findViewById(R.id.valueAssignee);
             this.valueDescription = (EditText) itemView.findViewById(R.id.valueDescription);
-
-            this.valueDateStart = (TextView) itemView.findViewById(R.id.valueDateStart);
-            this.valueDateEnd = (TextView) itemView.findViewById(R.id.valueDateEnd);
-            this.btnImg = (ImageButton) itemView.findViewById(R.id.btnImg);
-            this.valueImgResolution = (ImageView) itemView.findViewById(R.id.valueImgResolution);
-            this.valueResult = (EditText) itemView.findViewById(R.id.valueResult);
-            this.valueReviewer = (TextView) itemView.findViewById(R.id.valueReviewer);
-            this.valueMark = (NumberPicker) itemView.findViewById(R.id.valueMark);
-            this.valueDateReview = (TextView) itemView.findViewById(R.id.valueDateReview);
-            this.valueReview = (EditText) itemView.findViewById(R.id.valueReview);
             this.valueModifiedBy = (TextView) itemView.findViewById(R.id.valueModifiedBy);
             this.valueModifiedAt = (TextView) itemView.findViewById(R.id.valueModifedAt);
 
             this.btnUpdate = (Button) itemView.findViewById(R.id.btnUpdateTask);
             this.btnApprove = (Button) itemView.findViewById(R.id.btnApprove);
             this.btnDecline = (Button) itemView.findViewById(R.id.btnDecline);
-
-            this.btnClose = (Button) itemView.findViewById(R.id.btnClose);
-            this.btnClone = (Button) itemView.findViewById(R.id.btnCloneTask);
 
         }
     }
@@ -171,22 +153,15 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
         for (int i = 0; i < ID_NOT_SHOW_GENERAL.length; i++) {
             view.findViewById(ID_NOT_SHOW_GENERAL[i]).setVisibility(View.GONE);
         }
-        for (int i = 0; i < ID_NOT_EDITABLE_GENERAL.length; i++) {
-            view.findViewById(ID_NOT_EDITABLE_GENERAL[i]).setEnabled(false);
-        }
         switch (currentAccount.getRoleId().intValue()) {
             case ROLE_USER:
-                for (int i = 0; i < ID_NOT_SHOW_USER.length; i++) {
-                    view.findViewById(ID_NOT_SHOW_USER[i]).setVisibility(View.GONE);
+                for (int i = 0; i < ID_NOT_SHOW_DETAIL_USER.length; i++) {
+                    view.findViewById(ID_NOT_SHOW_DETAIL_USER[i]).setVisibility(View.GONE);
                 }
-                view.findViewById(R.id.valueReview).setEnabled(false);
-                view.findViewById(R.id.valueMark).setEnabled(false);
                 break;
             case ROLE_MANAGER:
-
                 break;
             case ROLE_ADMIN:
-
                 break;
         }
         return new TaskFormHolder(view);
@@ -198,7 +173,6 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
 
 
         if (dataLoaded) {
-
 //                  Set task name
             ((TaskFormHolder) holder).valueTaskName.setText(taskModel.getTaskName().toString());
             //      Set task id
@@ -209,44 +183,56 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
             //                    -Choose date and time of deadline-
             final Button valueDeadline = ((TaskFormHolder) holder).valueDateDeadline;
             final Button valueTimeDeadline = ((TaskFormHolder) holder).valueTimeDeadline;
-            //set deadline
-
+//                    Choose date
+            final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            final Calendar newCalendar = Calendar.getInstance();
+            final DatePickerDialog pickDate = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
+                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    Calendar newDate = Calendar.getInstance();
+                    newDate.set(year, monthOfYear, dayOfMonth);
+                    String date = dateFormat.format(newDate.getTime());
+                    valueDeadline.setText(date);
+                }
+            }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+            valueDeadline.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pickDate.show();
+                    pickDate.getDatePicker().setMinDate(System.currentTimeMillis());
+                }
+            });
+//                    Choose time
+            final DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+            final Calendar newClock = Calendar.getInstance();
+            final TimePickerDialog pickTime = new TimePickerDialog(mContext, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                    Calendar newClock = Calendar.getInstance();
+                    newClock.set(0, 0, 0, hourOfDay, minute);
+                    String time = timeFormat.format(newClock.getTime());
+                    valueTimeDeadline.setText(time);
+                }
+            }, newClock.get(Calendar.HOUR_OF_DAY), newClock.get(Calendar.MINUTE), true);
+            valueTimeDeadline.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pickTime.show();
+                }
+            });
             valueDeadline.setText(LocalDateTime.ofInstant(taskModel.getDeadline(), ZoneId.of("GMT")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             valueTimeDeadline.setText(LocalDateTime.ofInstant(taskModel.getDeadline(), ZoneId.of("GMT")).format(DateTimeFormatter.ofPattern("HH:mm")));
 //                  Set status
-            HashMap<Long, String> temp = new HashMap<>(statusList);
-            temp.remove(Long.valueOf(0));
-            temp.remove(Long.valueOf(1));
-            if (taskModel.getStatus().equals(Long.valueOf(3)))
-                temp.remove(Long.valueOf(2));
-            if (taskModel.getStatus().equals(Long.valueOf(2)))
-                temp.remove(Long.valueOf(3));
-            final Collection<String> statusValues = temp.values();
+            Collection<String> statusValues = statusList.values();
             ArrayList<String> listOfStatus = new ArrayList<String>(statusValues);
             ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, listOfStatus);
             ((TaskFormHolder) holder).valueStatus.setAdapter(statusAdapter);
-            ((TaskFormHolder) holder).valueStatus.setSelection(listOfStatus.indexOf(temp.get(taskModel.getStatus())));
-            ((TaskFormHolder) holder).valueStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            ((TaskFormHolder) holder).valueStatus.setSelection(taskModel.getStatus().intValue());
+            ((TaskFormHolder) holder).valueStatus.setOnTouchListener(new View.OnTouchListener() {
                 @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    String value = ((TaskFormHolder) holder).valueStatus.getItemAtPosition(position).toString();
-                    BiMap<Long, String> statusBiMap = HashBiMap.create(statusList);
-                    currentStatus = statusBiMap.inverse().get(value).intValue();
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
                 }
             });
-            if (currentAccount.getRoleId() == 0) {
-                ((TaskFormHolder) holder).valueStatus.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        return true;
-                    }
-                });
-            }
 //                  Set note
             String note = "";
             if (taskModel.getEndTime() == null) {
@@ -280,90 +266,46 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
             ((TaskFormHolder) holder).valueCreator.setText(creator.getFullName());
             //                  Set Description
             ((TaskFormHolder) holder).valueDescription.setText(taskModel.getDescription());
-            //                  Set start date
-            ((TaskFormHolder) holder).valueDateStart.setText(taskModel.getStartTime() != null ? DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm").format(taskModel.getStartTime().atZone(ZoneId.of("GMT"))) : "");
-            ((TaskFormHolder) holder).valueDateEnd.setText(taskModel.getEndTime() != null ? DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm").format(taskModel.getEndTime().atZone(ZoneId.of("GMT"))) : "");
-
-            //                  Set select img listener
-            if (currentAccount.getRoleId() > 0 && !taskModel.getAssignee().equals(currentAccount.getAccountId())) {
-                ((TaskFormHolder) holder).btnImg.setEnabled(false);
-            }
-
-            //                  Set image to resolution image
-            if (imageResolution != null) {
-                ((TaskFormHolder) holder).valueImgResolution.setImageBitmap(imageResolution);
-            }
-            //                  Result
-            ((TaskFormHolder) holder).valueResult.setEnabled(false);
-            ((TaskFormHolder) holder).valueResult.setText(taskModel.getResult());
-            //                  Reviewer
-            ((TaskFormHolder) holder).valueReviewer.setText(reviewer != null ? reviewer.getFullName() : "");
-            //                  Mark
-
-            ((TaskFormHolder) holder).valueMark.setMinValue(0);
-            ((TaskFormHolder) holder).valueMark.setMaxValue(10);
-            if (taskModel.getMark() != null) {
-                ((TaskFormHolder) holder).valueMark.setValue(taskModel.getMark().intValue());
-            }
-            //                  Date reviewed
-            ((TaskFormHolder) holder).valueDateReview.setText(taskModel.getReviewTime() != null ? DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm").format(taskModel.getReviewTime().atZone(ZoneId.of("GMT"))) : "");
-            //                  Review content
-            ((TaskFormHolder) holder).valueReview.setText(taskModel.getManagerComment() != null ? taskModel.getManagerComment() : "");
             //                  last modified
             ((TaskFormHolder) holder).valueModifiedBy.setText(lastModifiedName);
             ((TaskFormHolder) holder).valueModifiedAt.setText(DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm").format(taskModel.getEditedAt().atZone(ZoneId.of("GMT"))));
-            //                  button update
+
             ((TaskFormHolder) holder).btnUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     TaskModel taskUpdate = new TaskModel();
                     taskUpdate.setTaskId(taskModel.getTaskId());
-                    taskUpdate.setStatus(Long.valueOf(currentStatus));
-                    taskUpdate.setMark(Long.valueOf(((TaskFormHolder) holder).valueMark.getValue()));
-                    taskUpdate.setReviewerId(currentAccount.getAccountId());
-                    taskUpdate.setManagerComment(((TaskFormHolder) holder).valueReview.getText().toString());
+                    taskUpdate.setTaskName(((TaskFormHolder) holder).valueTaskName.getText().toString());
+                    taskUpdate.setDate(((TaskFormHolder) holder).valueDateDeadline.getText().toString());
+                    taskUpdate.setTime(((TaskFormHolder) holder).valueTimeDeadline.getText().toString());
+                    taskUpdate.setDescription(((TaskFormHolder) holder).valueDescription.getText().toString());
                     taskUpdate.setEditedBy(currentAccount.getAccountId());
-                    updateTask(taskUpdate, false);
+                    updateTask(taskUpdate);
                 }
             });
-            if (!taskModel.getStatus().equals(Long.valueOf(3))) {
-                ((TaskFormHolder) holder).btnClone.setVisibility(View.GONE);
-            } else {
-                ((TaskFormHolder) holder).btnClone.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        TaskModel taskUpdate = new TaskModel();
-                        taskUpdate.setTaskId(taskModel.getTaskId());
-                        taskUpdate.setStatus(Long.valueOf(3));
-                        taskUpdate.setMark(Long.valueOf(((TaskFormHolder) holder).valueMark.getValue()));
-                        taskUpdate.setReviewerId(currentAccount.getAccountId());
-                        taskUpdate.setManagerComment(((TaskFormHolder) holder).valueReview.getText().toString());
-                        taskUpdate.setEditedBy(currentAccount.getAccountId());
-                        taskUpdate.setClosed(true);
-                        updateTask(taskUpdate, true);
-                        ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
-                        ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new TaskCreateFragment(approveList, roleList, statusList, taskModel)).commit();
-                        ((AppCompatActivity) mContext).setTitle("Clone task");
-                    }
-                });
-            }
-            ((TaskFormHolder) holder).btnClose.setOnClickListener(new View.OnClickListener() {
+            ((TaskFormHolder) holder).btnApprove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     TaskModel taskUpdate = new TaskModel();
                     taskUpdate.setTaskId(taskModel.getTaskId());
-                    taskUpdate.setStatus(Long.valueOf(currentStatus));
-                    taskUpdate.setMark(Long.valueOf(((TaskFormHolder) holder).valueMark.getValue()));
-                    taskUpdate.setReviewerId(currentAccount.getAccountId());
-                    taskUpdate.setManagerComment(((TaskFormHolder) holder).valueReview.getText().toString());
+                    taskUpdate.setApprovedId(Long.valueOf(1));
                     taskUpdate.setEditedBy(currentAccount.getAccountId());
+                    updateTask(taskUpdate);
+                }
+            });
+            ((TaskFormHolder) holder).btnDecline.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TaskModel taskUpdate = new TaskModel();
+                    taskUpdate.setTaskId(taskModel.getTaskId());
+                    taskUpdate.setApprovedId(Long.valueOf(2));
                     taskUpdate.setClosed(true);
-                    updateTask(taskUpdate, false);
+                    taskUpdate.setEditedBy(currentAccount.getAccountId());
+                    updateTask(taskUpdate);
                 }
             });
 
         }
-
 
     }
 
@@ -383,10 +325,6 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
                 responses.add(response);
                 List<TaskModel> taskModels = TimeUtil.convertTaskResponseToTask(responses);
                 taskModel = taskModels.get(0);
-                if (taskModel.getImgResolutionUrl() != null) {
-                    byte[] decodedString = Base64.decode(taskModel.getImgResolutionUrl(), Base64.DEFAULT);
-                    imageResolution = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                }
                 getCreatorById(taskModel.getAccountCreated());
 
             }
@@ -426,30 +364,6 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
             @Override
             public void onResponse(LoginResponse response) {
                 assignee = response.account;
-                if (taskModel.getReviewerId() != null) {
-                    getReviewerById(taskModel.getReviewerId());
-                } else {
-                    dataLoaded = true;
-                    notifyDataSetChanged();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(mContext, "Connection Time Out", Toast.LENGTH_SHORT).show();
-            }
-        });
-        requestQueue.add(gsonRequest);
-    }
-
-    public void getReviewerById(Long accountId) {
-        RequestQueue requestQueue = SingletonRequestQueue.getInstance(mContext.getApplicationContext()).getRequestQueue();
-        HashMap<String, String> headers = new HashMap<>();
-        String url = mContext.getResources().getString(R.string.BASE_URL) + "/account?id=" + accountId;
-        GsonRequest<LoginResponse> gsonRequest = new GsonRequest<>(url, LoginResponse.class, headers, new Response.Listener<LoginResponse>() {
-            @Override
-            public void onResponse(LoginResponse response) {
-                reviewer = response.account;
                 getLastModifiedById(taskModel.getEditedBy());
             }
         }, new Response.ErrorListener() {
@@ -481,7 +395,7 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
         requestQueue.add(gsonRequest);
     }
 
-    public void updateTask(TaskModel taskModel, final boolean isClone) {
+    public void updateTask(TaskModel taskModel) {
         String url = String.format(mContext.getResources().getString(R.string.BASE_URL) + "/task");
         HashMap<String, String> header = new HashMap<>();
         header.put("Content-Type", "application/json");
@@ -495,9 +409,7 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
             @Override
             public void onResponse(Integer response) {
                 Toast.makeText(mContext.getApplicationContext(), "Update successfully!", Toast.LENGTH_LONG);
-                if (!isClone) {
-                    ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
-                }
+                ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
             }
         }, new Response.ErrorListener() {
             @Override

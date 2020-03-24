@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 currentFragment = new TaskCreateFragment(approveList, roleList, statusList);
                 break;
             case 2:
-                currentFragment = new DetailAccountFragment(roleList);
+                currentFragment = new AccountDetailFragment(roleList);
                 break;
             case 4:
                 deleteTokenFromServer();
@@ -378,7 +378,7 @@ public class MainActivity extends AppCompatActivity {
                     fragmentManager.popBackStack();
                 }
                 MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-                        new DetailAccountFragment(accountModel, roleList)).addToBackStack(null).commit();
+                        new AccountDetailFragment(accountModel, roleList)).addToBackStack(null).commit();
             }
         }, new Response.ErrorListener() {
             @Override

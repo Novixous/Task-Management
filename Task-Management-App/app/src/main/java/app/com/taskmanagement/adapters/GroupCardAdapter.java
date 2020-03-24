@@ -24,7 +24,7 @@ import app.com.taskmanagement.model.response.GroupResponse;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.SingletonRequestQueue;
 
-public class CardGroupAdapter extends RecyclerView.Adapter {
+public class GroupCardAdapter extends RecyclerView.Adapter {
     private ArrayList<GroupModel> dataSet;
     private Fragment fragment;
     private Context mContext;
@@ -34,7 +34,7 @@ public class CardGroupAdapter extends RecyclerView.Adapter {
         this.onItemClickedListener = onItemClickedListener;
     }
 
-    public CardGroupAdapter(Context mContext, Fragment fragment) {
+    public GroupCardAdapter(Context mContext, Fragment fragment) {
         this.dataSet = new ArrayList<>();
         this.mContext = mContext;
         this.fragment = fragment;

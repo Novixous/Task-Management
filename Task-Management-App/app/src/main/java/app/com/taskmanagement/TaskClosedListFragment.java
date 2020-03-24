@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import app.com.taskmanagement.adapters.CardTaskClosedAdapter;
+import app.com.taskmanagement.adapters.TaskCardClosedAdapter;
 import app.com.taskmanagement.model.response.TaskResponse;
 
 /**
@@ -47,7 +47,7 @@ public class TaskClosedListFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        CardTaskClosedAdapter cardTaskAdapter = new CardTaskClosedAdapter(this.getActivity(), approveList, roleList, statusList);
+        TaskCardClosedAdapter cardTaskAdapter = new TaskCardClosedAdapter(this.getActivity(), approveList, roleList, statusList);
         recyclerView = view.findViewById(R.id.tabShowCard);
         StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(lm);

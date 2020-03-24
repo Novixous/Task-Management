@@ -41,7 +41,7 @@ import app.com.taskmanagement.model.response.LoginResponse;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.SingletonRequestQueue;
 
-public class CreateAccountAdapter extends RecyclerView.Adapter {
+public class AccountCreateAdapter extends RecyclerView.Adapter {
     private AccountModel accountModel;
     Context mContext;
     private Boolean dataLoaded;
@@ -50,7 +50,7 @@ public class CreateAccountAdapter extends RecyclerView.Adapter {
     private List<AccountModel> listMembers;
     private int currentRole;
 
-    public CreateAccountAdapter(Context mContext, HashMap<Long, String> roleList) {
+    public AccountCreateAdapter(Context mContext, HashMap<Long, String> roleList) {
         this.mContext = mContext;
         this.groupModelList = new ArrayList<>();
         this.roleList = roleList;

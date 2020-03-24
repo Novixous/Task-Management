@@ -31,7 +31,7 @@ import app.com.taskmanagement.util.SingletonRequestQueue;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DetailAccountFragment extends Fragment {
+public class AccountDetailFragment extends Fragment {
     private AccountModel accountModel;
     private EditText edtId, edtFullname, edtUsername, edtEmail, edtPhone;
     private Spinner spinnerActive, spinnerGroup, spinnerRole;
@@ -40,13 +40,13 @@ public class DetailAccountFragment extends Fragment {
 
     private HashMap<Long, String> roleList = new HashMap<>();
 
-    public DetailAccountFragment(AccountModel accountModel, HashMap<Long, String> roleList) {
+    public AccountDetailFragment(AccountModel accountModel, HashMap<Long, String> roleList) {
         this.accountModel = accountModel;
         this.roleList =roleList;
     }
 
 
-    public DetailAccountFragment(HashMap<Long, String> roleList) {
+    public AccountDetailFragment(HashMap<Long, String> roleList) {
         this.roleList = roleList;
 
         // Required empty public constructor
