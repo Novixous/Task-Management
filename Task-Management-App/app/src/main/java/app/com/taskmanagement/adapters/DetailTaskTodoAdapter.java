@@ -14,14 +14,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.NumberPicker;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -268,6 +264,13 @@ public class DetailTaskTodoAdapter extends RecyclerView.Adapter {
                     String value = dialogStatusItems[which];
                     BiMap<Long, String> statusBiMap = HashBiMap.create(statusList);
                     currentStatus = statusBiMap.inverse().get(value).intValue();
+                    if (currentStatus == 3 || currentStatus == 2) {
+                        ((TaskFormHolder) holder).valueResult.setEnabled(true);
+                        ((TaskFormHolder) holder).btnImg.setEnabled(true);
+                    } else {
+                        ((TaskFormHolder) holder).valueResult.setEnabled(false);
+                        ((TaskFormHolder) holder).btnImg.setEnabled(false);
+                    }
                     ((TaskFormHolder) holder).valueStatus.setText(value);
                 }
             });
@@ -326,20 +329,20 @@ public class DetailTaskTodoAdapter extends RecyclerView.Adapter {
             if (currentAccount.getRoleId() > 0 && !taskModel.getAssignee().equals(currentAccount.getAccountId())) {
                 ((TaskFormHolder) holder).btnImg.setEnabled(false);
             }
-            if (!taskModel.getStatus().equals(Long.valueOf(0))) {
-                ((TaskFormHolder) holder).btnImg.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (ActivityCompat.checkSelfPermission(fragment.getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                            fragment.requestPermissions(
-                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                    2000);
-                        } else {
-                            startGallery();
-                        }
+
+            ((TaskFormHolder) holder).btnImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (ActivityCompat.checkSelfPermission(fragment.getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        fragment.requestPermissions(
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                2000);
+                    } else {
+                        startGallery();
                     }
-                });
-            }
+                }
+            });
+            
             //                  Set image to resolution image
             if (imageResolution != null) {
                 ((TaskFormHolder) holder).valueImgResolution.setImageBitmap(imageResolution);
@@ -543,8 +546,12 @@ public class DetailTaskTodoAdapter extends RecyclerView.Adapter {
         GsonRequest<Integer> taskResponseCreateRequest = new GsonRequest<>(Request.Method.PUT, url, Integer.class, header, body, new Response.Listener<Integer>() {
             @Override
             public void onResponse(Integer response) {
-                Toast.makeText(mContext.getApplicationContext(), "Update successfully!", Toast.LENGTH_LONG);
-                ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
+                if (response.intValue() > 0) {
+                    Toast.makeText(mContext.getApplicationContext(), "Update successfully!", Toast.LENGTH_LONG);
+                    ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
+                } else if (response.intValue() == -1) {
+                    Toast.makeText(mContext, "Please fill in both result and select evidence image", Toast.LENGTH_SHORT).show();
+                }
             }
         }, new Response.ErrorListener() {
             @Override

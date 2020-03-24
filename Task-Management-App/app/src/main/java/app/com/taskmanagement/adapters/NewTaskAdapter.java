@@ -28,8 +28,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.google.gson.Gson;
 
 import java.text.DateFormat;
@@ -280,20 +278,6 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
                 spinnerAssigneeItems.add("(" + account.getAccountId() + ") " + account.getFullName());
             }
         }
-//        ArrayAdapter<String> assigneeAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, spinnerAssigneeItems);
-//        assigneeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        ((TaskFormHolder) holder).valueAssignee.setAdapter(assigneeAdapter);
-//        //Choose assignee
-//        ((TaskFormHolder) holder).valueAssignee.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                taskModel.setAssignee(listMembers.get(position).getAccountId());
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//            }
-//        });
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle("Choose assignee");
@@ -302,6 +286,7 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
             final String[] dialogAssigneeItems = spinnerAssigneeItems.toArray(new String[0]);
             int checkedItem = 0;
             ((TaskFormHolder) holder).valueAssignee.setText(dialogAssigneeItems[0]);
+            taskModel.setAssignee(listMembers.get(checkedItem).getAccountId());
             builder.setSingleChoiceItems(dialogAssigneeItems, checkedItem, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -319,14 +304,14 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
             });
             builder.setNegativeButton("Cancel", null);
 
-                ((TaskFormHolder) holder).valueAssignee.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // create and show the alert dialog
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-                    }
-                });
+            ((TaskFormHolder) holder).valueAssignee.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // create and show the alert dialog
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            });
 
         }
 //                  show name creator
@@ -413,9 +398,17 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
         GsonRequest<Integer> taskResponseCreateRequest = new GsonRequest<>(Request.Method.POST, url, Integer.class, header, body, new Response.Listener<Integer>() {
             @Override
             public void onResponse(Integer response) {
-                Toast.makeText(mContext, "Create successfully!", Toast.LENGTH_LONG);
-                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new TaskFragment(approveList, roleList, statusList)).commit();
-                ((AppCompatActivity) mContext).setTitle("My Task");
+                if (response.intValue() >= 0) {
+                    Toast.makeText(mContext, "Create successfully!", Toast.LENGTH_LONG);
+                    ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new TaskFragment(approveList, roleList, statusList)).commit();
+                    ((AppCompatActivity) mContext).setTitle("My Task");
+                } else if (response.intValue() == -2) {
+                    Toast.makeText(mContext, "Please input both date and time of deadline!", Toast.LENGTH_LONG).show();
+                } else if (response.intValue() == -3) {
+                    Toast.makeText(mContext, "Task name must not be blank", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(mContext, "Error creating task", Toast.LENGTH_SHORT).show();
+                }
             }
         }, new Response.ErrorListener() {
             @Override

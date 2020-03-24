@@ -138,50 +138,103 @@
             android:orientation="vertical"
             android:paddingTop="3dp"
             android:paddingBottom="3dp">
-
+            <!--            Creator-->
             <TextView
-                android:id="@+id/txtDeadline"
+                android:id="@+id/txtCreator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/muli_bold"
-                android:text="Deadline: "
+                android:text="Creator: "
                 android:textColor="@color/title"
                 android:textSize="13dp"
                 android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/valueDateDeadline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:background="@color/white"
-                    android:fontFamily="@font/lato"
-                    android:text="Get date"
-                    android:textAllCaps="false"
-                    android:textColor="@color/black"
-                    android:textSize="18dp" />
-
-                <Button
-                    android:id="@+id/valueTimeDeadline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="0.5"
-                    android:background="@color/white"
-                    android:fontFamily="@font/lato"
-                    android:text="Get time"
-                    android:textAllCaps="false"
-                    android:textSize="18dp" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/valueCreator"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
+                android:gravity="center"
+                android:text="Creator"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
         </LinearLayout>
 
         <View
-            android:id="@+id/lineDeadline"
+            android:id="@+id/lineCreator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="5dp"
+            android:background="@color/cardview_dark_background" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp">
+
+            <TextView
+                android:id="@+id/txtGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Group: "
+                android:textColor="@color/title"
+                android:textSize="13dp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <Spinner
+                android:id="@+id/valueGroup"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Assignee"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/lineGroup"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="5dp"
+            android:background="@color/cardview_dark_background"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp">
+            <!--            Assignee-->
+            <TextView
+                android:id="@+id/txtAssignee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/muli_bold"
+                android:text="Assignee: "
+                android:textColor="@color/title"
+                android:textSize="13dp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/valueAssignee"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/smoke"
+                android:fontFamily="@font/lato"
+                android:gravity="center"
+                android:text="Assignee"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/lineAssignee"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
@@ -262,116 +315,60 @@
             android:layout_margin="5dp"
             android:background="@color/cardview_dark_background" />
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingTop="3dp"
             android:paddingBottom="3dp">
-            <!--            Creator-->
 
             <TextView
-                android:id="@+id/txtCreator"
+                android:id="@+id/txtDeadline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/muli_bold"
-                android:text="Creator: "
+                android:text="Deadline: "
                 android:textColor="@color/title"
                 android:textSize="13dp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/valueCreator"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lato"
-                android:gravity="center"
-                android:text="Creator"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/valueDateDeadline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:background="@color/white"
+                    android:fontFamily="@font/lato"
+                    android:text="Get date"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+
+                <Button
+                    android:id="@+id/valueTimeDeadline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="0.5"
+                    android:background="@color/white"
+                    android:fontFamily="@font/lato"
+                    android:text="Get time"
+                    android:textAllCaps="false"
+                    android:textSize="18dp" />
+            </LinearLayout>
         </LinearLayout>
 
         <View
-            android:id="@+id/lineCreator"
+            android:id="@+id/lineDeadline"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="5dp"
             android:background="@color/cardview_dark_background" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp">
-            <!--            Assignee-->
-            <TextView
-                android:id="@+id/txtGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Group: "
-                android:textColor="@color/title"
-                android:textSize="13dp"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <Spinner
-                android:id="@+id/valueGroup"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Assignee"
-                android:textColor="@color/black"
-                android:textSize="18dp"
-                android:visibility="gone" />
-        </LinearLayout>
-
-        <View
-            android:id="@+id/lineGroup"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="5dp"
-            android:background="@color/cardview_dark_background"
-            android:visibility="gone" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="3dp"
-            android:paddingBottom="3dp">
-            <!--            Assignee-->
-            <TextView
-                android:id="@+id/txtAssignee"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/muli_bold"
-                android:text="Assignee: "
-                android:textColor="@color/title"
-                android:textSize="13dp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/valueAssignee"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/smoke"
-                android:fontFamily="@font/lato"
-                android:gravity="center"
-                android:text="Assignee"
-                android:textColor="@color/black"
-                android:textSize="18dp" />
-        </LinearLayout>
-
-        <View
-            android:id="@+id/lineAssignee"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="5dp"
-            android:background="@color/cardview_dark_background" />
-
         <!--        txtDescription-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -652,17 +649,17 @@
                         android:id="@+id/valueMark"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:isb_indicator_color="@color/colorAccent"
                         app:isb_max="10"
                         app:isb_show_indicator="circular_bubble"
                         app:isb_show_tick_marks_type="oval"
                         app:isb_show_tick_texts="true"
+                        app:isb_thumb_color="@color/colorAccent"
                         app:isb_tick_marks_color="@color/colorPrimary"
                         app:isb_tick_texts_color="@color/colorAccent"
-                        app:isb_thumb_color="@color/colorAccent"
-                        app:isb_indicator_color="@color/colorAccent"
+                        app:isb_ticks_count="11"
                         app:isb_track_background_color="@color/colorAccent"
-                        app:isb_track_progress_color="@color/colorAccent"
-                        app:isb_ticks_count="11" />
+                        app:isb_track_progress_color="@color/colorAccent" />
                 </com.warkiz.widget.IndicatorStayLayout>
             </LinearLayout>
 

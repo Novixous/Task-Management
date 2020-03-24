@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import java.util.HashMap;
 
 import app.com.taskmanagement.adapters.CardTaskFinishedAdapter;
-import app.com.taskmanagement.adapters.TaskCardPendingAdapter;
 import app.com.taskmanagement.adapters.CardTaskTodoAdapter;
+import app.com.taskmanagement.adapters.TaskCardPendingAdapter;
 
 /**
  * A simple {@link Fragment} subclass.

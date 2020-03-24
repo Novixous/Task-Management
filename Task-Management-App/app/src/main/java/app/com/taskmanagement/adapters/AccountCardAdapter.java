@@ -8,9 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.RequestQueue;
@@ -21,10 +19,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import app.com.taskmanagement.FragmentAccountList;
 import app.com.taskmanagement.R;
 import app.com.taskmanagement.model.AccountModel;
-import app.com.taskmanagement.model.Group;
+import app.com.taskmanagement.model.GroupModel;
 import app.com.taskmanagement.model.response.GroupResponse;
 import app.com.taskmanagement.model.response.UserListReponse;
 import app.com.taskmanagement.util.GsonRequest;
@@ -36,10 +33,10 @@ public class AccountCardAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private OnItemClicked onItemClickedListener;
     private HashMap<Long, String> roleList;
-    private HashMap<Long, Group> groupHashMap;
+    private HashMap<Long, GroupModel> groupHashMap;
 
 
-    public CardAccountAdapter(Context mContext, Fragment fragment, HashMap<Long, String> roleList) {
+    public AccountCardAdapter(Context mContext, Fragment fragment, HashMap<Long, String> roleList) {
         this.dataSet = new ArrayList<>();
         this.roleList = roleList;
         this.fragment = fragment;
@@ -129,10 +126,10 @@ public class AccountCardAdapter extends RecyclerView.Adapter {
         GsonRequest<GroupResponse> userListReponseGsonRequest = new GsonRequest<>(url, GroupResponse.class, header, new Response.Listener<GroupResponse>() {
             @Override
             public void onResponse(GroupResponse response) {
-                List<Group> groupList = new ArrayList<>();
+                List<GroupModel> groupList = new ArrayList<>();
                 groupList.addAll(response.getData());
                 groupHashMap = new HashMap<>();
-                for (Group group : groupList) {
+                for (GroupModel group : groupList) {
                     groupHashMap.put(group.getGroupId(), group);
                 }
                 notifyDataSetChanged();

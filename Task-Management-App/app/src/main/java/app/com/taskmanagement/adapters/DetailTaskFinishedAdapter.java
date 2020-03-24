@@ -2,8 +2,6 @@ package app.com.taskmanagement.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -12,14 +10,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.NumberPicker;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +32,7 @@ import com.google.common.collect.HashBiMap;
 import com.google.gson.Gson;
 import com.warkiz.widget.IndicatorSeekBar;
 
+import java.io.ByteArrayOutputStream;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -337,6 +332,14 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
                     taskUpdate.setReviewerId(currentAccount.getAccountId());
                     taskUpdate.setManagerComment(((TaskFormHolder) holder).valueReview.getText().toString());
                     taskUpdate.setEditedBy(currentAccount.getAccountId());
+                    taskUpdate.setResult(((TaskFormHolder) holder).valueResult.getText().toString());
+                    if (imageResolution != null) {
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        imageResolution.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                        byte[] byteArray = byteArrayOutputStream.toByteArray();
+                        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        taskUpdate.setImgResolutionUrl(encoded);
+                    }
                     updateTask(taskUpdate, false);
                 }
             });
@@ -353,6 +356,14 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
                         taskUpdate.setReviewerId(currentAccount.getAccountId());
                         taskUpdate.setManagerComment(((TaskFormHolder) holder).valueReview.getText().toString());
                         taskUpdate.setEditedBy(currentAccount.getAccountId());
+                        taskUpdate.setResult(((TaskFormHolder) holder).valueResult.getText().toString());
+                        if (imageResolution != null) {
+                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                            imageResolution.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                            byte[] byteArray = byteArrayOutputStream.toByteArray();
+                            String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                            taskUpdate.setImgResolutionUrl(encoded);
+                        }
                         taskUpdate.setClosed(true);
                         updateTask(taskUpdate, true);
                         ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
@@ -372,6 +383,14 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
                     taskUpdate.setManagerComment(((TaskFormHolder) holder).valueReview.getText().toString());
                     taskUpdate.setEditedBy(currentAccount.getAccountId());
                     taskUpdate.setClosed(true);
+                    taskUpdate.setResult(((TaskFormHolder) holder).valueResult.getText().toString());
+                    if (imageResolution != null) {
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        imageResolution.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                        byte[] byteArray = byteArrayOutputStream.toByteArray();
+                        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                        taskUpdate.setImgResolutionUrl(encoded);
+                    }
                     updateTask(taskUpdate, false);
                 }
             });
@@ -508,9 +527,13 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
         GsonRequest<Integer> taskResponseCreateRequest = new GsonRequest<>(Request.Method.PUT, url, Integer.class, header, body, new Response.Listener<Integer>() {
             @Override
             public void onResponse(Integer response) {
-                Toast.makeText(mContext.getApplicationContext(), "Update successfully!", Toast.LENGTH_LONG);
-                if (!isClone) {
-                    ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
+                if (response.intValue() > 0) {
+                    Toast.makeText(mContext.getApplicationContext(), "Update successfully!", Toast.LENGTH_LONG);
+                    if (!isClone) {
+                        ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
+                    }
+                } else if (response.intValue() == -2) {
+                    Toast.makeText(mContext, "Please fill in review content.", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {

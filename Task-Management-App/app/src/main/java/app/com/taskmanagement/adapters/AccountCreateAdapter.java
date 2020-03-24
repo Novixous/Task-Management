@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import app.com.taskmanagement.GroupListFragment;
+import app.com.taskmanagement.FragmentAccountList;
 import app.com.taskmanagement.R;
 import app.com.taskmanagement.model.AccountModel;
 import app.com.taskmanagement.model.GroupModel;
@@ -193,7 +193,7 @@ public class AccountCreateAdapter extends RecyclerView.Adapter {
                 if (response.account == null) {
                     createAccount(accountModel);
                 } else {
-                    Toast.makeText(mContext, "AAA", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "Username existed", Toast.LENGTH_LONG).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -217,8 +217,15 @@ public class AccountCreateAdapter extends RecyclerView.Adapter {
         GsonRequest<Integer> taskResponseCreateRequest = new GsonRequest<>(Request.Method.POST, url, Integer.class, header, body, new Response.Listener<Integer>() {
             @Override
             public void onResponse(Integer response) {
-                ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
-                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new GroupListFragment());
+                if (response.intValue() == 1) {
+                    Toast.makeText(mContext, "Create account successful", Toast.LENGTH_LONG).show();
+                    ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
+                    ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new FragmentAccountList(roleList)).commit();
+                } else if (response.intValue() == 0) {
+                    Toast.makeText(mContext, "There is aldready a manager of this group!", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(mContext, "There is error creating account", Toast.LENGTH_SHORT).show();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
