@@ -162,6 +162,7 @@
                     android:background="@color/white"
                     android:fontFamily="@font/lato"
                     android:text="Get date"
+                    android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:textSize="18dp" />
 
@@ -174,6 +175,7 @@
                     android:background="@color/white"
                     android:fontFamily="@font/lato"
                     android:text="Get time"
+                    android:textAllCaps="false"
                     android:textSize="18dp" />
             </LinearLayout>
         </LinearLayout>
@@ -214,9 +216,11 @@
                     android:id="@+id/valueStatus"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/smoke"
                     android:fontFamily="@font/lato"
                     android:gravity="center"
                     android:text="Status"
+                    android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -352,6 +356,7 @@
                 android:id="@+id/valueAssignee"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/smoke"
                 android:fontFamily="@font/lato"
                 android:gravity="center"
                 android:text="Assignee"
@@ -391,11 +396,11 @@
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/lato"
                 android:gravity="top"
+                android:inputType="textMultiLine"
                 android:maxLines="10"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 android:singleLine="false"
-                android:inputType="textMultiLine"
                 android:text=""
                 android:textColor="@color/black"
                 android:textSize="18dp" />
@@ -448,7 +453,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
-                android:background="@drawable/br_vertical"
                 android:orientation="vertical">
                 <!--            txtDateEnd-->
 
@@ -562,12 +566,12 @@
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/lato"
                 android:gravity="top"
+                android:inputType="textMultiLine"
                 android:maxLines="10"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 android:singleLine="false"
                 android:text=""
-                android:inputType="textMultiLine"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
@@ -637,6 +641,7 @@
                     android:textColor="@color/title"
                     android:textSize="13dp"
                     android:textStyle="bold" />
+
                 <com.warkiz.widget.IndicatorStayLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -645,26 +650,19 @@
                         android:id="@+id/valueMark"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:isb_tick_marks_color="@color/colorPrimary"
                         app:isb_max="10"
                         app:isb_show_indicator="circular_bubble"
                         app:isb_show_tick_marks_type="oval"
                         app:isb_show_tick_texts="true"
-                        app:isb_tick_texts_color="@color/selector_tick_texts_3_color"
+                        app:isb_tick_marks_color="@color/colorPrimary"
+                        app:isb_tick_texts_color="@color/colorAccent"
                         app:isb_ticks_count="11" />
                 </com.warkiz.widget.IndicatorStayLayout>
-<!--                <NumberPicker-->
-<!--                    android:id="@+id/valueMark"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="50dp"-->
-<!--                    android:layout_marginLeft="3dp"-->
-<!--                    android:textColor="@color/black"-->
-<!--                    android:textSize="18dp" />-->
-
             </LinearLayout>
 
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -672,11 +670,11 @@
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
             android:weightSum="1">
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/br_vertical"
                 android:orientation="vertical">
                 <!--            txtDateReview-->
                 <TextView
@@ -735,12 +733,12 @@
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/lato"
                 android:gravity="top"
+                android:inputType="textMultiLine"
                 android:maxLines="10"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 android:singleLine="false"
                 android:text=""
-                android:inputType="textMultiLine"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
