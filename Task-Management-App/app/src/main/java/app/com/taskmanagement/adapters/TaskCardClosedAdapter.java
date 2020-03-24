@@ -255,7 +255,7 @@ public class TaskCardClosedAdapter extends RecyclerView.Adapter {
                 ((ShowCardTaskHolder) holder).valueTaskName.setText(object.getTaskName());
                 ((ShowCardTaskHolder) holder).valueAssignee.setText(assigneeMap.get(object.getAssignee()));
                 ((ShowCardTaskHolder) holder).valueStatus.setText(statusList.get(object.getStatus()));
-                ((ShowCardTaskHolder) holder).valueDeadline.setText(splitDeadline.substring(0, 19).replace("T", "\n"));
+                ((ShowCardTaskHolder) holder).valueDeadline.setText(splitDeadline.substring(0, 19).replace("T", " "));
                 break;
         }
     }

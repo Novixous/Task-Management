@@ -40,7 +40,9 @@ public class GroupDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.detail_group_fragment, container, false);
         edtGroupId = rootView.findViewById(R.id.edtGroupId);
         edtGroupName = rootView.findViewById(R.id.edtGroupName);
+        edtGroupName.setEnabled(false);
         edtGroupDescription = rootView.findViewById(R.id.edtGroupDescription);
+        edtGroupDescription.setEnabled(false);
         edtGroupCreator = rootView.findViewById(R.id.edtGroupCreator);
 
         edtGroupId.setText(groupModel.getGroupId().toString());
