@@ -1,13 +1,19 @@
 package app.com.taskmanagement;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import androidx.fragment.app.Fragment;
@@ -20,6 +26,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
 import app.com.taskmanagement.model.AccountModel;
 import app.com.taskmanagement.model.GroupModel;
 import app.com.taskmanagement.model.response.GroupResponse;
@@ -36,6 +44,8 @@ public class AccountDetailFragment extends Fragment {
     private EditText edtId, edtFullname, edtUsername, edtEmail, edtPhone;
     private Spinner spinnerActive, spinnerGroup, spinnerRole;
     private List<GroupModel> groupModelList;
+    private QRGEncoder qrgEncoder;
+    Bitmap qrBitmap;
 
 
     private HashMap<Long, String> roleList = new HashMap<>();
@@ -99,6 +109,24 @@ public class AccountDetailFragment extends Fragment {
                 return true;
             }
         });
+        try {
+            WindowManager manager = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+            Display display = manager.getDefaultDisplay();
+            Point point = new Point();
+            display.getSize(point);
+            int width = point.x;
+            int height = point.y;
+            int smallerDimension = width < height ? width : height;
+            smallerDimension = smallerDimension * 3 / 4;
+            qrgEncoder = new QRGEncoder(accountModel.getAccountId().toString(), null, QRGContents.Type.TEXT, smallerDimension);
+            // Getting QR-Code as Bitmap
+            qrBitmap = qrgEncoder.encodeAsBitmap();
+            // Setting Bitmap to ImageView
+            ImageView qrImageView = rootView.findViewById(R.id.nav_image_view);
+            qrImageView.setImageBitmap(qrBitmap);
+        } catch (Exception e) {
+            Log.v("Account Detail Fragment", e.toString());
+        }
 
         return rootView;
     }

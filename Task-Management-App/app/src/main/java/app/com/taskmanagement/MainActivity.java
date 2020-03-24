@@ -63,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
     private HashMap<Long, String> approveList = new HashMap<>();
     private HashMap<Long, String> roleList = new HashMap<>();
     private HashMap<Long, String> statusList = new HashMap<>();
-    private QRGEncoder qrgEncoder;
-    Bitmap qrBitmap;
     String newToken;
 
 
@@ -109,25 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        try {
-            WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
-            Display display = manager.getDefaultDisplay();
-            Point point = new Point();
-            display.getSize(point);
-            int width = point.x;
-            int height = point.y;
-            int smallerDimension = width < height ? width : height;
-            smallerDimension = smallerDimension * 3 / 4;
-            qrgEncoder = new QRGEncoder(PreferenceUtil.getAccountFromSharedPreferences(this.getApplicationContext()).getAccountId().toString(), null, QRGContents.Type.TEXT, smallerDimension);
-            // Getting QR-Code as Bitmap
-            qrBitmap = qrgEncoder.encodeAsBitmap();
-            // Setting Bitmap to ImageView
-            View header = navigationView.getHeaderView(0);
-            ImageView qrImageView = header.findViewById(R.id.nav_image_view);
-            qrImageView.setImageBitmap(qrBitmap);
-        } catch (Exception e) {
-            Log.v("Main Activity", e.toString());
-        }
+
 
 
     }
