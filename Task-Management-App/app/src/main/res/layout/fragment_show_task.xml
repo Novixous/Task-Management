@@ -656,6 +656,10 @@
                         app:isb_show_tick_texts="true"
                         app:isb_tick_marks_color="@color/colorPrimary"
                         app:isb_tick_texts_color="@color/colorAccent"
+                        app:isb_thumb_color="@color/colorAccent"
+                        app:isb_indicator_color="@color/colorAccent"
+                        app:isb_track_background_color="@color/colorAccent"
+                        app:isb_track_progress_color="@color/colorAccent"
                         app:isb_ticks_count="11" />
                 </com.warkiz.widget.IndicatorStayLayout>
             </LinearLayout>
