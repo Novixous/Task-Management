@@ -39,7 +39,7 @@ public class FragmentAccountList extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_list_account, container, false);
         getActivity().setTitle("Account List");
 
-        final CardAccountAdapter cardAccountAdapter = new CardAccountAdapter(this.getActivity(), this);
+        final CardAccountAdapter cardAccountAdapter = new CardAccountAdapter(this.getActivity(), this, roleList);
         cardAccountAdapter.setOnItemClickedListener(new CardAccountAdapter.OnItemClicked() {
             @Override
             public void onClicked(int position) {
