@@ -46,7 +46,7 @@ public class AccountListFragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
                         new AccountDetailFragment(accountModel, roleList))
                         .addToBackStack(null).commit();
-                getActivity().setTitle("Group Detail");
+                getActivity().setTitle("Account Detail");
             }
         });
         recyclerView = rootView.findViewById(R.id.accountlist_recycler);
