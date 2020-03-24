@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             android:maxLines="2"
             android:text="Group Name"
-            android:textColor="@color/darkBlue"
+            android:textColor="@color/title"
+            android:fontFamily="@font/muli_bold"
             android:textSize="20dp"
             android:textStyle="bold" />
         <View
@@ -31,6 +32,8 @@
             android:id="@+id/txtDesGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/lato"
+            android:textColor="@color/black"
             android:maxLines="2"
             android:text="Phân công người khác xử lý tiếp công việc khi công việc đã thất bại: Khi phân công việc tự lấy từ công việc cũ để tạo thành record mới và người tạo sẽ là manager, người xử lý là user được manager chọn" />
     </LinearLayout>

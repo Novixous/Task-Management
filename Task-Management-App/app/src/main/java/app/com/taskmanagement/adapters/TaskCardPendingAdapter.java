@@ -93,11 +93,13 @@ public class TaskCardPendingAdapter extends RecyclerView.Adapter {
 
     public static class SearchCardHolder extends RecyclerView.ViewHolder {
         Button btnFrom, btnTo, btnSearch, btnReset;
+        TextView searchTxtStatus;
         Spinner spinnerStatus, spinnerUser;
 
 
         public SearchCardHolder(@NonNull View itemView) {
             super(itemView);
+            this.searchTxtStatus = itemView.findViewById(R.id.searchTxtStatus);
             this.btnFrom = itemView.findViewById(R.id.btnFrom);
             this.btnTo = itemView.findViewById(R.id.btnTo);
             this.btnSearch = itemView.findViewById(R.id.btnSearch);
@@ -240,6 +242,7 @@ public class TaskCardPendingAdapter extends RecyclerView.Adapter {
                     }
                 });
                 ((SearchCardHolder) holder).spinnerStatus.setVisibility(View.GONE);
+                ((SearchCardHolder) holder).searchTxtStatus.setVisibility(View.GONE);
                 break;
             case TaskModel.TASK_CARD:
                 String splitDeadline = object.getDeadline().toString();

@@ -22,7 +22,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Group name:"
-                android:textColor="@color/darkBlue"
+                android:fontFamily="@font/muli_bold"
+                android:textColor="@color/title"
                 android:textSize="16dp"
                 android:textStyle="bold" />
 
@@ -30,6 +31,7 @@
                 android:id="@+id/edtGroupName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
                 android:inputType="textCapWords"
                 android:background="@android:color/transparent"
                 android:minLines="2"
@@ -54,14 +56,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Group description:"
-                android:textColor="@color/darkBlue"
+                android:textColor="@color/title"
                 android:textSize="16dp"
+                android:fontFamily="@font/muli_bold"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/edtGroupDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
                 android:background="@android:color/transparent"
                 android:maxLines="12"
                 android:minLines="5"
@@ -86,6 +90,7 @@
             android:id="@+id/btnCreateGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_bold"
             android:background="@drawable/background_button"
             android:text="Create"
             android:textColor="@color/white" />

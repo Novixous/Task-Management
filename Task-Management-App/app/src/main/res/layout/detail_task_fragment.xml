@@ -24,10 +24,11 @@
                 android:id="@+id/txtTaskName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/muli_bold"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 android:text="Task name: "
-                android:textColor="@color/darkBlue"
+                android:textColor="@color/title"
                 android:textSize="13dp"
                 android:textStyle="bold" />
 
@@ -36,12 +37,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
+                android:fontFamily="@font/lato"
                 android:gravity="top"
+                android:inputType="textCapSentences"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 android:singleLine="false"
                 android:text=""
-                android:inputType="textCapSentences"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
@@ -73,8 +75,9 @@
                     android:id="@+id/txtIDTask"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/muli_bold"
                     android:text="ID: "
-                    android:textColor="@color/darkBlue"
+                    android:textColor="@color/title"
                     android:textSize="13dp"
                     android:textStyle="bold" />
 
@@ -82,6 +85,7 @@
                     android:id="@+id/valueIDTask"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato"
                     android:gravity="center"
                     android:text=""
                     android:textColor="@color/black"
@@ -102,8 +106,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
+                    android:fontFamily="@font/muli_bold"
                     android:text="ID Old: "
-                    android:textColor="@color/darkBlue"
+                    android:textColor="@color/title"
                     android:textSize="13dp"
                     android:textStyle="bold" />
 
@@ -112,6 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
+                    android:fontFamily="@font/lato"
                     android:gravity="center"
                     android:text=""
                     android:textColor="@color/black"
@@ -137,8 +143,9 @@
                 android:id="@+id/txtDeadline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/muli_bold"
                 android:text="Deadline: "
-                android:textColor="@color/darkBlue"
+                android:textColor="@color/title"
                 android:textSize="13dp"
                 android:textStyle="bold" />
 
@@ -153,6 +160,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:background="@color/white"
+                    android:fontFamily="@font/lato"
                     android:text="Get date"
                     android:textColor="@color/black"
                     android:textSize="18dp" />
@@ -164,6 +172,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_weight="0.5"
                     android:background="@color/white"
+                    android:fontFamily="@font/lato"
                     android:text="Get time"
                     android:textSize="18dp" />
             </LinearLayout>
@@ -195,8 +204,9 @@
                     android:id="@+id/txtStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/muli_bold"
                     android:text="Status: "
-                    android:textColor="@color/darkBlue"
+                    android:textColor="@color/title"
                     android:textSize="13dp"
                     android:textStyle="bold" />
 
@@ -204,6 +214,7 @@
                     android:id="@+id/valueStatus"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato"
                     android:gravity="center"
                     android:text="Status"
                     android:textColor="@color/black"
@@ -221,8 +232,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
+                    android:fontFamily="@font/muli_bold"
                     android:text="Note: "
-                    android:textColor="@color/darkBlue"
+                    android:textColor="@color/title"
                     android:textSize="13dp"
                     android:textStyle="bold" />
 
@@ -231,6 +243,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
+                    android:fontFamily="@font/lato"
                     android:gravity="center"
                     android:text="Nope"
                     android:textColor="@color/black"
@@ -258,8 +271,9 @@
                 android:id="@+id/txtCreator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/muli_bold"
                 android:text="Creator: "
-                android:textColor="@color/darkBlue"
+                android:textColor="@color/title"
                 android:textSize="13dp"
                 android:textStyle="bold" />
 
@@ -267,6 +281,7 @@
                 android:id="@+id/valueCreator"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
                 android:gravity="center"
                 android:text="Creator"
                 android:textColor="@color/black"
@@ -292,7 +307,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Group: "
-                android:textColor="@color/darkBlue"
+                android:textColor="@color/title"
                 android:textSize="13dp"
                 android:textStyle="bold"
                 android:visibility="gone" />
@@ -327,8 +342,9 @@
                 android:id="@+id/txtAssignee"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/muli_bold"
                 android:text="Assignee: "
-                android:textColor="@color/darkBlue"
+                android:textColor="@color/title"
                 android:textSize="13dp"
                 android:textStyle="bold" />
 
@@ -336,6 +352,7 @@
                 android:id="@+id/valueAssignee"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
                 android:gravity="center"
                 android:text="Assignee"
                 android:textColor="@color/black"
@@ -359,10 +376,11 @@
                 android:id="@+id/txtDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/muli_bold"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 android:text="Description: "
-                android:textColor="@color/darkBlue"
+                android:textColor="@color/title"
                 android:textSize="13dp"
                 android:textStyle="bold" />
 
@@ -371,6 +389,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
+                android:fontFamily="@font/lato"
                 android:gravity="top"
                 android:maxLines="5"
                 android:minLines="3"
@@ -408,8 +427,9 @@
                     android:id="@+id/txtDateStart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/muli_bold"
                     android:text="Start date: "
-                    android:textColor="@color/darkBlue"
+                    android:textColor="@color/title"
                     android:textSize="13dp"
                     android:textStyle="bold" />
 
@@ -417,6 +437,7 @@
                     android:id="@+id/valueDateStart"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato"
                     android:gravity="center"
                     android:text=""
                     android:textColor="@color/black"
@@ -436,8 +457,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
+                    android:fontFamily="@font/muli_bold"
                     android:text="End date: "
-                    android:textColor="@color/darkBlue"
+                    android:textColor="@color/title"
                     android:textSize="13dp"
                     android:textStyle="bold" />
 
@@ -446,6 +468,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
+                    android:fontFamily="@font/lato"
                     android:gravity="center"
                     android:text=""
                     android:textColor="@color/black"
@@ -475,10 +498,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:fontFamily="@font/muli_bold"
                     android:paddingTop="3dp"
                     android:paddingBottom="3dp"
                     android:text="Photo of evidence: "
-                    android:textColor="@color/darkBlue"
+                    android:textColor="@color/title"
                     android:textSize="13dp"
                     android:textStyle="bold" />
 
@@ -523,10 +547,11 @@
                 android:id="@+id/txtResult"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/muli_bold"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 android:text="Result: "
-                android:textColor="@color/darkBlue"
+                android:textColor="@color/title"
                 android:textSize="13dp"
                 android:textStyle="bold" />
 
@@ -535,6 +560,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
+                android:fontFamily="@font/lato"
                 android:gravity="top"
                 android:maxLines="5"
                 android:minLines="3"
@@ -564,8 +590,9 @@
                 android:id="@+id/txtReviewer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/muli_bold"
                 android:text="Reviewer: "
-                android:textColor="@color/darkBlue"
+                android:textColor="@color/title"
                 android:textSize="13dp"
                 android:textStyle="bold" />
 
@@ -573,6 +600,7 @@
                 android:id="@+id/valueReviewer"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
                 android:gravity="center"
                 android:text=""
                 android:textColor="@color/black"
@@ -604,8 +632,9 @@
                     android:id="@+id/txtMark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/muli_bold"
                     android:text="Mark: "
-                    android:textColor="@color/darkBlue"
+                    android:textColor="@color/title"
                     android:textSize="13dp"
                     android:textStyle="bold" />
 
@@ -631,8 +660,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
+                    android:fontFamily="@font/muli_bold"
                     android:text="Date review: "
-                    android:textColor="@color/darkBlue"
+                    android:textColor="@color/title"
                     android:textSize="13dp"
                     android:textStyle="bold" />
 
@@ -641,6 +671,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3dp"
+                    android:fontFamily="@font/lato"
                     android:gravity="center"
                     android:text=""
                     android:textColor="@color/black"
@@ -665,10 +696,11 @@
                 android:id="@+id/txtReview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/muli_bold"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 android:text="Review: "
-                android:textColor="@color/darkBlue"
+                android:textColor="@color/title"
                 android:textSize="13dp"
                 android:textStyle="bold" />
 
@@ -677,6 +709,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
+                android:fontFamily="@font/lato"
                 android:gravity="top"
                 android:maxLines="5"
                 android:minLines="3"
@@ -694,43 +727,52 @@
                 android:layout_margin="5dp"
                 android:background="@color/cardview_dark_background" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/lastModifedContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/txtModifiedBy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/muli_bold"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 android:text="Last modified by: "
-                android:textColor="@color/darkBlue"
+                android:textColor="@color/title"
                 android:textSize="13dp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/valueModifiedBy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
                 android:gravity="center"
                 android:text="Creator"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
+
             <TextView
                 android:id="@+id/txtModifiedAt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
                 android:paddingTop="3dp"
                 android:paddingBottom="3dp"
                 android:text=" at: "
-                android:textColor="@color/darkBlue"
+                android:textColor="@color/title"
                 android:textSize="13dp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/valueModifedAt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/lato"
                 android:gravity="center"
                 android:text="2020-15-02 12:45"
                 android:textColor="@color/black"
@@ -750,6 +792,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/background_button"
+            android:fontFamily="@font/roboto_bold"
             android:gravity="center"
             android:text="Create Task"
             android:textColor="@color/white"
@@ -761,10 +804,11 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@drawable/button_decline"
+            android:fontFamily="@font/roboto_bold"
             android:gravity="center"
             android:text="Close Task"
             android:textColor="@color/white"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -779,6 +823,7 @@
                 android:layout_margin="10dp"
                 android:layout_weight="0.5"
                 android:background="@drawable/background_button"
+                android:fontFamily="@font/roboto_bold"
                 android:text="Update Task"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
@@ -790,6 +835,7 @@
                 android:layout_margin="10dp"
                 android:layout_weight="0.5"
                 android:background="@drawable/background_button"
+                android:fontFamily="@font/roboto_bold"
                 android:text="Clone task"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
@@ -808,6 +854,7 @@
                 android:layout_margin="10dp"
                 android:layout_weight="0.5"
                 android:background="@drawable/button_approve"
+                android:fontFamily="@font/roboto_bold"
                 android:text="Approve"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
@@ -819,6 +866,7 @@
                 android:layout_margin="10dp"
                 android:layout_weight="0.5"
                 android:background="@drawable/button_decline"
+                android:fontFamily="@font/roboto_bold"
                 android:text="Decline"
                 android:textColor="@color/white"
                 android:textStyle="bold" />

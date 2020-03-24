@@ -24,6 +24,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:singleLine="true"
+                android:fontFamily="@font/muli_bold"
+                android:textColor="@color/title"
                 android:text="Task NameTask NameTask"
                 android:textSize="20dp"
                 android:textStyle="bold" />
@@ -42,8 +44,9 @@
                 android:layout_marginTop="5dp"
                 android:gravity="center"
                 android:lines="1"
+                android:fontFamily="@font/lato"
                 android:text="Cao Thanh Thu"
-                android:textColor="@color/green"
+                android:textColor="@color/nameCard"
                 android:textSize="18dp"
                 android:textStyle="bold" />
 
@@ -64,6 +67,8 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="Done"
+                android:fontFamily="@font/lato"
+                android:textColor="@color/status"
                 android:textSize="18dp"
                 android:textStyle="bold" />
 
@@ -81,8 +86,9 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
+                android:fontFamily="@font/lato"
                 android:text="13:30 | Mar 21,2020"
-                android:textColor="@color/red"
+                android:textColor="@color/time"
                 android:textSize="15dp"
                 android:textStyle="bold" />
 

@@ -15,12 +15,12 @@
 
     <Button
         android:id="@+id/btnCreateAccount"
-        android:onClick="clickToCreateAccount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@drawable/background_button"
         android:text="Create New Account"
+        android:fontFamily="@font/roboto_bold"
         android:textColor="@color/white" />
 
 </LinearLayout>

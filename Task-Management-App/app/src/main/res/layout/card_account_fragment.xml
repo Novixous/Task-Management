@@ -17,7 +17,8 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:text="Account Name"
-            android:textColor="@color/darkBlue"
+            android:fontFamily="@font/muli_bold"
+            android:textColor="@color/title"
             android:textSize="20dp"
             android:textStyle="bold" />
 
@@ -27,13 +28,17 @@
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:text="Admin"
+            android:textColor="@color/black"
+            android:fontFamily="@font/lato"
             android:textSize="16dp" />
 
         <TextView
             android:id="@+id/txtGroupName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/lato"
             android:maxLines="1"
+            android:textColor="@color/black"
             android:text="Group Name"
             android:textSize="16dp" />
     </LinearLayout>

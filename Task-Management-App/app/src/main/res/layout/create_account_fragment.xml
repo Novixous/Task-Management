@@ -22,7 +22,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Fullname:"
-                    android:textColor="@color/darkBlue"
+                    android:fontFamily="@font/muli_bold"
+                    android:textColor="@color/title"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
@@ -31,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/lato"
                     android:inputType="textCapWords"
                     android:text=""
                     android:textColor="#000000"
@@ -53,7 +54,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Username:"
-                    android:textColor="@color/darkBlue"
+                    android:textColor="@color/title"
+                    android:fontFamily="@font/muli_bold"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
@@ -62,7 +64,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/lato"
                     android:text=""
                     android:textColor="#000000"
                     android:textSize="18sp" />
@@ -83,7 +85,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Password:"
-                    android:textColor="@color/darkBlue"
+                    android:textColor="@color/title"
+                    android:fontFamily="@font/muli_bold"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
@@ -92,7 +95,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/lato"
                     android:inputType="textPassword"
                     android:textColor="#000000"
                     android:textSize="18sp" />
@@ -113,7 +116,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Role:"
-                    android:textColor="@color/darkBlue"
+                    android:textColor="@color/title"
+                    android:fontFamily="@font/muli_bold"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
@@ -121,7 +125,7 @@
                     android:id="@+id/spinnerRole"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/lato"
                     android:text="Manager"
                     android:textColor="#000000"
                     android:textSize="18sp" />
@@ -142,7 +146,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Group:"
-                    android:textColor="@color/darkBlue"
+                    android:textColor="@color/title"
+                    android:fontFamily="@font/muli_bold"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
@@ -150,7 +155,7 @@
                     android:id="@+id/spinnerGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/lato"
                     android:text="Sim"
                     android:textColor="#000000"
                     android:textSize="18sp" />
@@ -172,7 +177,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Email:"
-                    android:textColor="@color/darkBlue"
+                    android:textColor="@color/title"
+                    android:fontFamily="@font/muli_bold"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
@@ -181,7 +187,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/lato"
                     android:inputType="textEmailAddress"
                     android:text=""
                     android:textColor="#000000"
@@ -204,8 +210,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Phone:"
-                    android:textColor="@color/darkBlue"
+                    android:textColor="@color/title"
                     android:textSize="13sp"
+                    android:fontFamily="@font/muli_bold"
                     android:textStyle="bold" />
 
                 <EditText
@@ -213,7 +220,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/lato"
                     android:inputType="phone"
                     android:maxLength="10"
                     android:text=""
@@ -236,8 +243,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Status:"
-                    android:textColor="@color/darkBlue"
+                    android:textColor="@color/title"
                     android:textSize="13sp"
+                    android:fontFamily="@font/muli_bold"
                     android:textStyle="bold" />
 
                 <Spinner
@@ -245,7 +253,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:entries="@array/activeArray"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/lato"
                     android:text="Active"
                     android:textColor="#000000"
                     android:textSize="18sp" />
@@ -265,6 +273,7 @@
             android:layout_margin="10dp"
             android:background="@drawable/background_button"
             android:text="Create"
+            android:fontFamily="@font/roboto_bold"
             android:textColor="@color/white"
             android:textStyle="bold" />
 
