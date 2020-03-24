@@ -81,7 +81,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "YOUR_CHANNEL_ID")
                 .setSmallIcon(R.mipmap.ic_launcher) // notification icon
                 .setContentTitle(title) // title for notification
-                .setContentText(message)// message for notification
+                .setContentText(message)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))// message for notification
                 .setAutoCancel(true); // clear notification after click
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);

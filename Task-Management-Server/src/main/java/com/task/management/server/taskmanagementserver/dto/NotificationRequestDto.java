@@ -1,5 +1,6 @@
 package com.task.management.server.taskmanagementserver.dto;
 
+import com.task.management.server.taskmanagementserver.model.Task;
 import lombok.Data;
 
 @Data
@@ -8,7 +9,8 @@ public class NotificationRequestDto {
     private String target;
     private String title;
     private String body;
-    TaskToBeNotifiedDTO taskToBeNotifiedDTO;
+    private TaskToBeNotifiedDTO taskToBeNotifiedDTO;
+    private Task taskUpdateNotified;
 
     public String getTarget() {
         return target;
@@ -40,5 +42,13 @@ public class NotificationRequestDto {
 
     public void setTaskToBeNotifiedDTO(TaskToBeNotifiedDTO taskToBeNotifiedDTO) {
         this.taskToBeNotifiedDTO = taskToBeNotifiedDTO;
+    }
+
+    public Task getTaskUpdateNotified() {
+        return taskUpdateNotified;
+    }
+
+    public void setTaskUpdateNotified(Task taskUpdateNotified) {
+        this.taskUpdateNotified = taskUpdateNotified;
     }
 }

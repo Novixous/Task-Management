@@ -337,7 +337,7 @@ public class DetailTodoAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
-            
+
             //                  Set image to resolution image
             if (imageResolution != null) {
                 ((TaskFormHolder) holder).valueImgResolution.setImageBitmap(imageResolution);

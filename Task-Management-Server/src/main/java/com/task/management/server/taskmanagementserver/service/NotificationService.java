@@ -58,24 +58,48 @@ public class NotificationService {
     }
 
     public String sendsPnsToDevices(NotificationRequestDto notificationRequestDto, List<String> tokens) {
-        if(tokens.size() == 0) return "None to send";
-        MulticastMessage message = MulticastMessage.builder()
-                .setNotification(new Notification(notificationRequestDto.getTitle(), notificationRequestDto.getBody()))
-                .putData("content", notificationRequestDto.getTitle())
-                .putData("body", notificationRequestDto.getBody())
-                .putData("taskId", notificationRequestDto.getTaskToBeNotifiedDTO().getTaskId().toString())
-                .putData("oldTaskId", notificationRequestDto.getTaskToBeNotifiedDTO().getOldTaskId() != null ? notificationRequestDto.getTaskToBeNotifiedDTO().getOldTaskId().toString() : "")
-                .putData("taskName", notificationRequestDto.getTaskToBeNotifiedDTO().getTaskName())
-                .putData("deadLine", notificationRequestDto.getTaskToBeNotifiedDTO().getDeadline().toString())
-                .addAllTokens(tokens)
-                .build();
-        BatchResponse response = null;
-        try {
-            response = FirebaseMessaging.getInstance().sendMulticast(message);
-        } catch (FirebaseMessagingException e) {
+        if (tokens.size() == 0) return "None to send";
+        MulticastMessage message = null;
+        if (notificationRequestDto.getTaskToBeNotifiedDTO() != null) {
+            message = MulticastMessage.builder()
+                    .setNotification(new Notification(notificationRequestDto.getTitle(), notificationRequestDto.getBody()))
+                    .putData("content", notificationRequestDto.getTitle())
+                    .putData("body", notificationRequestDto.getBody())
+                    .putData("taskId", notificationRequestDto.getTaskToBeNotifiedDTO().getTaskId().toString())
+                    .putData("oldTaskId", notificationRequestDto.getTaskToBeNotifiedDTO().getOldTaskId() != null ? notificationRequestDto.getTaskToBeNotifiedDTO().getOldTaskId().toString() : "")
+                    .putData("taskName", notificationRequestDto.getTaskToBeNotifiedDTO().getTaskName())
+                    .putData("deadLine", notificationRequestDto.getTaskToBeNotifiedDTO().getDeadline().toString())
+                    .addAllTokens(tokens)
+                    .build();
+            BatchResponse response = null;
+            try {
+                response = FirebaseMessaging.getInstance().sendMulticast(message);
+            } catch (FirebaseMessagingException e) {
+            }
+            System.out.println("Successfully sent " + response.getSuccessCount() + " notifications.");
+            return "Successfully sent " + response.getSuccessCount() + " notifications.";
+        } else {
+            message = MulticastMessage.builder()
+                    .setNotification(new Notification(notificationRequestDto.getTitle(), notificationRequestDto.getBody()))
+                    .putData("content", notificationRequestDto.getTitle())
+                    .putData("body", notificationRequestDto.getBody())
+                    .putData("taskId", notificationRequestDto.getTaskUpdateNotified().getTaskId().toString())
+                    .putData("oldTaskId", notificationRequestDto.getTaskUpdateNotified().getOldTaskId() != null ? notificationRequestDto.getTaskToBeNotifiedDTO().getOldTaskId().toString() : "")
+                    .putData("taskName", notificationRequestDto.getTaskUpdateNotified().getTaskName())
+                    .putData("deadLine", notificationRequestDto.getTaskUpdateNotified().getDeadline().toString())
+                    .addAllTokens(tokens)
+                    .build();
+            BatchResponse response = null;
+            try {
+                response = FirebaseMessaging.getInstance().sendMulticast(message);
+            } catch (FirebaseMessagingException e) {
+            }
+            System.out.println("Successfully sent " + response.getSuccessCount() + " notifications.");
+            return "Successfully sent " + response.getSuccessCount() + " notifications.";
+
         }
-        return "Successfully sent " + response.getSuccessCount() + " notifications.";
     }
+
 
     public String sendPnsToDevice(NotificationRequestDto notificationRequestDto) {
         Message message = Message.builder()

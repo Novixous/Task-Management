@@ -82,7 +82,43 @@ public class TaskController {
             return TASk_NAME_EMPTY;
         }
         try {
-            taskMapper.createTask(result);
+            int intResult = taskMapper.createTask(result);
+            if (intResult >= 0) {
+                List<String> tokens = null;
+                String title = "";
+                title = "Task Detail changed!!!";
+                String content = "";
+                NotificationRequestDto notification = null;
+                Long managerId = accountMapper.getManagerIdOfGroupByGroupId(converted.get(0).getGroupId());
+                Long assigneeId = converted.get(0).getAssignee();
+                Long editorId = converted.get(0).getEditedBy();
+                Long creator = converted.get(0).getAccountCreated();
+                if (assigneeId.equals(editorId) && !assigneeId.equals(managerId)) {
+                    content = "Task with name: " + converted.get(0).getTaskName() + " managed by you was created by " + accountMapper.getAccountById(editorId).getFullName();
+                    tokens = accountMapper.getTokensByAccountId(managerId);
+                    notification = new NotificationRequestDto();
+                    notification.setTitle(title);
+                    notification.setBody(content);
+                    notification.setTaskUpdateNotified(converted.get(0));
+                    notificationService.sendsPnsToDevices(notification, tokens);
+                } else if (!assigneeId.equals(editorId) && !assigneeId.equals(managerId)) {
+                    content = "Task with name: " + converted.get(0).getTaskName() + " was assigned to you created by " + accountMapper.getAccountById(editorId).getFullName();
+                    tokens = accountMapper.getTokensByAccountId(assigneeId);
+                    notification = new NotificationRequestDto();
+                    notification.setTitle(title);
+                    notification.setBody(content);
+                    notification.setTaskUpdateNotified(converted.get(0));
+                    notificationService.sendsPnsToDevices(notification, tokens);
+                } else if (assigneeId.equals(managerId) && !editorId.equals(managerId)) {
+                    content = "Task with name: " + converted.get(0).getTaskName() + " was assigned to you by " + accountMapper.getAccountById(editorId).getFullName();
+                    tokens = accountMapper.getTokensByAccountId(assigneeId);
+                    notification = new NotificationRequestDto();
+                    notification.setTitle(title);
+                    notification.setBody(content);
+                    notification.setTaskUpdateNotified(converted.get(0));
+                    notificationService.sendsPnsToDevices(notification, tokens);
+                }
+            }
             return result.getTaskId().intValue();
         } catch (Exception e) {
             if (e.getMessage().contains("Column 'deadline' cannot be null")) {
@@ -98,18 +134,66 @@ public class TaskController {
     public int updateTask(@RequestBody TaskRequest taskRequest) {
         List<TaskResponse> taskResponses = taskRequest.getData();
         List<Task> converted = TimeUtil.convertTaskResponseToTask(taskResponses);
-        if ((converted.get(0).getStatus().equals(Long.valueOf(2)) || converted.get(0).getStatus().equals(Long.valueOf(3))) && (converted.get(0).getResult() == null || converted.get(0).getImgResolutionUrl() == null)) {
-            return RESULT_REQUIRED;
-        }
-        if ((converted.get(0).getStatus().equals(Long.valueOf(2)) || converted.get(0).getStatus().equals(Long.valueOf(3))) && (converted.get(0).getResult().isEmpty() || converted.get(0).getImgResolutionUrl().isEmpty())) {
-            return RESULT_REQUIRED;
-        }
-        if (converted.get(0).getIsClosed() != null) {
-            if ((converted.get(0).getStatus().equals(Long.valueOf(4)) || converted.get(0).getIsClosed()) && converted.get(0).getManagerComment().isEmpty()) {
-                return REVIEW_REQUIRED;
+        if (converted.get(0).getStatus() != null){
+            if ((converted.get(0).getStatus().equals(Long.valueOf(2)) || converted.get(0).getStatus().equals(Long.valueOf(3))) && (converted.get(0).getResult() == null || converted.get(0).getImgResolutionUrl() == null)) {
+                return RESULT_REQUIRED;
+            }
+            if ((converted.get(0).getStatus().equals(Long.valueOf(2)) || converted.get(0).getStatus().equals(Long.valueOf(3))) && (converted.get(0).getResult().isEmpty() || converted.get(0).getImgResolutionUrl().isEmpty())) {
+                return RESULT_REQUIRED;
+            }
+            if (converted.get(0).getIsClosed() != null) {
+                if ((converted.get(0).getStatus().equals(Long.valueOf(4)) || converted.get(0).getIsClosed()) && converted.get(0).getManagerComment().isEmpty()) {
+                    return REVIEW_REQUIRED;
+                }
             }
         }
-        return taskMapper.updateTask(converted.get(0));
+        int result = taskMapper.updateTask(converted.get(0));
+        if (result >= 0) {
+            List<String> tokens = null;
+            String title = "";
+            title = "Task Detail changed!!!";
+            String content = "";
+            NotificationRequestDto notification = null;
+            Task temp = taskMapper.getTaskByTaskId(converted.get(0).getTaskId());
+            Long managerId = accountMapper.getManagerIdOfGroupByGroupId(temp.getGroupId());
+            Long assigneeId = temp.getAssignee();
+            Long editorId = temp.getEditedBy();
+            Long creator = temp.getAccountCreated();
+            if (assigneeId.equals(editorId) && !assigneeId.equals(managerId)) {
+                content = "Task with name: " + temp.getTaskName() + " managed by you was updated by " + accountMapper.getAccountById(editorId).getFullName();
+                tokens = accountMapper.getTokensByAccountId(managerId);
+                notification = new NotificationRequestDto();
+                notification.setTitle(title);
+                notification.setBody(content);
+                notification.setTaskUpdateNotified(temp);
+                notificationService.sendsPnsToDevices(notification, tokens);
+            } else if (!assigneeId.equals(editorId) && !assigneeId.equals(managerId)) {
+                content = "Task with name: " + temp.getTaskName() + " assigned to you was updated by " + accountMapper.getAccountById(editorId).getFullName();
+                tokens = accountMapper.getTokensByAccountId(assigneeId);
+                notification = new NotificationRequestDto();
+                notification.setTitle(title);
+                notification.setBody(content);
+                notification.setTaskUpdateNotified(temp);
+                notificationService.sendsPnsToDevices(notification, tokens);
+            } else if (assigneeId.equals(managerId) && !editorId.equals(managerId)) {
+                content = "Task with name: " + temp.getTaskName() + " assigned to you was updated by " + accountMapper.getAccountById(editorId).getFullName();
+                tokens = accountMapper.getTokensByAccountId(assigneeId);
+                notification = new NotificationRequestDto();
+                notification.setTitle(title);
+                notification.setBody(content);
+                notification.setTaskUpdateNotified(temp);
+                notificationService.sendsPnsToDevices(notification, tokens);
+            } else if (assigneeId.equals(managerId) && editorId.equals(managerId) && !creator.equals(managerId)) {
+                content = "Task with name: " + temp.getTaskName() + " managed by you was updated by " + accountMapper.getAccountById(editorId).getFullName();
+                tokens = accountMapper.getTokensByAccountId(creator);
+                notification = new NotificationRequestDto();
+                notification.setTitle(title);
+                notification.setBody(content);
+                notification.setTaskUpdateNotified(temp);
+                notificationService.sendsPnsToDevices(notification, tokens);
+            }
+        }
+        return result;
     }
 
     @GetMapping("/{taskId}")
