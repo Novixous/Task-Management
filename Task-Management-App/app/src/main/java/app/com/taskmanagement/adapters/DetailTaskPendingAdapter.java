@@ -260,7 +260,7 @@ public class DetailTaskPendingAdapter extends RecyclerView.Adapter {
             ((TaskFormHolder) holder).valueDescription.setText(taskModel.getDescription());
             //                  last modified
             ((TaskFormHolder) holder).valueModifiedBy.setText(lastModifiedName);
-            ((TaskFormHolder) holder).valueModifiedAt.setText(DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm").format(taskModel.getEditedAt().atZone(ZoneId.of("GMT"))));
+            ((TaskFormHolder) holder).valueModifiedAt.setText(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(taskModel.getEditedAt().atZone(ZoneId.of("GMT"))));
 
             ((TaskFormHolder) holder).btnUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override

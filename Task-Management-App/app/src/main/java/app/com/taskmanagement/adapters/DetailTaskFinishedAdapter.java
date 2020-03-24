@@ -297,8 +297,8 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
             //                  Set Description
             ((TaskFormHolder) holder).valueDescription.setText(taskModel.getDescription());
             //                  Set start date
-            ((TaskFormHolder) holder).valueDateStart.setText(taskModel.getStartTime() != null ? DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm").format(taskModel.getStartTime().atZone(ZoneId.of("GMT"))) : "");
-            ((TaskFormHolder) holder).valueDateEnd.setText(taskModel.getEndTime() != null ? DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm").format(taskModel.getEndTime().atZone(ZoneId.of("GMT"))) : "");
+            ((TaskFormHolder) holder).valueDateStart.setText(taskModel.getStartTime() != null ? DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(taskModel.getStartTime().atZone(ZoneId.of("GMT"))) : "");
+            ((TaskFormHolder) holder).valueDateEnd.setText(taskModel.getEndTime() != null ? DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(taskModel.getEndTime().atZone(ZoneId.of("GMT"))) : "");
 
             //                  Set select img listener
             if (currentAccount.getRoleId() > 0 && !taskModel.getAssignee().equals(currentAccount.getAccountId())) {
@@ -320,12 +320,12 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
                 ((TaskFormHolder) holder).valueMark.setProgress(taskModel.getMark());
             }
             //                  Date reviewed
-            ((TaskFormHolder) holder).valueDateReview.setText(taskModel.getReviewTime() != null ? DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm").format(taskModel.getReviewTime().atZone(ZoneId.of("GMT"))) : "");
+            ((TaskFormHolder) holder).valueDateReview.setText(taskModel.getReviewTime() != null ? DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(taskModel.getReviewTime().atZone(ZoneId.of("GMT"))) : "");
             //                  Review content
             ((TaskFormHolder) holder).valueReview.setText(taskModel.getManagerComment() != null ? taskModel.getManagerComment() : "");
             //                  last modified
             ((TaskFormHolder) holder).valueModifiedBy.setText(lastModifiedName);
-            ((TaskFormHolder) holder).valueModifiedAt.setText(DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm").format(taskModel.getEditedAt().atZone(ZoneId.of("GMT"))));
+            ((TaskFormHolder) holder).valueModifiedAt.setText(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(taskModel.getEditedAt().atZone(ZoneId.of("GMT"))));
             //                  button update
             ((TaskFormHolder) holder).btnUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override

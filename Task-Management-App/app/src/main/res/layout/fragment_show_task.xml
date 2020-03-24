@@ -288,6 +288,7 @@
                 android:fontFamily="@font/lato"
                 android:gravity="center"
                 android:text="Creator"
+                android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
         </LinearLayout>
@@ -607,6 +608,7 @@
                 android:fontFamily="@font/lato"
                 android:gravity="center"
                 android:text=""
+                android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
         </LinearLayout>
@@ -728,6 +730,7 @@
                 android:text="Review: "
                 android:textColor="@color/title"
                 android:textSize="13dp"
+
                 android:textStyle="bold" />
 
             <EditText
