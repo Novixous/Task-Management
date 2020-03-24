@@ -4,16 +4,16 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Approve implements Serializable {
+public class ApproveModel implements Serializable {
     @SerializedName("id")
     private Long id;
     @SerializedName("content")
     private String name;
 
-    public Approve() {
+    public ApproveModel() {
     }
 
-    public Approve(Long id, String name) {
+    public ApproveModel(Long id, String name) {
         this.id = id;
         this.name = name;
     }

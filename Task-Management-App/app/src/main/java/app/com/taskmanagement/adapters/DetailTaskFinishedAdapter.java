@@ -42,8 +42,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import app.com.taskmanagement.FragmentCreateNewTask;
 import app.com.taskmanagement.R;
+import app.com.taskmanagement.TaskCreateFragment;
 import app.com.taskmanagement.model.AccountModel;
 import app.com.taskmanagement.model.TaskModel;
 import app.com.taskmanagement.model.request.TaskCreateRequest;
@@ -167,7 +167,7 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_task_fragment, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_task_fragment, parent, false);
         for (int i = 0; i < ID_NOT_SHOW_GENERAL.length; i++) {
             view.findViewById(ID_NOT_SHOW_GENERAL[i]).setVisibility(View.GONE);
         }
@@ -342,7 +342,7 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
                         taskUpdate.setClosed(true);
                         updateTask(taskUpdate, true);
                         ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
-                        ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new FragmentCreateNewTask(approveList, roleList, statusList, taskModel)).commit();
+                        ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new TaskCreateFragment(approveList, roleList, statusList, taskModel)).commit();
                         ((AppCompatActivity) mContext).setTitle("Clone task");
                     }
                 });

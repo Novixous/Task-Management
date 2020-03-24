@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
-public class TaskList implements Serializable {
+public class TaskListResponse implements Serializable {
     @SerializedName("data")
     private List<TaskResponse> taskList;
 

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Group implements Serializable {
+public class GroupModel implements Serializable {
     @SerializedName("groupId")
     private Long groupId;
     @SerializedName("groupName")
@@ -14,10 +14,10 @@ public class Group implements Serializable {
     @SerializedName("creator")
     private Long creator;
 
-    public Group() {
+    public GroupModel() {
     }
 
-    public Group(Long groupId, String groupName, String description, Long creator) {
+    public GroupModel(Long groupId, String groupName, String description, Long creator) {
         this.groupId = groupId;
         this.groupName = groupName;
         this.description = description;

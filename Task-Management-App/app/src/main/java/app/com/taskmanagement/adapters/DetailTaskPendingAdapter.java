@@ -149,7 +149,7 @@ public class DetailTaskPendingAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_task_fragment, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_task_fragment, parent, false);
         for (int i = 0; i < ID_NOT_SHOW_GENERAL.length; i++) {
             view.findViewById(ID_NOT_SHOW_GENERAL[i]).setVisibility(View.GONE);
         }

@@ -4,16 +4,16 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Status implements Serializable {
+public class StatusModel implements Serializable {
     @SerializedName("id")
     private Long id;
     @SerializedName("content")
     private String name;
 
-    public Status() {
+    public StatusModel() {
     }
 
-    public Status(Long id, String name) {
+    public StatusModel(Long id, String name) {
         this.id = id;
         this.name = name;
     }

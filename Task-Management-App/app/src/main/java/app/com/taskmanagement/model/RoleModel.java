@@ -4,16 +4,16 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Role implements Serializable {
+public class RoleModel implements Serializable {
     @SerializedName("id")
     private Long id;
     @SerializedName("content")
     private String name;
 
-    public Role() {
+    public RoleModel() {
     }
 
-    public Role(Long id, String name) {
+    public RoleModel(Long id, String name) {
         this.id = id;
         this.name = name;
     }

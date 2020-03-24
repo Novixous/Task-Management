@@ -36,10 +36,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
-import app.com.taskmanagement.MyTaskFragment;
 import app.com.taskmanagement.R;
+import app.com.taskmanagement.TaskFragment;
 import app.com.taskmanagement.model.AccountModel;
-import app.com.taskmanagement.model.Group;
+import app.com.taskmanagement.model.GroupModel;
 import app.com.taskmanagement.model.TaskModel;
 import app.com.taskmanagement.model.request.TaskCreateRequest;
 import app.com.taskmanagement.model.response.GroupResponse;
@@ -52,7 +52,7 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private TaskModel taskModel;
     private List<AccountModel> listMembers;
-    private List<Group> groupList;
+    private List<GroupModel> groupModelList;
     private AccountModel currentAccount;
     private Boolean dataLoaded;
     private AccountModel assignee;
@@ -68,7 +68,7 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
         this.taskModel = new TaskModel();
         currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
         this.assignee = null;
-        this.groupList = null;
+        this.groupModelList = null;
         dataLoaded = false;
         if (!currentAccount.getRoleId().equals(Long.valueOf(2))) {
             getUserList(currentAccount.getGroupId());
@@ -88,7 +88,7 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
         this.taskModel.setDescription(taskModel.getDescription());
         currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
         this.assignee = null;
-        this.groupList = null;
+        this.groupModelList = null;
         dataLoaded = false;
         if (!currentAccount.getRoleId().equals(Long.valueOf(2))) {
             getUserList(currentAccount.getGroupId());
@@ -168,7 +168,7 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
 
         switch (viewType) {
             case TaskModel.SHOW_FORM_CREATE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_task_fragment, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_task_fragment, parent, false);
                 for (int i = 0; i < id_not_show_create_task.length; i++) {
                     view.findViewById(id_not_show_create_task[i]).setVisibility(View.GONE);
                 }
@@ -245,9 +245,9 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
         });
 //                    -Choose group
         List<String> spinnerGroupItems = new ArrayList<>();
-        if (groupList != null) {
-            for (Group group : groupList) {
-                spinnerGroupItems.add(group.getGroupName());
+        if (groupModelList != null) {
+            for (GroupModel groupModel : groupModelList) {
+                spinnerGroupItems.add(groupModel.getGroupName());
             }
         }
         if (listMembers == null) {
@@ -257,8 +257,8 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
             ((TaskFormHolder) holder).valueGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    taskModel.setGroupId(groupList.get(position).getGroupId());
-                    getUserList(groupList.get(position).getGroupId());
+                    taskModel.setGroupId(groupModelList.get(position).getGroupId());
+                    getUserList(groupModelList.get(position).getGroupId());
                 }
 
                 @Override
@@ -374,7 +374,7 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
             @Override
             public void onResponse(Integer response) {
                 Toast.makeText(mContext, "Create successfully!", Toast.LENGTH_LONG);
-                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new MyTaskFragment(approveList, roleList, statusList)).commit();
+                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new TaskFragment(approveList, roleList, statusList)).commit();
                 ((AppCompatActivity) mContext).setTitle("My Task");
             }
         }, new Response.ErrorListener() {
@@ -394,8 +394,8 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
         GsonRequest<GroupResponse> userListReponseGsonRequest = new GsonRequest<>(url, GroupResponse.class, header, new Response.Listener<GroupResponse>() {
             @Override
             public void onResponse(GroupResponse response) {
-                groupList = new ArrayList<>();
-                groupList.addAll(response.getData());
+                groupModelList = new ArrayList<>();
+                groupModelList.addAll(response.getData());
                 dataLoaded = true;
                 notifyDataSetChanged();
             }

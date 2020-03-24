@@ -1,4 +1,4 @@
-package app.com.taskmanagement.adapter;
+package app.com.taskmanagement.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import java.util.HashMap;
 
-import app.com.taskmanagement.UserTaskTabFragment;
+import app.com.taskmanagement.TaskTabFragment;
 
 public class TaskPageAdapter extends FragmentPagerAdapter {
     HashMap<Long, String> approveList = new HashMap<>();
@@ -34,7 +34,7 @@ public class TaskPageAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
-        Fragment fragment = new UserTaskTabFragment(tabTitles[i],approveList,roleList,statusList);
+        Fragment fragment = new TaskTabFragment(tabTitles[i],approveList,roleList,statusList);
         return fragment;
     }
 
