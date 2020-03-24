@@ -93,12 +93,13 @@ public class TaskCardPendingAdapter extends RecyclerView.Adapter {
 
     public static class SearchCardHolder extends RecyclerView.ViewHolder {
         Button btnFrom, btnTo, btnSearch, btnReset;
-        TextView searchTxtStatus;
+        TextView searchTxtStatus, searchTxtUser;
         Spinner spinnerStatus, spinnerUser;
 
 
         public SearchCardHolder(@NonNull View itemView) {
             super(itemView);
+            this.searchTxtUser=itemView.findViewById(R.id.searchTxtUser);
             this.searchTxtStatus = itemView.findViewById(R.id.searchTxtStatus);
             this.btnFrom = itemView.findViewById(R.id.btnFrom);
             this.btnTo = itemView.findViewById(R.id.btnTo);
@@ -121,6 +122,7 @@ public class TaskCardPendingAdapter extends RecyclerView.Adapter {
             case TaskModel.SEARCH_CARD:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.form_search_fragment, parent, false);
                 if (currentAccount.getRoleId().equals(Long.valueOf(0))) {
+                    view.findViewById(R.id.searchTxtUser).setVisibility(View.GONE);
                     view.findViewById(R.id.spinnerUser).setVisibility(View.GONE);
                 }
                 return new SearchCardHolder(view);

@@ -114,6 +114,7 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.form_search_fragment, parent, false);
                 if (currentAccount.getRoleId().equals(Long.valueOf(0))) {
                     view.findViewById(R.id.spinnerUser).setVisibility(View.GONE);
+                    view.findViewById(R.id.searchTxtUser).setVisibility(View.GONE);
                 }
                 return new SearchCardHolder(view);
         }
