@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import app.com.taskmanagement.model.AccountModel;
-import app.com.taskmanagement.model.Group;
+import app.com.taskmanagement.model.GroupModel;
 import app.com.taskmanagement.model.response.GroupResponse;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.PreferenceUtil;
@@ -31,22 +31,22 @@ import app.com.taskmanagement.util.SingletonRequestQueue;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentAccountDetail extends Fragment {
+public class DetailAccountFragment extends Fragment {
     private AccountModel accountModel;
     private EditText edtId, edtFullname, edtUsername, edtEmail, edtPhone;
     private Spinner spinnerActive, spinnerGroup, spinnerRole;
-    private List<Group> groupList;
+    private List<GroupModel> groupModelList;
 
 
     private HashMap<Long, String> roleList = new HashMap<>();
 
-    public FragmentAccountDetail(AccountModel accountModel,HashMap<Long, String> roleList) {
+    public DetailAccountFragment(AccountModel accountModel, HashMap<Long, String> roleList) {
         this.accountModel = accountModel;
         this.roleList =roleList;
     }
 
 
-    public FragmentAccountDetail(HashMap<Long, String> roleList) {
+    public DetailAccountFragment(HashMap<Long, String> roleList) {
         this.roleList = roleList;
 
         // Required empty public constructor
@@ -57,7 +57,7 @@ public class FragmentAccountDetail extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_account_detail, container, false);
+        View rootView = inflater.inflate(R.layout.detail_account_fragment, container, false);
         if (accountModel == null) {
             this.accountModel = PreferenceUtil.getAccountFromSharedPreferences(getActivity().getApplicationContext());
         }
@@ -100,9 +100,9 @@ public class FragmentAccountDetail extends Fragment {
         GsonRequest<GroupResponse> userListReponseGsonRequest = new GsonRequest<>(url, GroupResponse.class, header, new Response.Listener<GroupResponse>() {
             @Override
             public void onResponse(GroupResponse response) {
-                groupList = new ArrayList<>();
-                groupList.addAll(response.getData());
-                for (Group group : groupList) {
+                groupModelList = new ArrayList<>();
+                groupModelList.addAll(response.getData());
+                for (GroupModel group : groupModelList) {
                     if (group.getGroupId().equals(accountModel.getGroupId())) {
                         ArrayList<String> tempGroupList = new ArrayList<>();
                         tempGroupList.add(group.getGroupName());

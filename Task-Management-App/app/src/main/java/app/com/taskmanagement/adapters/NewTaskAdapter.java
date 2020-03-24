@@ -168,7 +168,7 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
 
         switch (viewType) {
             case TaskModel.SHOW_FORM_CREATE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_task, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_task_fragment, parent, false);
                 for (int i = 0; i < id_not_show_create_task.length; i++) {
                     view.findViewById(id_not_show_create_task[i]).setVisibility(View.GONE);
                 }

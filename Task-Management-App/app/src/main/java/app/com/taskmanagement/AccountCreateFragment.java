@@ -14,10 +14,10 @@ import java.util.HashMap;
 
 import app.com.taskmanagement.adapters.CreateAccountAdapter;
 
-public class FragmentCreateAccount extends Fragment {
+public class AccountCreateFragment extends Fragment {
     private HashMap<Long, String> roleList;
 
-    public FragmentCreateAccount(HashMap<Long, String> roleList) {
+    public AccountCreateFragment(HashMap<Long, String> roleList) {
         this.roleList = roleList;
     }
 

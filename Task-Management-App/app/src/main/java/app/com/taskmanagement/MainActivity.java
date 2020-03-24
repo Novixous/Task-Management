@@ -41,9 +41,9 @@ import java.util.HashMap;
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 import app.com.taskmanagement.model.AccountModel;
-import app.com.taskmanagement.model.Approve;
-import app.com.taskmanagement.model.Role;
-import app.com.taskmanagement.model.Status;
+import app.com.taskmanagement.model.ApproveModel;
+import app.com.taskmanagement.model.RoleModel;
+import app.com.taskmanagement.model.StatusModel;
 import app.com.taskmanagement.model.request.TokenRequestModel;
 import app.com.taskmanagement.model.response.InitialResponse;
 import app.com.taskmanagement.model.response.LoginResponse;
@@ -136,28 +136,25 @@ public class MainActivity extends AppCompatActivity {
 
         switch (position) {
             case 0:
-                currentFragment = new MyTaskFragment(approveList, roleList, statusList);
+                currentFragment = new TaskFragment(approveList, roleList, statusList);
                 break;
             case 1:
-                currentFragment = new FragmentCreateNewTask(approveList, roleList, statusList);
+                currentFragment = new TaskCreateFragment(approveList, roleList, statusList);
                 break;
             case 2:
-                currentFragment = new FragmentAccountDetail(roleList);
-                break;
-            case 3:
-                currentFragment = new SettingsFragment();
+                currentFragment = new DetailAccountFragment(roleList);
                 break;
             case 4:
                 deleteTokenFromServer();
                 break;
             case 5:
-                currentFragment = new FragmentGroupList();
+                currentFragment = new GroupListFragment();
                 break;
             case 6:
-                currentFragment = new FragmentAccountList(roleList);
+                currentFragment = new AccountListFragment(roleList);
                 break;
             case 7:
-                currentFragment = new ClosedTaskListFragment("Archived tasks", approveList, roleList, statusList);
+                currentFragment = new TaskClosedListFragment("Archived tasks", approveList, roleList, statusList);
                 break;
             default:
                 break;
@@ -209,8 +206,6 @@ public class MainActivity extends AppCompatActivity {
                 return 1;
             case "My Account":
                 return 2;
-            case "Settings":
-                return 3;
             case "Logout":
                 return 4;
             case "Group List":
@@ -242,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
-            return inflater.inflate(R.layout.fragment_show_task, container, false);
+            return inflater.inflate(R.layout.detail_task_fragment, container, false);
         }
     }
 
@@ -270,14 +265,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void publishInitialValues(InitialResponse response) {
-        for (Role role : response.getRoles()) {
-            roleList.put(role.getId(), role.getName());
+        for (RoleModel roleModel : response.getRoleModels()) {
+            roleList.put(roleModel.getId(), roleModel.getName());
         }
-        for (Status status : response.getStatuses()) {
-            statusList.put(status.getId(), status.getName());
+        for (StatusModel statusModel : response.getStatusModels()) {
+            statusList.put(statusModel.getId(), statusModel.getName());
         }
-        for (Approve approve : response.getApproves()) {
-            approveList.put(approve.getId(), approve.getName());
+        for (ApproveModel approveModel : response.getApproveModels()) {
+            approveList.put(approveModel.getId(), approveModel.getName());
         }
     }
 
@@ -383,7 +378,7 @@ public class MainActivity extends AppCompatActivity {
                     fragmentManager.popBackStack();
                 }
                 MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-                        new FragmentAccountDetail(accountModel, roleList)).addToBackStack(null).commit();
+                        new DetailAccountFragment(accountModel, roleList)).addToBackStack(null).commit();
             }
         }, new Response.ErrorListener() {
             @Override

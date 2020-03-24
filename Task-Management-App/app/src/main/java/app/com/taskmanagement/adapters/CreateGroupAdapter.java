@@ -22,9 +22,9 @@ import com.google.gson.Gson;
 
 import java.util.HashMap;
 
-import app.com.taskmanagement.FragmentGroupList;
+import app.com.taskmanagement.GroupListFragment;
 import app.com.taskmanagement.R;
-import app.com.taskmanagement.model.Group;
+import app.com.taskmanagement.model.GroupModel;
 import app.com.taskmanagement.model.request.GroupRequest;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.PreferenceUtil;
@@ -51,7 +51,7 @@ public class CreateGroupAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_create_new_group, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.create_group_fragment, parent, false);
         return new CreateGroupHolder(view);
     }
 
@@ -64,11 +64,11 @@ public class CreateGroupAdapter extends RecyclerView.Adapter {
                 String groupDescription = ((CreateGroupHolder) holder).txtDesGroup.getText().toString();
 
                 if (!groupName.isEmpty() && !groupDescription.isEmpty()) {
-                    Group group = new Group();
-                    group.setCreator(PreferenceUtil.getAccountFromSharedPreferences(mContext.getApplicationContext()).getAccountId());
-                    group.setGroupName(groupName);
-                    group.setDescription(groupDescription);
-                    createGroup(group);
+                    GroupModel groupModel = new GroupModel();
+                    groupModel.setCreator(PreferenceUtil.getAccountFromSharedPreferences(mContext.getApplicationContext()).getAccountId());
+                    groupModel.setGroupName(groupName);
+                    groupModel.setDescription(groupDescription);
+                    createGroup(groupModel);
                 } else {
                     Toast.makeText(mContext, "Please input both group name and group description", Toast.LENGTH_SHORT).show();
                 }
@@ -82,20 +82,20 @@ public class CreateGroupAdapter extends RecyclerView.Adapter {
         return 1;
     }
 
-    public void createGroup(Group group) {
+    public void createGroup(GroupModel groupModel) {
         String url = String.format(mContext.getResources().getString(R.string.BASE_URL) + "/group");
         HashMap<String, String> header = new HashMap<>();
         header.put("Content-Type", "application/json");
         RequestQueue requestQueue = Volley.newRequestQueue(mContext.getApplicationContext());
         Gson gson = new Gson();
         GroupRequest groupRequest = new GroupRequest();
-        groupRequest.setData(group);
+        groupRequest.setData(groupModel);
         String body = gson.toJson(groupRequest);
         GsonRequest<Integer> taskResponseCreateRequest = new GsonRequest<>(Request.Method.POST, url, Integer.class, header, body, new Response.Listener<Integer>() {
             @Override
             public void onResponse(Integer response) {
                 ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
-                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new FragmentGroupList());
+                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new GroupListFragment());
             }
         }, new Response.ErrorListener() {
             @Override

@@ -3,26 +3,25 @@ package app.com.taskmanagement.model.request;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.List;
 
-import app.com.taskmanagement.model.Group;
+import app.com.taskmanagement.model.GroupModel;
 
 public class GroupRequest implements Serializable {
     @SerializedName("data")
-    Group data;
+    GroupModel data;
 
-    public GroupRequest(Group data) {
+    public GroupRequest(GroupModel data) {
         this.data = data;
     }
 
     public GroupRequest() {
     }
 
-    public Group getData() {
+    public GroupModel getData() {
         return data;
     }
 
-    public void setData(Group data) {
+    public void setData(GroupModel data) {
         this.data = data;
     }
 }

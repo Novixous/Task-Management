@@ -31,10 +31,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import app.com.taskmanagement.FragmentGroupList;
+import app.com.taskmanagement.GroupListFragment;
 import app.com.taskmanagement.R;
 import app.com.taskmanagement.model.AccountModel;
-import app.com.taskmanagement.model.Group;
+import app.com.taskmanagement.model.GroupModel;
 import app.com.taskmanagement.model.request.AccountRequest;
 import app.com.taskmanagement.model.response.GroupResponse;
 import app.com.taskmanagement.model.response.LoginResponse;
@@ -45,14 +45,14 @@ public class CreateAccountAdapter extends RecyclerView.Adapter {
     private AccountModel accountModel;
     Context mContext;
     private Boolean dataLoaded;
-    private List<Group> groupList;
+    private List<GroupModel> groupModelList;
     private HashMap<Long, String> roleList;
     private List<AccountModel> listMembers;
     private int currentRole;
 
     public CreateAccountAdapter(Context mContext, HashMap<Long, String> roleList) {
         this.mContext = mContext;
-        this.groupList = new ArrayList<>();
+        this.groupModelList = new ArrayList<>();
         this.roleList = roleList;
         this.accountModel = new AccountModel();
         dataLoaded = false;
@@ -69,7 +69,7 @@ public class CreateAccountAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_create_account, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.create_account_fragment, parent, false);
         for (int i = 0; i < not_show_on_create.length; i++) {
             view.findViewById(not_show_on_create[i]).setVisibility(View.GONE);
         }
@@ -83,9 +83,9 @@ public class CreateAccountAdapter extends RecyclerView.Adapter {
 
 //      Group
         List<String> spinnerGroupItems = new ArrayList<>();
-        if (groupList != null) {
-            for (Group group : groupList) {
-                spinnerGroupItems.add(group.getGroupName());
+        if (groupModelList != null) {
+            for (GroupModel groupModel : groupModelList) {
+                spinnerGroupItems.add(groupModel.getGroupName());
             }
         }
         if (listMembers == null) {
@@ -95,7 +95,7 @@ public class CreateAccountAdapter extends RecyclerView.Adapter {
             ((CreateAccountHolder) holder).spinnerGroup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    accountModel.setGroupId(groupList.get(position).getGroupId());
+                    accountModel.setGroupId(groupModelList.get(position).getGroupId());
                 }
 
                 @Override
@@ -218,7 +218,7 @@ public class CreateAccountAdapter extends RecyclerView.Adapter {
             @Override
             public void onResponse(Integer response) {
                 ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
-                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new FragmentGroupList());
+                ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new GroupListFragment());
             }
         }, new Response.ErrorListener() {
             @Override
@@ -236,8 +236,8 @@ public class CreateAccountAdapter extends RecyclerView.Adapter {
         GsonRequest<GroupResponse> userListReponseGsonRequest = new GsonRequest<>(url, GroupResponse.class, header, new Response.Listener<GroupResponse>() {
             @Override
             public void onResponse(GroupResponse response) {
-                groupList = new ArrayList<>();
-                groupList.addAll(response.getData());
+                groupModelList = new ArrayList<>();
+                groupModelList.addAll(response.getData());
                 dataLoaded = true;
 
                 notifyDataSetChanged();

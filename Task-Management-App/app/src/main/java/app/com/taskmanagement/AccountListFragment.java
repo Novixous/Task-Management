@@ -15,15 +15,14 @@ import java.util.HashMap;
 
 import app.com.taskmanagement.adapters.CardAccountAdapter;
 import app.com.taskmanagement.model.AccountModel;
-import app.com.taskmanagement.util.PreferenceUtil;
 
 
-public class FragmentAccountList extends Fragment {
+public class AccountListFragment extends Fragment {
     private RecyclerView recyclerView;
     private Button btnCreate;
     private HashMap<Long, String> roleList;
 
-    public FragmentAccountList(HashMap<Long, String> roleList) {
+    public AccountListFragment(HashMap<Long, String> roleList) {
         this.roleList = roleList;
     }
 
@@ -45,7 +44,7 @@ public class FragmentAccountList extends Fragment {
             public void onClicked(int position) {
                 AccountModel accountModel = cardAccountAdapter.getItem(position);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-                        new FragmentAccountDetail(accountModel, roleList))
+                        new DetailAccountFragment(accountModel, roleList))
                         .addToBackStack(null).commit();
                 getActivity().setTitle("Group Detail");
             }
@@ -61,7 +60,7 @@ public class FragmentAccountList extends Fragment {
             @Override
             public void onClick(View v) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-                        new FragmentCreateAccount(roleList)).commit();
+                        new AccountCreateFragment(roleList)).commit();
                 getActivity().setTitle("Create account");
             }
         });

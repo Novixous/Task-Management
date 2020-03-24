@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,28 +12,16 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.android.volley.NetworkError;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import app.com.taskmanagement.adapters.CardTaskFinishedAdapter;
 import app.com.taskmanagement.adapters.CardTaskPendingAdapter;
 import app.com.taskmanagement.adapters.CardTaskTodoAdapter;
-import app.com.taskmanagement.model.TaskModel;
-import app.com.taskmanagement.model.response.TaskList;
-import app.com.taskmanagement.model.response.TaskResponse;
-import app.com.taskmanagement.util.GsonRequest;
-import app.com.taskmanagement.util.PreferenceUtil;
-import app.com.taskmanagement.util.SingletonRequestQueue;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class UserTaskTabFragment extends Fragment {
+public class TaskTabFragment extends Fragment {
 
     public static final String ARG_OBJECT = "object";
     public String tabTitle;
@@ -43,7 +30,7 @@ public class UserTaskTabFragment extends Fragment {
     HashMap<Long, String> statusList = new HashMap<>();
     private RecyclerView recyclerView;
 
-    public UserTaskTabFragment(String tabTitle, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
+    public TaskTabFragment(String tabTitle, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
         this.tabTitle = tabTitle;
         this.approveList = approveList;
         this.roleList = roleList;

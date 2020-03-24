@@ -14,13 +14,13 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.HashMap;
 
-import app.com.taskmanagement.adapter.TaskPageAdapter;
+import app.com.taskmanagement.adapters.TaskPageAdapter;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyTaskFragment extends Fragment {
+public class TaskFragment extends Fragment {
 
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -30,7 +30,7 @@ public class MyTaskFragment extends Fragment {
     HashMap<Long, String> statusList;
 
 
-    public MyTaskFragment(HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
+    public TaskFragment(HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
         this.approveList = approveList;
         this.roleList = roleList;
         this.statusList = statusList;

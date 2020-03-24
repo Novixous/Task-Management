@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import app.com.taskmanagement.adapters.CardGroupAdapter;
-import app.com.taskmanagement.model.Group;
+import app.com.taskmanagement.model.GroupModel;
 
 
-public class FragmentGroupList extends Fragment {
+public class GroupListFragment extends Fragment {
     private RecyclerView recyclerView;
     private Button btnCreate;
 
@@ -35,9 +35,9 @@ public class FragmentGroupList extends Fragment {
         cardGroupAdapter.setOnItemClickedListener(new CardGroupAdapter.OnItemClicked() {
             @Override
             public void onClicked(int position) {
-                Group group = cardGroupAdapter.getItem(position);
+                GroupModel groupModel = cardGroupAdapter.getItem(position);
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-                        new FragmentGroupDetail(group))
+                        new GroupDetailFragment(groupModel))
                         .addToBackStack(null).commit();
                 getActivity().setTitle("Group Detail");
             }
@@ -53,7 +53,7 @@ public class FragmentGroupList extends Fragment {
             @Override
             public void onClick(View v) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-                        new FragmentCreateNewGroup()).addToBackStack(null).commit();
+                        new GroupCreateFragment()).addToBackStack(null).commit();
                 getActivity().setTitle("Create group");
             }
         });

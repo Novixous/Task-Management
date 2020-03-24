@@ -36,7 +36,7 @@ import app.com.taskmanagement.R;
 import app.com.taskmanagement.TaskDetailFragment;
 import app.com.taskmanagement.model.AccountModel;
 import app.com.taskmanagement.model.TaskModel;
-import app.com.taskmanagement.model.response.TaskList;
+import app.com.taskmanagement.model.response.TaskListResponse;
 import app.com.taskmanagement.model.response.TaskResponse;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.PreferenceUtil;
@@ -110,10 +110,10 @@ public class CardTaskClosedAdapter extends RecyclerView.Adapter {
         View view;
         switch (viewType) {
             case TaskModel.TASK_CARD:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_card_task, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_task_fragment, parent, false);
                 return new ShowCardTaskHolder(view);
             case TaskModel.SEARCH_CARD:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_card, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.form_search_fragment, parent, false);
                 if (currentAccount.getRoleId().equals(Long.valueOf(0))) {
                     view.findViewById(R.id.spinnerUser).setVisibility(View.GONE);
                 }
@@ -312,9 +312,9 @@ public class CardTaskClosedAdapter extends RecyclerView.Adapter {
                 break;
         }
 
-        GsonRequest<TaskList> gsonRequest = new GsonRequest<>(url, TaskList.class, headers, new Response.Listener<TaskList>() {
+        GsonRequest<TaskListResponse> gsonRequest = new GsonRequest<>(url, TaskListResponse.class, headers, new Response.Listener<TaskListResponse>() {
             @Override
-            public void onResponse(TaskList response) {
+            public void onResponse(TaskListResponse response) {
                 List<TaskResponse> responses = new ArrayList<>();
                 responses.addAll(response.getTaskList());
                 List<TaskModel> taskModels = TimeUtil.convertTaskResponseToTask(responses);

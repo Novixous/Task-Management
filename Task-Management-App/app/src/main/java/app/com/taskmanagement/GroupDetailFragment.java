@@ -1,14 +1,13 @@
 package app.com.taskmanagement;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -16,7 +15,7 @@ import com.android.volley.VolleyError;
 
 import java.util.HashMap;
 
-import app.com.taskmanagement.model.Group;
+import app.com.taskmanagement.model.GroupModel;
 import app.com.taskmanagement.model.response.LoginResponse;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.SingletonRequestQueue;
@@ -25,12 +24,12 @@ import app.com.taskmanagement.util.SingletonRequestQueue;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FragmentGroupDetail extends Fragment {
-    private Group group;
+public class GroupDetailFragment extends Fragment {
+    private GroupModel groupModel;
     private EditText edtGroupId, edtGroupName, edtGroupDescription, edtGroupCreator;
 
-    public FragmentGroupDetail(Group group) {
-        this.group = group;
+    public GroupDetailFragment(GroupModel groupModel) {
+        this.groupModel = groupModel;
     }
 
 
@@ -38,16 +37,16 @@ public class FragmentGroupDetail extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_group_detail, container, false);
+        View rootView = inflater.inflate(R.layout.detail_group_fragment, container, false);
         edtGroupId = rootView.findViewById(R.id.edtGroupId);
         edtGroupName = rootView.findViewById(R.id.edtGroupName);
         edtGroupDescription = rootView.findViewById(R.id.edtGroupDescription);
         edtGroupCreator = rootView.findViewById(R.id.edtGroupCreator);
 
-        edtGroupId.setText(group.getGroupId().toString());
-        edtGroupName.setText(group.getGroupName());
-        edtGroupDescription.setText(group.getDescription());
-        getGroupCreatorName(group.getCreator());
+        edtGroupId.setText(groupModel.getGroupId().toString());
+        edtGroupName.setText(groupModel.getGroupName());
+        edtGroupDescription.setText(groupModel.getDescription());
+        getGroupCreatorName(groupModel.getCreator());
 
         return rootView;
     }

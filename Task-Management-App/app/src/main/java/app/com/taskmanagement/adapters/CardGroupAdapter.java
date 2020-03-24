@@ -19,13 +19,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import app.com.taskmanagement.R;
-import app.com.taskmanagement.model.Group;
+import app.com.taskmanagement.model.GroupModel;
 import app.com.taskmanagement.model.response.GroupResponse;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.SingletonRequestQueue;
 
 public class CardGroupAdapter extends RecyclerView.Adapter {
-    private ArrayList<Group> dataSet;
+    private ArrayList<GroupModel> dataSet;
     private Fragment fragment;
     private Context mContext;
     private OnItemClicked onItemClickedListener;
@@ -69,7 +69,7 @@ public class CardGroupAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        final Group object = dataSet.get(position);
+        final GroupModel object = dataSet.get(position);
         if (object != null) {
             ((CardGroupHolder) holder).txtGroupName.setText(object.getGroupName());
             ((CardGroupHolder) holder).txtDesGroup.setText(object.getDescription());
@@ -82,7 +82,7 @@ public class CardGroupAdapter extends RecyclerView.Adapter {
         return dataSet.size();
     }
 
-    public Group getItem(int position) {
+    public GroupModel getItem(int position) {
         return dataSet.get(position);
     }
 

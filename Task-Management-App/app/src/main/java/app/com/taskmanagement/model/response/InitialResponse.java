@@ -4,48 +4,48 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import app.com.taskmanagement.model.Approve;
-import app.com.taskmanagement.model.Role;
-import app.com.taskmanagement.model.Status;
+import app.com.taskmanagement.model.ApproveModel;
+import app.com.taskmanagement.model.RoleModel;
+import app.com.taskmanagement.model.StatusModel;
 
 public class InitialResponse {
     @SerializedName("role")
-    private List<Role> roles;
+    private List<RoleModel> roleModels;
     @SerializedName("status")
-    private List<Status> statuses;
+    private List<StatusModel> statusModels;
     @SerializedName("approve")
-    private List<Approve> approves;
+    private List<ApproveModel> approveModels;
 
     public InitialResponse() {
     }
 
-    public InitialResponse(List<Role> roles, List<Status> statuses, List<Approve> approves) {
-        this.roles = roles;
-        this.statuses = statuses;
-        this.approves = approves;
+    public InitialResponse(List<RoleModel> roleModels, List<StatusModel> statusModels, List<ApproveModel> approveModels) {
+        this.roleModels = roleModels;
+        this.statusModels = statusModels;
+        this.approveModels = approveModels;
     }
 
-    public List<Role> getRoles() {
-        return roles;
+    public List<RoleModel> getRoleModels() {
+        return roleModels;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setRoleModels(List<RoleModel> roleModels) {
+        this.roleModels = roleModels;
     }
 
-    public List<Status> getStatuses() {
-        return statuses;
+    public List<StatusModel> getStatusModels() {
+        return statusModels;
     }
 
-    public void setStatuses(List<Status> statuses) {
-        this.statuses = statuses;
+    public void setStatusModels(List<StatusModel> statusModels) {
+        this.statusModels = statusModels;
     }
 
-    public List<Approve> getApproves() {
-        return approves;
+    public List<ApproveModel> getApproveModels() {
+        return approveModels;
     }
 
-    public void setApproves(List<Approve> approves) {
-        this.approves = approves;
+    public void setApproveModels(List<ApproveModel> approveModels) {
+        this.approveModels = approveModels;
     }
 }

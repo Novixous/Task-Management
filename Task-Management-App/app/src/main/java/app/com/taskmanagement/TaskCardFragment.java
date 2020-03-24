@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-public class UserCardTaskFragment extends Fragment {
+public class TaskCardFragment extends Fragment {
 
-    public UserCardTaskFragment() {
+    public TaskCardFragment() {
         // Required empty public constructor
     }
 
@@ -22,6 +22,6 @@ public class UserCardTaskFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_show_card_task, container, false);
+        return inflater.inflate(R.layout.card_task_fragment, container, false);
     }
 }
