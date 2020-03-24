@@ -98,6 +98,9 @@ public class TaskController {
     public int updateTask(@RequestBody TaskRequest taskRequest) {
         List<TaskResponse> taskResponses = taskRequest.getData();
         List<Task> converted = TimeUtil.convertTaskResponseToTask(taskResponses);
+        if ((converted.get(0).getStatus().equals(Long.valueOf(2)) || converted.get(0).getStatus().equals(Long.valueOf(3))) && (converted.get(0).getResult() == null || converted.get(0).getImgResolutionUrl() == null)) {
+            return RESULT_REQUIRED;
+        }
         if ((converted.get(0).getStatus().equals(Long.valueOf(2)) || converted.get(0).getStatus().equals(Long.valueOf(3))) && (converted.get(0).getResult().isEmpty() || converted.get(0).getImgResolutionUrl().isEmpty())) {
             return RESULT_REQUIRED;
         }

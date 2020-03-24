@@ -261,6 +261,13 @@ public class DetailTodoAdapter extends RecyclerView.Adapter {
                     String value = ((TaskFormHolder) holder).valueStatus.getItemAtPosition(position).toString();
                     BiMap<Long, String> statusBiMap = HashBiMap.create(statusList);
                     currentStatus = statusBiMap.inverse().get(value).intValue();
+                    if(currentStatus == 4){
+                        ((TaskFormHolder)holder).valueResult.setEnabled(true);
+                        ((TaskFormHolder)holder).btnImg.setEnabled(true);
+                    }else {
+                        ((TaskFormHolder)holder).valueResult.setEnabled(false);
+                        ((TaskFormHolder)holder).btnImg.setEnabled(false);
+                    }
                 }
 
                 @Override
