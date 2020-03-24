@@ -24,6 +24,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.gson.Gson;
+import com.warkiz.widget.IndicatorSeekBar;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -65,7 +70,6 @@ public class DetailTaskClosedAdapter extends RecyclerView.Adapter {
             R.id.valueDescription,
             R.id.btnImg,
             R.id.valueResult,
-            R.id.valueMark,
             R.id.valueReview
     };
 
@@ -103,16 +107,16 @@ public class DetailTaskClosedAdapter extends RecyclerView.Adapter {
         EditText valueTaskName;
         TextView valueIDTask, valueOldID;
         Button valueDateDeadline, valueTimeDeadline;
-        Spinner valueStatus;
+        Button valueStatus;
         TextView valueNote, valueCreator;
-        Spinner valueAssignee;
+        Button valueAssignee;
         EditText valueDescription;
         TextView valueDateStart, valueDateEnd;
         ImageButton btnImg;
         ImageView valueImgResolution;
         EditText valueResult;
         TextView valueReviewer;
-        NumberPicker valueMark;
+        IndicatorSeekBar valueMark;
         TextView valueDateReview;
         EditText valueReview;
 
@@ -129,10 +133,10 @@ public class DetailTaskClosedAdapter extends RecyclerView.Adapter {
             this.valueOldID = (TextView) itemView.findViewById(R.id.valueIDOldTask);
             this.valueDateDeadline = (Button) itemView.findViewById(R.id.valueDateDeadline);
             this.valueTimeDeadline = (Button) itemView.findViewById(R.id.valueTimeDeadline);
-            this.valueStatus = (Spinner) itemView.findViewById(R.id.valueStatus);
+            this.valueStatus = (Button) itemView.findViewById(R.id.valueStatus);
             this.valueNote = (TextView) itemView.findViewById(R.id.valueNote);
             this.valueCreator = (TextView) itemView.findViewById(R.id.valueCreator);
-            this.valueAssignee = (Spinner) itemView.findViewById(R.id.valueAssignee);
+            this.valueAssignee = (Button) itemView.findViewById(R.id.valueAssignee);
             this.valueDescription = (EditText) itemView.findViewById(R.id.valueDescription);
 
             this.valueDateStart = (TextView) itemView.findViewById(R.id.valueDateStart);
@@ -141,7 +145,7 @@ public class DetailTaskClosedAdapter extends RecyclerView.Adapter {
             this.valueImgResolution = (ImageView) itemView.findViewById(R.id.valueImgResolution);
             this.valueResult = (EditText) itemView.findViewById(R.id.valueResult);
             this.valueReviewer = (TextView) itemView.findViewById(R.id.valueReviewer);
-            this.valueMark = (NumberPicker) itemView.findViewById(R.id.valueMark);
+            this.valueMark = (IndicatorSeekBar) itemView.findViewById(R.id.valueMark);
             this.valueDateReview = (TextView) itemView.findViewById(R.id.valueDateReview);
             this.valueReview = (EditText) itemView.findViewById(R.id.valueReview);
             this.valueModifiedBy = (TextView) itemView.findViewById(R.id.valueModifiedBy);
@@ -194,14 +198,9 @@ public class DetailTaskClosedAdapter extends RecyclerView.Adapter {
             final Collection<String> statusValues = temp.values();
             ArrayList<String> listOfStatus = new ArrayList<String>(statusValues);
             ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, listOfStatus);
-            ((TaskFormHolder) holder).valueStatus.setAdapter(statusAdapter);
-            ((TaskFormHolder) holder).valueStatus.setSelection(listOfStatus.indexOf(temp.get(taskModel.getStatus())));
-            ((TaskFormHolder) holder).valueStatus.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    return true;
-                }
-            });
+            final String[] dialogStatusItems = listOfStatus.toArray(new String[0]);
+            int checkedItem = listOfStatus.indexOf(statusList.get(taskModel.getStatus()));
+            ((TaskFormHolder) holder).valueStatus.setText(dialogStatusItems[checkedItem]);
 //                  Set note
             String note = "";
             if (taskModel.getEndTime() == null) {
@@ -222,14 +221,8 @@ public class DetailTaskClosedAdapter extends RecyclerView.Adapter {
             //      Set assignee
             List<String> assigneeSpinnerItems = new ArrayList<>();
             assigneeSpinnerItems.add("(" + assignee.getAccountId() + ")" + assignee.getFullName());
-            ArrayAdapter<String> assigneeAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, assigneeSpinnerItems);
-            ((TaskFormHolder) holder).valueAssignee.setAdapter(assigneeAdapter);
-            ((TaskFormHolder) holder).valueAssignee.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    return true;
-                }
-            });
+            final String[] dialogAssigneeItems = assigneeSpinnerItems.toArray(new String[0]);
+            ((TaskFormHolder) holder).valueAssignee.setText(dialogAssigneeItems[0]);
 //                  Set Creator
             ((TaskFormHolder) holder).valueCreator.setText(creator.getFullName());
             //                  Set Description
@@ -248,12 +241,15 @@ public class DetailTaskClosedAdapter extends RecyclerView.Adapter {
             ((TaskFormHolder) holder).valueReviewer.setText(reviewer != null ? reviewer.getFullName() : "");
             //                  Mark
 
-            ((TaskFormHolder) holder).valueMark.setMinValue(0);
-            ((TaskFormHolder) holder).valueMark.setMaxValue(10);
             if (taskModel.getMark() != null) {
-                ((TaskFormHolder) holder).valueMark.setValue(taskModel.getMark().intValue());
+                ((TaskFormHolder) holder).valueMark.setProgress(taskModel.getMark().intValue());
             }
-            ((TaskFormHolder) holder).valueMark.setEnabled(false);
+            ((TaskFormHolder) holder).valueMark.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
+                }
+            });
             //                  Date reviewed
             ((TaskFormHolder) holder).valueDateReview.setText(taskModel.getReviewTime() != null ? DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm").format(taskModel.getReviewTime().atZone(ZoneId.of("GMT"))) : "");
             //                  Review content

@@ -63,4 +63,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-vision:19.0.0'
     implementation project(path: ':barcode-reader')
 
+    //Seekbar
+    implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
+
 }

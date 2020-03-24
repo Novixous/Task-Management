@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -209,7 +210,7 @@
                     android:textSize="13dp"
                     android:textStyle="bold" />
 
-                <Spinner
+                <Button
                     android:id="@+id/valueStatus"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -347,7 +348,7 @@
                 android:textSize="13dp"
                 android:textStyle="bold" />
 
-            <Spinner
+            <Button
                 android:id="@+id/valueAssignee"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -624,7 +625,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_weight="1"
                 android:orientation="vertical">
                 <!--Mark-->
                 <TextView
@@ -636,21 +637,45 @@
                     android:textColor="@color/title"
                     android:textSize="13dp"
                     android:textStyle="bold" />
+                <com.warkiz.widget.IndicatorStayLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <NumberPicker
-                    android:id="@+id/valueMark"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="3dp"
-                    android:textColor="@color/black"
-                    android:textSize="18dp" />
+                    <com.warkiz.widget.IndicatorSeekBar
+                        android:id="@+id/valueMark"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:isb_tick_marks_color="@color/colorPrimary"
+                        app:isb_max="10"
+                        app:isb_show_indicator="circular_bubble"
+                        app:isb_show_tick_marks_type="oval"
+                        app:isb_show_tick_texts="true"
+                        app:isb_tick_texts_color="@color/selector_tick_texts_3_color"
+                        app:isb_ticks_count="11" />
+                </com.warkiz.widget.IndicatorStayLayout>
+<!--                <NumberPicker-->
+<!--                    android:id="@+id/valueMark"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="50dp"-->
+<!--                    android:layout_marginLeft="3dp"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="18dp" />-->
 
             </LinearLayout>
 
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:weightSum="1">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_weight="1"
                 android:background="@drawable/br_vertical"
                 android:orientation="vertical">
                 <!--            txtDateReview-->

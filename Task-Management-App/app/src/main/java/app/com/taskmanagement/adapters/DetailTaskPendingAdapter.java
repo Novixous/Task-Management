@@ -18,6 +18,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -116,9 +117,9 @@ public class DetailTaskPendingAdapter extends RecyclerView.Adapter {
         EditText valueTaskName;
         TextView valueIDTask, valueOldID;
         Button valueDateDeadline, valueTimeDeadline;
-        Spinner valueStatus;
+        Button valueStatus;
         TextView valueNote, valueCreator;
-        Spinner valueAssignee;
+        Button valueAssignee;
         EditText valueDescription;
         TextView valueModifiedBy, valueModifiedAt;
 
@@ -132,10 +133,10 @@ public class DetailTaskPendingAdapter extends RecyclerView.Adapter {
             this.valueOldID = (TextView) itemView.findViewById(R.id.valueIDOldTask);
             this.valueDateDeadline = (Button) itemView.findViewById(R.id.valueDateDeadline);
             this.valueTimeDeadline = (Button) itemView.findViewById(R.id.valueTimeDeadline);
-            this.valueStatus = (Spinner) itemView.findViewById(R.id.valueStatus);
+            this.valueStatus = (Button) itemView.findViewById(R.id.valueStatus);
             this.valueNote = (TextView) itemView.findViewById(R.id.valueNote);
             this.valueCreator = (TextView) itemView.findViewById(R.id.valueCreator);
-            this.valueAssignee = (Spinner) itemView.findViewById(R.id.valueAssignee);
+            this.valueAssignee = (Button) itemView.findViewById(R.id.valueAssignee);
             this.valueDescription = (EditText) itemView.findViewById(R.id.valueDescription);
             this.valueModifiedBy = (TextView) itemView.findViewById(R.id.valueModifiedBy);
             this.valueModifiedAt = (TextView) itemView.findViewById(R.id.valueModifedAt);
@@ -224,15 +225,11 @@ public class DetailTaskPendingAdapter extends RecyclerView.Adapter {
 //                  Set status
             Collection<String> statusValues = statusList.values();
             ArrayList<String> listOfStatus = new ArrayList<String>(statusValues);
-            ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, listOfStatus);
-            ((TaskFormHolder) holder).valueStatus.setAdapter(statusAdapter);
-            ((TaskFormHolder) holder).valueStatus.setSelection(taskModel.getStatus().intValue());
-            ((TaskFormHolder) holder).valueStatus.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    return true;
-                }
-            });
+           
+
+            final String[] dialogStatusItems = listOfStatus.toArray(new String[0]);
+            int checkedItem = listOfStatus.indexOf(statusList.get(taskModel.getStatus()));
+            ((TaskFormHolder) holder).valueStatus.setText(dialogStatusItems[checkedItem]);
 //                  Set note
             String note = "";
             if (taskModel.getEndTime() == null) {
@@ -253,14 +250,8 @@ public class DetailTaskPendingAdapter extends RecyclerView.Adapter {
             //      Set assignee
             List<String> assigneeSpinnerItems = new ArrayList<>();
             assigneeSpinnerItems.add("(" + assignee.getAccountId() + ")" + assignee.getFullName());
-            ArrayAdapter<String> assigneeAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, assigneeSpinnerItems);
-            ((TaskFormHolder) holder).valueAssignee.setAdapter(assigneeAdapter);
-            ((TaskFormHolder) holder).valueAssignee.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    return true;
-                }
-            });
+            final String[] dialogAssigneeItems = assigneeSpinnerItems.toArray(new String[0]);
+            ((TaskFormHolder) holder).valueAssignee.setText(dialogAssigneeItems[0]);
 
 //                  Set Creator
             ((TaskFormHolder) holder).valueCreator.setText(creator.getFullName());

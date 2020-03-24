@@ -3,6 +3,7 @@ package app.com.taskmanagement.adapters;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +28,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 import com.google.gson.Gson;
 
 import java.text.DateFormat;
@@ -101,7 +105,8 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
     public static class TaskFormHolder extends RecyclerView.ViewHolder {
         TextView valueIDtask, valueOldID, valueCreator;
         EditText valueDescription, valueTaskname;
-        Spinner valueAssignee, valueGroup;
+        Button valueAssignee;
+        Spinner valueGroup;
         Button valueDateDeadline, valueTimeDeadline;
         Button btnCreate;
 
@@ -114,7 +119,7 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
             this.valueTimeDeadline = (Button) itemView.findViewById(R.id.valueTimeDeadline);
             this.valueCreator = (TextView) itemView.findViewById(R.id.valueCreator);
             this.valueGroup = (Spinner) itemView.findViewById(R.id.valueGroup);
-            this.valueAssignee = (Spinner) itemView.findViewById(R.id.valueAssignee);
+            this.valueAssignee = (Button) itemView.findViewById(R.id.valueAssignee);
             this.valueDescription = (EditText) itemView.findViewById(R.id.valueDescription);
             this.btnCreate = (Button) itemView.findViewById(R.id.btnCreateTask);
         }
@@ -275,20 +280,55 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
                 spinnerAssigneeItems.add("(" + account.getAccountId() + ") " + account.getFullName());
             }
         }
-        ArrayAdapter<String> assigneeAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, spinnerAssigneeItems);
-        assigneeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ((TaskFormHolder) holder).valueAssignee.setAdapter(assigneeAdapter);
-        //Choose assignee
-        ((TaskFormHolder) holder).valueAssignee.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                taskModel.setAssignee(listMembers.get(position).getAccountId());
-            }
+//        ArrayAdapter<String> assigneeAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, spinnerAssigneeItems);
+//        assigneeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        ((TaskFormHolder) holder).valueAssignee.setAdapter(assigneeAdapter);
+//        //Choose assignee
+//        ((TaskFormHolder) holder).valueAssignee.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                taskModel.setAssignee(listMembers.get(position).getAccountId());
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//            }
+//        });
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("Choose assignee");
+        // add a radio button list
+        if (spinnerAssigneeItems.size() > 0) {
+            final String[] dialogAssigneeItems = spinnerAssigneeItems.toArray(new String[0]);
+            int checkedItem = 0;
+            ((TaskFormHolder) holder).valueAssignee.setText(dialogAssigneeItems[0]);
+            builder.setSingleChoiceItems(dialogAssigneeItems, checkedItem, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    taskModel.setAssignee(listMembers.get(which).getAccountId());
+                    ((TaskFormHolder) holder).valueAssignee.setText(dialogAssigneeItems[which]);
+                }
+            });
+
+            // add OK and Cancel buttons
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            builder.setNegativeButton("Cancel", null);
+
+                ((TaskFormHolder) holder).valueAssignee.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // create and show the alert dialog
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
+                });
+
+        }
 //                  show name creator
         ((TaskFormHolder) holder).valueCreator.setText(currentAccount.getFullName());
 //                    -Button Create-

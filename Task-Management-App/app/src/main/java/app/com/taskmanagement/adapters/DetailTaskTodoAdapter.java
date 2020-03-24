@@ -2,6 +2,7 @@ package app.com.taskmanagement.adapters;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -38,6 +40,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.gson.Gson;
+import com.warkiz.widget.IndicatorSeekBar;
 
 import java.io.ByteArrayOutputStream;
 import java.time.Duration;
@@ -126,9 +129,9 @@ public class DetailTaskTodoAdapter extends RecyclerView.Adapter {
         EditText valueTaskName;
         TextView valueIDTask, valueOldID;
         Button valueDateDeadline, valueTimeDeadline;
-        Spinner valueStatus;
+        Button valueStatus;
         TextView valueNote, valueCreator;
-        Spinner valueAssignee;
+        Button valueAssignee;
         EditText valueDescription;
         TextView valueDateStart, valueDateEnd;
         ImageButton btnImg;
@@ -137,7 +140,7 @@ public class DetailTaskTodoAdapter extends RecyclerView.Adapter {
         TextView txtReviewer;
         TextView valueReviewer;
         TextView txtMark;
-        NumberPicker valueMark;
+        IndicatorSeekBar valueMark;
         TextView txtDateReview;
         TextView valueDateReview;
         TextView txtReview;
@@ -155,10 +158,10 @@ public class DetailTaskTodoAdapter extends RecyclerView.Adapter {
             this.valueOldID = (TextView) itemView.findViewById(R.id.valueIDOldTask);
             this.valueDateDeadline = (Button) itemView.findViewById(R.id.valueDateDeadline);
             this.valueTimeDeadline = (Button) itemView.findViewById(R.id.valueTimeDeadline);
-            this.valueStatus = (Spinner) itemView.findViewById(R.id.valueStatus);
+            this.valueStatus = (Button) itemView.findViewById(R.id.valueStatus);
             this.valueNote = (TextView) itemView.findViewById(R.id.valueNote);
             this.valueCreator = (TextView) itemView.findViewById(R.id.valueCreator);
-            this.valueAssignee = (Spinner) itemView.findViewById(R.id.valueAssignee);
+            this.valueAssignee = (Button) itemView.findViewById(R.id.valueAssignee);
             this.valueDescription = (EditText) itemView.findViewById(R.id.valueDescription);
 
             this.valueDateStart = (TextView) itemView.findViewById(R.id.valueDateStart);
@@ -169,7 +172,7 @@ public class DetailTaskTodoAdapter extends RecyclerView.Adapter {
             this.txtReviewer = (TextView) itemView.findViewById(R.id.txtReviewer);
             this.valueReviewer = (TextView) itemView.findViewById(R.id.valueReviewer);
             this.txtMark = (TextView) itemView.findViewById(R.id.txtMark);
-            this.valueMark = (NumberPicker) itemView.findViewById(R.id.valueMark);
+            this.valueMark = (IndicatorSeekBar) itemView.findViewById(R.id.valueMark);
             this.txtDateReview = (TextView) itemView.findViewById(R.id.txtDateReview);
             this.valueDateReview = (TextView) itemView.findViewById(R.id.valueDateReview);
             this.txtReview = (TextView) itemView.findViewById(R.id.txtReview);
@@ -249,31 +252,43 @@ public class DetailTaskTodoAdapter extends RecyclerView.Adapter {
             }
             final Collection<String> statusValues = temp.values();
             ArrayList<String> listOfStatus = new ArrayList<String>(statusValues);
-            ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, listOfStatus);
-            ((TaskFormHolder) holder).valueStatus.setAdapter(statusAdapter);
-            ((TaskFormHolder) holder).valueStatus.setSelection(listOfStatus.indexOf(temp.get(taskModel.getStatus())));
-            ((TaskFormHolder) holder).valueStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+            builder.setTitle("Choose status");
+            // add a radio button list
+
+            final String[] dialogStatusItems = listOfStatus.toArray(new String[0]);
+            int checkedItem = listOfStatus.indexOf(statusList.get(taskModel.getStatus()));
+            ((TaskFormHolder) holder).valueStatus.setText(dialogStatusItems[checkedItem]);
+            builder.setSingleChoiceItems(dialogStatusItems, checkedItem, new DialogInterface.OnClickListener() {
                 @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    String value = ((TaskFormHolder) holder).valueStatus.getItemAtPosition(position).toString();
+                public void onClick(DialogInterface dialog, int which) {
+                    String value = dialogStatusItems[which];
                     BiMap<Long, String> statusBiMap = HashBiMap.create(statusList);
                     currentStatus = statusBiMap.inverse().get(value).intValue();
+                    ((TaskFormHolder) holder).valueStatus.setText(value);
                 }
+            });
 
+            // add OK and Cancel buttons
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
-                public void onNothingSelected(AdapterView<?> parent) {
+                public void onClick(DialogInterface dialog, int which) {
 
                 }
             });
-            if (currentAccount.getRoleId() > 0 && !taskModel.getAssignee().equals(currentAccount.getAccountId())) {
-                ((TaskFormHolder) holder).valueStatus.setOnTouchListener(new View.OnTouchListener() {
+            builder.setNegativeButton("Cancel", null);
+            if (taskModel.getAssignee().equals(currentAccount.getAccountId())) {
+                ((TaskFormHolder) holder).valueStatus.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        return true;
+                    public void onClick(View v) {
+                        // create and show the alert dialog
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
                     }
                 });
             }
-//                  Set note
+
+            //                  Set note
             String note = "";
             if (taskModel.getEndTime() == null) {
                 if (LocalDateTime.now().isAfter(taskModel.getDeadline().atZone(ZoneId.of("GMT+0")).toLocalDateTime())) {
@@ -293,14 +308,8 @@ public class DetailTaskTodoAdapter extends RecyclerView.Adapter {
             //      Set assignee
             List<String> assigneeSpinnerItems = new ArrayList<>();
             assigneeSpinnerItems.add("(" + assignee.getAccountId() + ")" + assignee.getFullName());
-            ArrayAdapter<String> assigneeAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, assigneeSpinnerItems);
-            ((TaskFormHolder) holder).valueAssignee.setAdapter(assigneeAdapter);
-            ((TaskFormHolder) holder).valueAssignee.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    return true;
-                }
-            });
+            final String[] dialogAssigneeItems = assigneeSpinnerItems.toArray(new String[0]);
+            ((TaskFormHolder) holder).valueAssignee.setText(dialogAssigneeItems[0]);
 
 //                  Set Creator
             ((TaskFormHolder) holder).valueCreator.setText(creator.getFullName());
@@ -342,7 +351,12 @@ public class DetailTaskTodoAdapter extends RecyclerView.Adapter {
                 ((TaskFormHolder) holder).lineReviewer.setVisibility(View.VISIBLE);
                 ((TaskFormHolder) holder).txtMark.setVisibility(View.VISIBLE);
                 ((TaskFormHolder) holder).valueMark.setVisibility(View.VISIBLE);
-                ((TaskFormHolder) holder).valueMark.setEnabled(false);
+                ((TaskFormHolder) holder).valueMark.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        return true;
+                    }
+                });
                 ((TaskFormHolder) holder).txtDateReview.setVisibility(View.VISIBLE);
                 ((TaskFormHolder) holder).valueDateReview.setVisibility(View.VISIBLE);
                 ((TaskFormHolder) holder).lineConfirm.setVisibility(View.VISIBLE);
@@ -354,10 +368,9 @@ public class DetailTaskTodoAdapter extends RecyclerView.Adapter {
                 ((TaskFormHolder) holder).valueReviewer.setText(reviewer != null ? reviewer.getFullName() : "");
                 //                  Mark
 
-                ((TaskFormHolder) holder).valueMark.setMinValue(0);
-                ((TaskFormHolder) holder).valueMark.setMaxValue(10);
+
                 if (taskModel.getMark() != null) {
-                    ((TaskFormHolder) holder).valueMark.setValue(taskModel.getMark().intValue());
+                    ((TaskFormHolder) holder).valueMark.setProgress(taskModel.getMark().intValue());
                 }
                 //                  Date reviewed
                 ((TaskFormHolder) holder).valueDateReview.setText(taskModel.getReviewTime() != null ? DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm").format(taskModel.getReviewTime().atZone(ZoneId.of("GMT"))) : "");

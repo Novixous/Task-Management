@@ -19,5 +19,9 @@
 
     <color name="decline">#212121</color>
     <color name="approve">#FF5252</color>
+    <color name="blue">#2196F3</color>
+    <color name="color_blue">#007dff</color>
+    <color name="color_gray">#C6B4B4</color>
+    <color name="color_Accent">#FF4081</color>
     <!--    <color name="red">#FF0000</color>-->
 </resources>
