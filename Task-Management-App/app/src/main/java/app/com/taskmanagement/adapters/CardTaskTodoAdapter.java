@@ -74,11 +74,12 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
     }
 
     public static class ShowCardTaskHolder extends RecyclerView.ViewHolder {
-        TextView valueTaskName, valueAssignee, valueStatus, valueDeadline;
+        TextView valueId, valueTaskName, valueAssignee, valueStatus, valueDeadline;
         LinearLayout cardTask;
 
         public ShowCardTaskHolder(@NonNull View itemView) {
             super(itemView);
+            this.valueId = itemView.findViewById(R.id.valueId);
             this.cardTask = (LinearLayout) itemView.findViewById(R.id.card_task);
             this.valueTaskName = (TextView) itemView.findViewById(R.id.valuetxtTaskName);
             this.valueAssignee = (TextView) itemView.findViewById(R.id.valuetxtAssignee);
@@ -258,6 +259,7 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
 
                     }
                 });
+                ((ShowCardTaskHolder)holder).valueId.setText(object.getTaskId().toString());
                 ((ShowCardTaskHolder) holder).valueTaskName.setText(object.getTaskName());
                 ((ShowCardTaskHolder) holder).valueAssignee.setText(assigneeMap.get(object.getAssignee()));
                 ((ShowCardTaskHolder) holder).valueStatus.setText(statusList.get(object.getStatus()));

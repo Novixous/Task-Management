@@ -230,6 +230,7 @@ public class DetailTaskPendingAdapter extends RecyclerView.Adapter {
             final String[] dialogStatusItems = listOfStatus.toArray(new String[0]);
             int checkedItem = listOfStatus.indexOf(statusList.get(taskModel.getStatus()));
             ((TaskFormHolder) holder).valueStatus.setText(dialogStatusItems[checkedItem]);
+            ((TaskFormHolder) holder).valueStatus.setClipToOutline(true);
 //                  Set note
             String note = "";
             if (taskModel.getEndTime() == null) {
