@@ -63,17 +63,27 @@ public class AccountDetailFragment extends Fragment {
         }
         edtId = rootView.findViewById(R.id.edtId);
         edtId.setText(accountModel.getAccountId().toString());
+        edtId.setEnabled(false);
+
         edtFullname = rootView.findViewById(R.id.edtFullname);
         edtFullname.setText(accountModel.getFullName());
+        edtFullname.setEnabled(false);
+
         edtUsername = rootView.findViewById(R.id.edtUsername);
         edtUsername.setText(accountModel.getUsername());
+        edtUsername.setEnabled(false);
+
         edtEmail = rootView.findViewById(R.id.edtEmail);
         edtEmail.setText(accountModel.getEmail());
+        edtEmail.setEnabled(false);
+
         edtPhone = rootView.findViewById(R.id.edtPhone);
         edtPhone.setText(accountModel.getPhone());
+        edtPhone.setEnabled(false);
 
         spinnerActive = rootView.findViewById(R.id.spinnerActive);
         spinnerActive.setTag(accountModel.isDeactivated());
+        spinnerActive.setEnabled(false);
 
         spinnerGroup = rootView.findViewById(R.id.spinnerGroup);
         getGroups();

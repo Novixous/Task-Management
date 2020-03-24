@@ -40,7 +40,7 @@
                     android:fontFamily="@font/lato"
                     android:inputType="textPersonName"
                     android:text=""
-                    android:textColor="#000000"
+                    android:textColor="@color/nameCard"
                     android:textSize="18sp" />
 
                 <View
@@ -74,7 +74,7 @@
                     android:fontFamily="@font/lato"
                     android:inputType="textCapWords"
                     android:text=""
-                    android:textColor="#000000"
+                    android:textColor="@color/nameCard"
                     android:textSize="18sp" />
 
                 <View
@@ -106,7 +106,7 @@
                     android:editable="false"
                     android:fontFamily="@font/lato"
                     android:text=""
-                    android:textColor="#000000"
+                    android:textColor="@color/nameCard"
                     android:textSize="18sp" />
 
                 <View
@@ -136,7 +136,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/lato"
                     android:text="Manager"
-                    android:textColor="#000000"
+                    android:textColor="@color/nameCard"
                     android:textSize="18sp" />
 
                 <View
@@ -167,7 +167,7 @@
                     android:editable="false"
                     android:fontFamily="@font/lato"
                     android:text="Sim"
-                    android:textColor="#000000"
+                    android:textColor="@color/nameCard"
                     android:textSize="18sp" />
 
                 <View
@@ -201,7 +201,7 @@
                     android:fontFamily="@font/lato"
                     android:inputType="textEmailAddress"
                     android:text=""
-                    android:textColor="#000000"
+                    android:textColor="@color/nameCard"
                     android:textSize="18sp" />
 
                 <View
@@ -236,7 +236,7 @@
                     android:inputType="phone"
                     android:maxLength="10"
                     android:text=""
-                    android:textColor="#000000"
+                    android:textColor="@color/nameCard"
                     android:textSize="18sp" />
 
                 <View
@@ -267,7 +267,7 @@
                     android:entries="@array/activeArray"
                     android:fontFamily="@font/lato"
                     android:text="Active"
-                    android:textColor="#000000"
+                    android:textColor="@color/nameCard"
                     android:textSize="18sp" />
 
                 <View
