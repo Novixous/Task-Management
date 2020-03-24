@@ -236,6 +236,7 @@ public class TaskCardTodoAdapter extends RecyclerView.Adapter {
                         btnFrom.setText("");
                         btnTo.setText("");
                         ((SearchCardHolder) holder).spinnerStatus.setSelection(0);
+                        ((SearchCardHolder) holder).spinnerUser.setSelection(0);
                     }
                 });
                 break;
