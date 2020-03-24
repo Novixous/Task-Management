@@ -261,12 +261,12 @@ public class DetailTodoAdapter extends RecyclerView.Adapter {
                     String value = ((TaskFormHolder) holder).valueStatus.getItemAtPosition(position).toString();
                     BiMap<Long, String> statusBiMap = HashBiMap.create(statusList);
                     currentStatus = statusBiMap.inverse().get(value).intValue();
-                    if(currentStatus == 3 || currentStatus == 2){
-                        ((TaskFormHolder)holder).valueResult.setEnabled(true);
-                        ((TaskFormHolder)holder).btnImg.setEnabled(true);
-                    }else {
-                        ((TaskFormHolder)holder).valueResult.setEnabled(false);
-                        ((TaskFormHolder)holder).btnImg.setEnabled(false);
+                    if (currentStatus == 3 || currentStatus == 2) {
+                        ((TaskFormHolder) holder).valueResult.setEnabled(true);
+                        ((TaskFormHolder) holder).btnImg.setEnabled(true);
+                    } else {
+                        ((TaskFormHolder) holder).valueResult.setEnabled(false);
+                        ((TaskFormHolder) holder).btnImg.setEnabled(false);
                     }
                 }
 
@@ -324,20 +324,20 @@ public class DetailTodoAdapter extends RecyclerView.Adapter {
             if (currentAccount.getRoleId() > 0 && !taskModel.getAssignee().equals(currentAccount.getAccountId())) {
                 ((TaskFormHolder) holder).btnImg.setEnabled(false);
             }
-            if (!taskModel.getStatus().equals(Long.valueOf(0))) {
-                ((TaskFormHolder) holder).btnImg.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (ActivityCompat.checkSelfPermission(fragment.getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                            fragment.requestPermissions(
-                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                    2000);
-                        } else {
-                            startGallery();
-                        }
+
+            ((TaskFormHolder) holder).btnImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (ActivityCompat.checkSelfPermission(fragment.getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        fragment.requestPermissions(
+                                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                2000);
+                    } else {
+                        startGallery();
                     }
-                });
-            }
+                }
+            });
+            
             //                  Set image to resolution image
             if (imageResolution != null) {
                 ((TaskFormHolder) holder).valueImgResolution.setImageBitmap(imageResolution);
@@ -540,7 +540,7 @@ public class DetailTodoAdapter extends RecyclerView.Adapter {
                 if (response.intValue() > 0) {
                     Toast.makeText(mContext.getApplicationContext(), "Update successfully!", Toast.LENGTH_LONG);
                     ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
-                }else if(response.intValue() == -1){
+                } else if (response.intValue() == -1) {
                     Toast.makeText(mContext, "Please fill in both result and select evidence image", Toast.LENGTH_SHORT).show();
                 }
             }
