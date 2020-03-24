@@ -3,6 +3,8 @@
     <item>
         <shape android:shape="rectangle">
             <solid android:color="#D7CCC8"/>
+            <corners android:topRightRadius="50dp"
+                android:bottomRightRadius="50dp"/>
         </shape>
     </item>
 
@@ -13,6 +15,8 @@
         android:bottom="0dp">
         <shape android:shape="rectangle">
             <solid android:color="@color/smoke"/>
+            <corners android:topRightRadius="50dp"
+                android:bottomRightRadius="50dp"/>
         </shape>
     </item>
 </layer-list>

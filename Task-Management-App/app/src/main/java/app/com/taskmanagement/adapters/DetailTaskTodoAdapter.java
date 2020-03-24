@@ -259,6 +259,9 @@ public class DetailTaskTodoAdapter extends RecyclerView.Adapter {
             final String[] dialogStatusItems = listOfStatus.toArray(new String[0]);
             int checkedItem = listOfStatus.indexOf(statusList.get(taskModel.getStatus()));
             ((TaskFormHolder) holder).valueStatus.setText(dialogStatusItems[checkedItem]);
+            String value = dialogStatusItems[checkedItem];
+            BiMap<Long, String> statusBiMap = HashBiMap.create(statusList);
+            currentStatus = statusBiMap.inverse().get(value).intValue();
             builder.setSingleChoiceItems(dialogStatusItems, checkedItem, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

@@ -181,6 +181,7 @@ public class DetailTaskClosedAdapter extends RecyclerView.Adapter {
         if (dataLoaded) {
 
 //                  Set task name
+
             ((TaskFormHolder) holder).valueTaskName.setText(taskModel.getTaskName().toString());
             //      Set task id
             ((TaskFormHolder) holder).valueIDTask.setText(taskModel.getTaskId().toString());
@@ -201,6 +202,9 @@ public class DetailTaskClosedAdapter extends RecyclerView.Adapter {
             final String[] dialogStatusItems = listOfStatus.toArray(new String[0]);
             int checkedItem = listOfStatus.indexOf(statusList.get(taskModel.getStatus()));
             ((TaskFormHolder) holder).valueStatus.setText(dialogStatusItems[checkedItem]);
+            String value = dialogStatusItems[checkedItem];
+            BiMap<Long, String> statusBiMap = HashBiMap.create(statusList);
+            currentStatus = statusBiMap.inverse().get(value).intValue();
 //                  Set note
             String note = "";
             if (taskModel.getEndTime() == null) {
