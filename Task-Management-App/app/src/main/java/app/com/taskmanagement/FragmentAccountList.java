@@ -15,7 +15,6 @@ import java.util.HashMap;
 
 import app.com.taskmanagement.adapters.CardAccountAdapter;
 import app.com.taskmanagement.model.AccountModel;
-import app.com.taskmanagement.util.PreferenceUtil;
 
 
 public class FragmentAccountList extends Fragment {
@@ -61,7 +60,7 @@ public class FragmentAccountList extends Fragment {
             @Override
             public void onClick(View v) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
-                        new FragmentCreateAccount(roleList)).commit();
+                        new FragmentCreateAccount(roleList)).addToBackStack(null).commit();
                 getActivity().setTitle("Create account");
             }
         });

@@ -10,11 +10,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import java.util.ArrayList;
-
-import app.com.taskmanagement.adapters.CardGroupAdapter;
 import app.com.taskmanagement.adapters.CreateGroupAdapter;
-import app.com.taskmanagement.model.Group;
 
 public class FragmentCreateNewGroup extends Fragment {
     private RecyclerView recyclerView;

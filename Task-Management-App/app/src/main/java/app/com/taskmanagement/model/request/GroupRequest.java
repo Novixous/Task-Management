@@ -3,7 +3,6 @@ package app.com.taskmanagement.model.request;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.List;
 
 import app.com.taskmanagement.model.Group;
 

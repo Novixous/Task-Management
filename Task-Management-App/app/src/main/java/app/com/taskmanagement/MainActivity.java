@@ -36,7 +36,9 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.notbytes.barcode_reader.BarcodeReaderActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
@@ -44,13 +46,16 @@ import app.com.taskmanagement.model.AccountModel;
 import app.com.taskmanagement.model.Approve;
 import app.com.taskmanagement.model.Role;
 import app.com.taskmanagement.model.Status;
+import app.com.taskmanagement.model.TaskModel;
 import app.com.taskmanagement.model.request.TokenRequestModel;
 import app.com.taskmanagement.model.response.InitialResponse;
 import app.com.taskmanagement.model.response.LoginResponse;
+import app.com.taskmanagement.model.response.TaskResponse;
 import app.com.taskmanagement.util.DialogUtil;
 import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.PreferenceUtil;
 import app.com.taskmanagement.util.SingletonRequestQueue;
+import app.com.taskmanagement.util.TimeUtil;
 
 public class MainActivity extends AppCompatActivity {
     public static final int BARCODE_READER_ACTIVITY_REQUEST = 1234;
@@ -71,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         setupToolbar();
         ((ImageButton) toolbar.findViewById(R.id.tool_bar_qr_btn)).setOnClickListener(new View.OnClickListener() {
@@ -257,6 +263,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(InitialResponse response) {
                 publishInitialValues(response);
+                Intent intent = MainActivity.this.getIntent();
+                Long taskId = intent.getLongExtra("targetTaskDetail", Long.valueOf(-1));
+                if (!taskId.equals(Long.valueOf(-1))) {
+                    getTaskById(taskId);
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -382,8 +393,14 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {
                     fragmentManager.popBackStack();
                 }
+                AccountModel currentUser = PreferenceUtil.getAccountFromSharedPreferences(getApplicationContext());
+                if (currentUser.getRoleId().intValue() < 2 && !currentUser.getGroupId().equals(accountModel.getGroupId())) {
+                    Toast.makeText(MainActivity.this, "This user does not be long to your group.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 MainActivity.this.getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,
                         new FragmentAccountDetail(accountModel, roleList)).addToBackStack(null).commit();
+                setTitle("Account detail");
             }
         }, new Response.ErrorListener() {
             @Override
@@ -392,5 +409,52 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         requestQueue.add(gsonRequest);
+    }
+
+    public void getTaskById(final Long taskId) {
+        RequestQueue requestQueue = SingletonRequestQueue.getInstance(this.getApplicationContext()).getRequestQueue();
+        HashMap<String, String> headers = new HashMap<>();
+        String url = this.getResources().getString(R.string.BASE_URL) + "/task/" + taskId;
+        GsonRequest<TaskResponse> gsonRequest = new GsonRequest<>(url, TaskResponse.class, headers, new Response.Listener<TaskResponse>() {
+            @Override
+            public void onResponse(TaskResponse response) {
+                List<TaskResponse> responses = new ArrayList<>();
+                responses.add(response);
+                List<TaskModel> taskModels = TimeUtil.convertTaskResponseToTask(responses);
+                TaskModel taskModel = taskModels.get(0);
+                if (!taskModel.isClosed()) {
+                    if (taskModel.getApprovedId().equals(Long.valueOf(0))) {
+                        MainActivity.this.getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.content_frame, new TaskDetailFragment(approveList, roleList, statusList, taskId, TaskDetailFragment.MODE_PENDING)).commit();
+                    } else {
+                        if(taskModel.getStatus().equals(Long.valueOf(0)) || taskModel.getStatus().equals(Long.valueOf(1))||taskModel.getStatus().equals(Long.valueOf(4))){
+                            MainActivity.this.getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.content_frame, new TaskDetailFragment(approveList, roleList, statusList, taskId, TaskDetailFragment.MODE_TODO)).commit();
+                        }
+                        if(taskModel.getStatus().equals(Long.valueOf(2)) || taskModel.getStatus().equals(Long.valueOf(3))){
+                            MainActivity.this.getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.content_frame, new TaskDetailFragment(approveList, roleList, statusList, taskId, TaskDetailFragment.MODE_FINISHED)).commit();
+                        }
+                    }
+                    setTitle("Task Detail");
+                }else {
+                    MainActivity.this.getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.content_frame, new TaskDetailFragment(approveList, roleList, statusList, taskId, TaskDetailFragment.MODE_CLOSED)).commit();
+                    setTitle("Task Detail");
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this, "Connection Time Out", Toast.LENGTH_SHORT).show();
+            }
+        });
+        requestQueue.add(gsonRequest);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
     }
 }

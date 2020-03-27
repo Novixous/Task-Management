@@ -160,7 +160,7 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
                     }
                 });
                 HashMap<Long, String> temp = new HashMap<>();
-                temp.put(Long.valueOf(-1), "None");
+                temp.put(Long.valueOf(-1), "Select status");
                 temp.putAll(statusList);
                 temp.remove(Long.valueOf(0));
                 temp.remove(Long.valueOf(1));
@@ -174,7 +174,7 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         String value = ((SearchCardHolder) holder).spinnerStatus.getItemAtPosition(position).toString();
-                        if (!value.equals("None")) {
+                        if (!value.equals("Select status")) {
                             BiMap<Long, String> statusBiMap = HashBiMap.create(statusList);
                             currentStatus = statusBiMap.inverse().get(value).intValue();
                         } else {
@@ -190,7 +190,7 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
                 //user spinner
                 //user spinner
                 HashMap<Long, String> tempUser = new HashMap<>();
-                tempUser.put(Long.valueOf(-1), "None");
+                tempUser.put(Long.valueOf(-1), "Select assignee");
                 tempUser.putAll(assigneeMap);
                 final Collection<String> userValues = tempUser.values();
                 ArrayList<String> listOfUsers = new ArrayList<String>(userValues);
@@ -201,7 +201,7 @@ public class CardTaskFinishedAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         String value = ((SearchCardHolder) holder).spinnerUser.getItemAtPosition(position).toString();
-                        if (!value.equals("None")) {
+                        if (!value.equals("Select assignee")) {
                             BiMap<Long, String> userBimap = HashBiMap.create(assigneeMap);
                             currentUser = userBimap.inverse().get(value).intValue();
                         } else {

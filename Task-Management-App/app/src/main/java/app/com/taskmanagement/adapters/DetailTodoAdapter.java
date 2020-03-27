@@ -40,8 +40,6 @@ import com.google.common.collect.HashBiMap;
 import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -51,7 +49,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import app.com.taskmanagement.MyTaskFragment;
 import app.com.taskmanagement.R;
 import app.com.taskmanagement.model.AccountModel;
 import app.com.taskmanagement.model.TaskModel;

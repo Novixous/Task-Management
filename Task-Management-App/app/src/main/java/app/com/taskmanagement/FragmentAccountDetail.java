@@ -40,9 +40,9 @@ public class FragmentAccountDetail extends Fragment {
 
     private HashMap<Long, String> roleList = new HashMap<>();
 
-    public FragmentAccountDetail(AccountModel accountModel,HashMap<Long, String> roleList) {
+    public FragmentAccountDetail(AccountModel accountModel, HashMap<Long, String> roleList) {
         this.accountModel = accountModel;
-        this.roleList =roleList;
+        this.roleList = roleList;
     }
 
 
@@ -63,17 +63,49 @@ public class FragmentAccountDetail extends Fragment {
         }
         edtId = rootView.findViewById(R.id.edtId);
         edtId.setText(accountModel.getAccountId().toString());
+        edtId.setTextColor(getActivity().getColor(R.color.black));
+        edtId.setEnabled(false);
+        edtId.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
         edtFullname = rootView.findViewById(R.id.edtFullname);
         edtFullname.setText(accountModel.getFullName());
+        edtFullname.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
         edtUsername = rootView.findViewById(R.id.edtUsername);
         edtUsername.setText(accountModel.getUsername());
         edtEmail = rootView.findViewById(R.id.edtEmail);
         edtEmail.setText(accountModel.getEmail());
+        edtEmail.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
         edtPhone = rootView.findViewById(R.id.edtPhone);
         edtPhone.setText(accountModel.getPhone());
+        edtPhone.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
 
         spinnerActive = rootView.findViewById(R.id.spinnerActive);
         spinnerActive.setTag(accountModel.isDeactivated());
+        spinnerActive.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
 
         spinnerGroup = rootView.findViewById(R.id.spinnerGroup);
         getGroups();
