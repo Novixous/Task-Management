@@ -16,6 +16,8 @@
             android:id="@+id/txtGroupName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:maxLines="2"
             android:text="Group Name"
             android:textColor="@color/title"
@@ -34,6 +36,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato"
             android:textColor="@color/black"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:maxLines="2"
             android:text="Phân công người khác xử lý tiếp công việc khi công việc đã thất bại: Khi phân công việc tự lấy từ công việc cũ để tạo thành record mới và người tạo sẽ là manager, người xử lý là user được manager chọn" />
     </LinearLayout>

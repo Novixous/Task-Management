@@ -24,6 +24,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/muli_bold"
                 android:maxLines="1"
+                android:paddingLeft="20dp"
                 android:text="Account Name"
                 android:textColor="@color/title"
                 android:textSize="20dp"
@@ -37,6 +38,7 @@
                 android:maxLines="1"
                 android:text="Group Name"
                 android:textColor="@color/nameCard"
+                android:paddingLeft="20dp"
                 android:textSize="16dp" />
         </LinearLayout>
 
@@ -56,6 +58,7 @@
                 android:fontFamily="@font/lato"
                 android:maxLines="1"
                 android:text="Admin"
+                android:paddingRight="10dp"
                 android:textColor="@color/status"
                 android:textSize="16dp" />
 
