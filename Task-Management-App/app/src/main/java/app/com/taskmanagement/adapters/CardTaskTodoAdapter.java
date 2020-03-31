@@ -2,6 +2,7 @@ package app.com.taskmanagement.adapters;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
@@ -90,8 +93,10 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
 
     public static class SearchCardHolder extends RecyclerView.ViewHolder {
         Button btnFrom, btnTo, btnSearch, btnReset;
-        Spinner spinnerStatus, spinnerUser;
-
+        Button valueStatus;
+        Button valueUser;
+        Button expandableSearchButton;
+        ExpandableLinearLayout expandableLinearLayout;
 
         public SearchCardHolder(@NonNull View itemView) {
             super(itemView);
@@ -99,8 +104,21 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
             this.btnTo = itemView.findViewById(R.id.btnTo);
             this.btnSearch = itemView.findViewById(R.id.btnSearch);
             this.btnReset = itemView.findViewById(R.id.btnReset);
-            this.spinnerStatus = itemView.findViewById(R.id.spinnerStatus);
-            this.spinnerUser = itemView.findViewById(R.id.spinnerUser);
+            this.valueStatus = itemView.findViewById(R.id.valueStatus);
+            this.valueUser = itemView.findViewById(R.id.valueUser);
+            this.expandableSearchButton = itemView.findViewById(R.id.expandableSearchButton);
+            this.expandableLinearLayout = itemView.findViewById(R.id.expandableLayout);
+            this.expandableSearchButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    expandableLinearLayout.toggle();
+                    if (expandableLinearLayout.isExpanded()) {
+                        expandableSearchButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, android.R.drawable.arrow_down_float, 0);
+                    } else {
+                        expandableSearchButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, android.R.drawable.arrow_up_float, 0);
+                    }
+                }
+            });
         }
     }
 
@@ -115,9 +133,8 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
             case TaskModel.SEARCH_CARD:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.form_search_fragment, parent, false);
                 if (currentAccount.getRoleId().equals(Long.valueOf(0))) {
-                    view.findViewById(R.id.spinnerUser).setVisibility(View.GONE);
+                    view.findViewById(R.id.valueUser).setVisibility(View.GONE);
                     view.findViewById(R.id.searchTxtUser).setVisibility(View.GONE);
-
                 }
                 return new SearchCardHolder(view);
         }
@@ -127,9 +144,15 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
+        holder.setIsRecyclable(false);
         final TaskModel object = dataSet.get(position);
         switch (object.type) {
             case TaskModel.SEARCH_CARD:
+                if(currentAccount.getRoleId().intValue() == 0){
+                    ExpandableLinearLayout.LayoutParams layoutParams = (ExpandableLinearLayout.LayoutParams) ((SearchCardHolder) holder).expandableLinearLayout.getLayoutParams();
+                    layoutParams.setMargins(0, 0, 0, -500);
+                    ((SearchCardHolder) holder).expandableLinearLayout.setLayoutParams(layoutParams);
+                }
                 final Button btnFrom = ((SearchCardHolder) holder).btnFrom;
                 final Button btnTo = ((SearchCardHolder) holder).btnTo;
                 final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -171,53 +194,92 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
                 temp.remove(Long.valueOf(3));
                 final Collection<String> statusValues = temp.values();
                 ArrayList<String> listOfStatus = new ArrayList<String>(statusValues);
-                ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, listOfStatus);
-                ((SearchCardHolder) holder).spinnerStatus.setAdapter(statusAdapter);
-                ((SearchCardHolder) holder).spinnerStatus.setSelection(listOfStatus.indexOf(temp.get(Long.valueOf(currentStatus))));
-                ((SearchCardHolder) holder).spinnerStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setTitle("Choose status");
+                // add a radio button list
+                final String[] dialogStatusItems = listOfStatus.toArray(new String[0]);
+
+
+                int checkedItem = listOfStatus.indexOf(temp.get(Long.valueOf(currentStatus)));
+                ((SearchCardHolder) holder).valueStatus.setText(dialogStatusItems[checkedItem]);
+                builder.setSingleChoiceItems(dialogStatusItems, 0, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        String value = ((SearchCardHolder) holder).spinnerStatus.getItemAtPosition(position).toString();
+                    public void onClick(DialogInterface dialog, int which) {
+                        String value = dialogStatusItems[which];
                         if (!value.equals("None")) {
                             BiMap<Long, String> statusBiMap = HashBiMap.create(statusList);
                             currentStatus = statusBiMap.inverse().get(value).intValue();
                         } else {
                             currentStatus = -1;
                         }
+                        ((SearchCardHolder) holder).valueStatus.setText(value);
                     }
-
+                });
+                // add OK and Cancel buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
+                    public void onClick(DialogInterface dialog, int which) {
 
                     }
                 });
-                //user spinner
+                builder.setNegativeButton("Cancel", null);
+
+                ((SearchCardHolder) holder).valueStatus.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // create and show the alert dialog
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
+                });
+
+
                 //user spinner
                 HashMap<Long, String> tempUser = new HashMap<>();
                 tempUser.put(Long.valueOf(-1), "None");
                 tempUser.putAll(assigneeMap);
                 final Collection<String> userValues = tempUser.values();
                 ArrayList<String> listOfUsers = new ArrayList<String>(userValues);
-                ArrayAdapter<String> userAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, listOfUsers);
-                ((SearchCardHolder) holder).spinnerUser.setAdapter(userAdapter);
-                ((SearchCardHolder) holder).spinnerUser.setSelection(listOfUsers.indexOf(tempUser.get(Long.valueOf(currentUser))));
-                ((SearchCardHolder) holder).spinnerUser.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                final AlertDialog.Builder userBuilder = new AlertDialog.Builder(mContext);
+                userBuilder.setTitle("Choose assignee");
+                final String[] dialogAssigneeItems = listOfUsers.toArray(new String[0]);
+
+                int userCheckedItem = listOfUsers.indexOf(tempUser.get(Long.valueOf(currentUser)));
+                ((SearchCardHolder) holder).valueUser.setText(dialogAssigneeItems[userCheckedItem]);
+                userBuilder.setSingleChoiceItems(dialogAssigneeItems, 0, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        String value = ((SearchCardHolder) holder).spinnerUser.getItemAtPosition(position).toString();
+                    public void onClick(DialogInterface dialog, int which) {
+                        String value = dialogAssigneeItems[which];
                         if (!value.equals("None")) {
-                            BiMap<Long, String> userBimap = HashBiMap.create(assigneeMap);
-                            currentUser = userBimap.inverse().get(value).intValue();
+                            BiMap<Long, String> assigneeBimap = HashBiMap.create(assigneeMap);
+                            currentUser = assigneeBimap.inverse().get(value).intValue();
                         } else {
                             currentUser = -1;
                         }
+                        ((SearchCardHolder) holder).valueUser.setText(value);
                     }
+                });
 
+                // add OK and Cancel buttons
+                userBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
+                    public void onClick(DialogInterface dialog, int which) {
 
                     }
                 });
+                userBuilder.setNegativeButton("Cancel", null);
+
+                ((SearchCardHolder) holder).valueUser.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // create and show the alert dialog
+                        AlertDialog dialog = userBuilder.create();
+                        dialog.show();
+                    }
+                });
+
+
+
 
                 ((SearchCardHolder) holder).btnSearch.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -238,10 +300,13 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
                     public void onClick(View v) {
                         btnFrom.setText("");
                         btnTo.setText("");
-                        ((SearchCardHolder) holder).spinnerStatus.setSelection(0);
-                        ((SearchCardHolder) holder).spinnerUser.setSelection(0);
+                        ((SearchCardHolder) holder).valueStatus.setText("None");
+                        currentStatus = -1;
+                        ((SearchCardHolder) holder).valueUser.setText("None");
+                        currentUser = -1;
                     }
                 });
+                ((SearchCardHolder)holder).expandableLinearLayout.initLayout();
                 break;
             case TaskModel.TASK_CARD:
                 String splitDeadline = object.getDeadline().toString();
@@ -259,7 +324,7 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
 
                     }
                 });
-                ((ShowCardTaskHolder)holder).valueId.setText(object.getTaskId().toString());
+                ((ShowCardTaskHolder) holder).valueId.setText(object.getTaskId().toString());
                 ((ShowCardTaskHolder) holder).valueTaskName.setText(object.getTaskName());
                 ((ShowCardTaskHolder) holder).valueAssignee.setText(assigneeMap.get(object.getAssignee()));
                 ((ShowCardTaskHolder) holder).valueStatus.setText(statusList.get(object.getStatus()));

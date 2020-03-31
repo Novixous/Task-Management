@@ -66,4 +66,6 @@ dependencies {
     //Seekbar
     implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
 
+    implementation 'com.github.aakira:expandable-layout:1.6.0@aar'
+
 }

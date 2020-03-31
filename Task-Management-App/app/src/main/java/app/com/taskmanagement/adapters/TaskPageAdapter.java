@@ -28,11 +28,6 @@ public class TaskPageAdapter extends FragmentPagerAdapter {
 
 
     @Override
-    public int getItemPosition(@NonNull Object object) {
-        return POSITION_NONE;
-    }
-
-    @Override
     public Fragment getItem(int i) {
         Fragment fragment = new TaskTabFragment(tabTitles[i],approveList,roleList,statusList);
         return fragment;

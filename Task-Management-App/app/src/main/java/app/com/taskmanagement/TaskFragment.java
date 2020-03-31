@@ -50,6 +50,7 @@ public class TaskFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         taskPageAdapter = new TaskPageAdapter(getChildFragmentManager(), approveList, roleList, statusList);
         viewPager.setAdapter(taskPageAdapter);
+        viewPager.setOffscreenPageLimit(2);
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
