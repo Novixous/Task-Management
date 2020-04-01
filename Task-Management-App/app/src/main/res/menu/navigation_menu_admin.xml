@@ -14,7 +14,6 @@
         android:title="Create New Task" />
     <item
         android:id="@+id/listgroup"
-        android:icon="@drawable/ic_group"
         android:title="Group List" />
     <item
         android:id="@+id/listaccount"
