@@ -41,7 +41,7 @@ public class TaskClosedListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_my_task_tab, container, false);
+        View rootView = inflater.inflate(R.layout.tab_task_fragment, container, false);
         return rootView;
     }
 

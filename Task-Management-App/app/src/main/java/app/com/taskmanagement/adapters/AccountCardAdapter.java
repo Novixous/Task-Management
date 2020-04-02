@@ -79,7 +79,7 @@ public class AccountCardAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_account_fragment, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.account_card_fragment, parent, false);
         return new CardAccountHolder(view, onItemClickedListener);
     }
 

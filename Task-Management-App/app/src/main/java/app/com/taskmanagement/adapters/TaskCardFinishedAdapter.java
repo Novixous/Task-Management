@@ -6,12 +6,9 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +43,7 @@ import app.com.taskmanagement.util.PreferenceUtil;
 import app.com.taskmanagement.util.SingletonRequestQueue;
 import app.com.taskmanagement.util.TimeUtil;
 
-public class CardTaskTodoAdapter extends RecyclerView.Adapter {
+public class TaskCardFinishedAdapter extends RecyclerView.Adapter {
     public static final int ROLE_USER = 0;
     public static final int ROLE_MANAGER = 1;
     public static final int ROLE_ADMIN = 2;
@@ -62,8 +59,7 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
     private int currentStatus;
     private int currentUser;
 
-
-    public CardTaskTodoAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
+    public TaskCardFinishedAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
         this.approveList = approveList;
         this.roleList = roleList;
         this.statusList = statusList;
@@ -73,7 +69,7 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
         currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
         this.currentStatus = -1;
         this.currentUser = -1;
-        getTodoTaskList(currentAccount.getRoleId(), null, null);
+        getFinishedTaskList(currentAccount.getRoleId(), null, null);
     }
 
     public static class ShowCardTaskHolder extends RecyclerView.ViewHolder {
@@ -97,6 +93,8 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
         Button valueUser;
         Button expandableSearchButton;
         ExpandableLinearLayout expandableLinearLayout;
+        boolean isExpanded;
+
 
         public SearchCardHolder(@NonNull View itemView) {
             super(itemView);
@@ -106,32 +104,35 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
             this.btnReset = itemView.findViewById(R.id.btnReset);
             this.valueStatus = itemView.findViewById(R.id.valueStatus);
             this.valueUser = itemView.findViewById(R.id.valueUser);
+            this.isExpanded = false;
             this.expandableSearchButton = itemView.findViewById(R.id.expandableSearchButton);
             this.expandableLinearLayout = itemView.findViewById(R.id.expandableLayout);
             this.expandableSearchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     expandableLinearLayout.toggle();
-                    if (expandableLinearLayout.isExpanded()) {
+                    if (isExpanded) {
                         expandableSearchButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, android.R.drawable.arrow_down_float, 0);
+                        isExpanded = false;
                     } else {
                         expandableSearchButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, android.R.drawable.arrow_up_float, 0);
+                        isExpanded = true;
                     }
                 }
             });
         }
     }
 
-
+    @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         switch (viewType) {
             case TaskModel.TASK_CARD:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_task_fragment, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_card_fragment, parent, false);
                 return new ShowCardTaskHolder(view);
             case TaskModel.SEARCH_CARD:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.form_search_fragment, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_form_fragment, parent, false);
                 if (currentAccount.getRoleId().equals(Long.valueOf(0))) {
                     view.findViewById(R.id.valueUser).setVisibility(View.GONE);
                     view.findViewById(R.id.searchTxtUser).setVisibility(View.GONE);
@@ -139,7 +140,6 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
                 return new SearchCardHolder(view);
         }
         return null;
-
     }
 
     @Override
@@ -169,7 +169,7 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onClick(View v) {
                         pickDateFrom.show();
-                        pickDateFrom.getDatePicker().setMinDate(System.currentTimeMillis());
+
                     }
                 });
                 final DatePickerDialog pickDateTo = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
@@ -184,21 +184,22 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onClick(View v) {
                         pickDateTo.show();
-                        pickDateTo.getDatePicker().setMinDate(System.currentTimeMillis());
+
                     }
                 });
                 HashMap<Long, String> temp = new HashMap<>();
                 temp.put(Long.valueOf(-1), "None");
                 temp.putAll(statusList);
-                temp.remove(Long.valueOf(2));
-                temp.remove(Long.valueOf(3));
+                temp.remove(Long.valueOf(0));
+                temp.remove(Long.valueOf(1));
+                temp.remove(Long.valueOf(4));
                 final Collection<String> statusValues = temp.values();
                 ArrayList<String> listOfStatus = new ArrayList<String>(statusValues);
+
                 final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
                 builder.setTitle("Choose status");
                 // add a radio button list
                 final String[] dialogStatusItems = listOfStatus.toArray(new String[0]);
-
 
                 int checkedItem = listOfStatus.indexOf(temp.get(Long.valueOf(currentStatus)));
                 ((SearchCardHolder) holder).valueStatus.setText(dialogStatusItems[checkedItem]);
@@ -232,8 +233,6 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
                         dialog.show();
                     }
                 });
-
-
                 //user spinner
                 HashMap<Long, String> tempUser = new HashMap<>();
                 tempUser.put(Long.valueOf(-1), "None");
@@ -278,9 +277,6 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
                     }
                 });
 
-
-
-
                 ((SearchCardHolder) holder).btnSearch.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -292,7 +288,7 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
                         if (!((SearchCardHolder) holder).btnTo.getText().toString().isEmpty()) {
                             to = ((SearchCardHolder) holder).btnTo.getText().toString();
                         }
-                        getTodoTaskList(currentAccount.getRoleId(), from, to);
+                        getFinishedTaskList(currentAccount.getRoleId(), from, to);
                     }
                 });
                 ((SearchCardHolder) holder).btnReset.setOnClickListener(new View.OnClickListener() {
@@ -306,7 +302,7 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
                         currentUser = -1;
                     }
                 });
-                ((SearchCardHolder)holder).expandableLinearLayout.initLayout();
+                ((SearchCardHolder) holder).expandableLinearLayout.initLayout();
                 break;
             case TaskModel.TASK_CARD:
                 String splitDeadline = object.getDeadline().toString();
@@ -320,7 +316,7 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
                                                         roleList,
                                                         statusList,
                                                         dataSet.get(position).getTaskId(),
-                                                        TaskDetailFragment.MODE_TODO)).addToBackStack(null).commit();
+                                                        TaskDetailFragment.MODE_FINISHED)).addToBackStack(null).commit();
 
                     }
                 });
@@ -351,34 +347,34 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
         return 0;
     }
 
-    public void getTodoTaskList(Long roleId, String from, String to) {
+    public void getFinishedTaskList(Long roleId, String from, String to) {
         RequestQueue requestQueue = SingletonRequestQueue.getInstance(mContext.getApplicationContext()).getRequestQueue();
         HashMap<String, String> headers = new HashMap<>();
         String url = "";
         switch (roleId.intValue()) {
             case ROLE_USER:
                 if (from == null && to == null && currentStatus == -1) {
-                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(0) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(1) + "&split5=or&fieldName5=status_id&value5=" + Long.valueOf(4) + "&splitClosed=)and&isClosed=false";
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(2) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(3) + "&splitClosed=)and&isClosed=false";
                 } else if (currentStatus == -1) {
-                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(0) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(1) + "&split5=or&fieldName5=status_id&value5=" + Long.valueOf(4) + "&splitClosed=)and&isClosed=false" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(2) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(3) + "&splitClosed=)and&isClosed=false" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
                 } else {
                     url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=assignee&value=" + currentAccount.getAccountId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&fieldName3=status_id&value3=" + Long.valueOf(currentStatus) + "&isClosed=false" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
                 }
                 break;
             case ROLE_MANAGER:
                 if (from == null && to == null && currentStatus == -1) {
-                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=group_id&value=" + currentAccount.getGroupId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(0) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(1) + "&split5=or&fieldName5=status_id&value5=" + Long.valueOf(4) + "&splitClosed=)and&isClosed=false";
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=group_id&value=" + currentAccount.getGroupId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(2) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(3) + "&splitClosed=)and&isClosed=false";
                 } else if (currentStatus == -1) {
-                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=group_id&value=" + currentAccount.getGroupId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(0) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(1) + "&split5=or&fieldName5=status_id&value5=" + Long.valueOf(4) + "&splitClosed=)and&isClosed=false" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=group_id&value=" + currentAccount.getGroupId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&split3=and(&fieldName3=status_id&value3=" + Long.valueOf(2) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(3) + "&splitClosed=)and&isClosed=false" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
                 } else {
                     url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=group_id&value=" + currentAccount.getGroupId() + "&fieldName2=approve_id&value2=" + Long.valueOf(1) + "&fieldName3=status_id&value3=" + Long.valueOf(currentStatus) + "&isClosed=false" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
                 }
                 break;
             case ROLE_ADMIN:
                 if (from == null && to == null && currentStatus == -1) {
-                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=approve_id&value=" + Long.valueOf(1) + "&split2=and(&fieldName2=status_id&value2=" + Long.valueOf(0) + "&split3=or&fieldName3=status_id&value3=" + Long.valueOf(1) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(4) + "&splitClosed=)and&isClosed=false";
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=approve_id&value=" + Long.valueOf(1) + "&split2=and(&fieldName2=status_id&value2=" + Long.valueOf(2) + "&split3=or&fieldName3=status_id&value3=" + Long.valueOf(3) + "&splitClosed=)and&isClosed=false";
                 } else if (currentStatus == -1) {
-                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=approve_id&value=" + Long.valueOf(1) + "&split2=and(&fieldName2=status_id&value2=" + Long.valueOf(0) + "&split3=or&fieldName3=status_id&value3=" + Long.valueOf(1) + "&split4=or&fieldName4=status_id&value4=" + Long.valueOf(4) + "&splitClosed=)and&isClosed=false" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
+                    url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=approve_id&value=" + Long.valueOf(1) + "&split2=and(&fieldName2=status_id&value2=" + Long.valueOf(2) + "&split3=or&fieldName3=status_id&value3=" + Long.valueOf(3) + "&splitClosed=)and&isClosed=false" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
                 } else {
                     url = mContext.getResources().getString(R.string.BASE_URL) + "/task/getTaskListByFieldId?fieldName=approve_id&value=" + Long.valueOf(1) + "&fieldName2=status_id&value2=" + Long.valueOf(currentStatus) + "&isClosed=false" + (from != null ? "&from=" + from : "") + (to != null ? "&to=" + to : "");
                 }
@@ -419,4 +415,5 @@ public class CardTaskTodoAdapter extends RecyclerView.Adapter {
         });
         requestQueue.add(gsonRequest);
     }
+
 }

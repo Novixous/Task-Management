@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import app.com.taskmanagement.FragmentAccountList;
+import app.com.taskmanagement.AccountListFragment;
 import app.com.taskmanagement.R;
 import app.com.taskmanagement.model.AccountModel;
 import app.com.taskmanagement.model.GroupModel;
@@ -69,7 +69,7 @@ public class AccountCreateAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.create_account_fragment, parent, false);
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.account_create_fragment, parent, false);
         for (int i = 0; i < not_show_on_create.length; i++) {
             view.findViewById(not_show_on_create[i]).setVisibility(View.GONE);
         }
@@ -220,7 +220,7 @@ public class AccountCreateAdapter extends RecyclerView.Adapter {
                 if (response.intValue() == 1) {
                     Toast.makeText(mContext, "Create account successful", Toast.LENGTH_LONG).show();
                     ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
-                    ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new FragmentAccountList(roleList)).commit();
+                    ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new AccountListFragment(roleList)).commit();
                 } else if (response.intValue() == 0) {
                     Toast.makeText(mContext, "There is aldready a manager of this group!", Toast.LENGTH_LONG).show();
                 } else {

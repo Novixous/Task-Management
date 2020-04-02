@@ -48,7 +48,7 @@ import app.com.taskmanagement.util.PreferenceUtil;
 import app.com.taskmanagement.util.SingletonRequestQueue;
 import app.com.taskmanagement.util.TimeUtil;
 
-public class DetailTaskPendingAdapter extends RecyclerView.Adapter {
+public class TaskDetailPendingAdapter extends RecyclerView.Adapter {
     private Context mContext;
     public static final int ROLE_USER = 0;
     public static final int ROLE_MANAGER = 1;
@@ -97,7 +97,7 @@ public class DetailTaskPendingAdapter extends RecyclerView.Adapter {
     private HashMap<Long, String> statusList;
     private Boolean dataLoaded;
 
-    public DetailTaskPendingAdapter(Context context, Long taskId, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
+    public TaskDetailPendingAdapter(Context context, Long taskId, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
         this.mContext = context;
         this.taskModel = new TaskModel();
         this.currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
@@ -146,7 +146,7 @@ public class DetailTaskPendingAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_task, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_task_fragment, parent, false);
         for (int i = 0; i < ID_NOT_SHOW_GENERAL.length; i++) {
             view.findViewById(ID_NOT_SHOW_GENERAL[i]).setVisibility(View.GONE);
         }

@@ -6,8 +6,6 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
@@ -128,10 +126,10 @@ public class TaskCardClosedAdapter extends RecyclerView.Adapter {
         View view;
         switch (viewType) {
             case TaskModel.TASK_CARD:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_task_fragment, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_card_fragment, parent, false);
                 return new ShowCardTaskHolder(view);
             case TaskModel.SEARCH_CARD:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.form_search_fragment, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_form_fragment, parent, false);
                 if (currentAccount.getRoleId().equals(Long.valueOf(0))) {
                     view.findViewById(R.id.searchTxtUser).setVisibility(View.GONE);
                     view.findViewById(R.id.valueUser).setVisibility(View.GONE);

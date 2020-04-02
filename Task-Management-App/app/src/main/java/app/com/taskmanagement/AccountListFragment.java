@@ -17,12 +17,12 @@ import app.com.taskmanagement.adapters.AccountCardAdapter;
 import app.com.taskmanagement.model.AccountModel;
 
 
-public class FragmentAccountList extends Fragment {
+public class AccountListFragment extends Fragment {
     private RecyclerView recyclerView;
     private Button btnCreate;
     private HashMap<Long, String> roleList;
 
-    public FragmentAccountList(HashMap<Long, String> roleList) {
+    public AccountListFragment(HashMap<Long, String> roleList) {
         this.roleList = roleList;
     }
 
@@ -35,7 +35,7 @@ public class FragmentAccountList extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_list_account, container, false);
+        View rootView = inflater.inflate(R.layout.account_list_fragment, container, false);
         getActivity().setTitle("Account List");
 
         final AccountCardAdapter AccountCardAdapter = new AccountCardAdapter(this.getActivity(), this, roleList);

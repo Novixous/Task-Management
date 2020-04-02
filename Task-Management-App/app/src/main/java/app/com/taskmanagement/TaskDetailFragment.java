@@ -19,10 +19,10 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import app.com.taskmanagement.adapters.DetailTaskClosedAdapter;
-import app.com.taskmanagement.adapters.DetailTaskFinishedAdapter;
-import app.com.taskmanagement.adapters.DetailTaskPendingAdapter;
-import app.com.taskmanagement.adapters.DetailTaskTodoAdapter;
+import app.com.taskmanagement.adapters.TaskDetailClosedAdapter;
+import app.com.taskmanagement.adapters.TaskDetailFinishedAdapter;
+import app.com.taskmanagement.adapters.TaskDetailPendingAdapter;
+import app.com.taskmanagement.adapters.TaskDetailTodoAdapter;
 import app.com.taskmanagement.model.TaskModel;
 
 public class TaskDetailFragment extends Fragment {
@@ -61,16 +61,16 @@ public class TaskDetailFragment extends Fragment {
         detailTaskAdapter = null;
         switch (mode) {
             case MODE_PENDING:
-                detailTaskAdapter = new DetailTaskPendingAdapter(this.getActivity(), taskId, approveList, roleList, statusList);
+                detailTaskAdapter = new TaskDetailPendingAdapter(this.getActivity(), taskId, approveList, roleList, statusList);
                 break;
             case MODE_TODO:
-                detailTaskAdapter = new DetailTaskTodoAdapter(this.getActivity(), this, taskId, approveList, roleList, statusList);
+                detailTaskAdapter = new TaskDetailTodoAdapter(this.getActivity(), this, taskId, approveList, roleList, statusList);
                 break;
             case MODE_FINISHED:
-                detailTaskAdapter = new DetailTaskFinishedAdapter(this.getActivity(), taskId, approveList, roleList, statusList);
+                detailTaskAdapter = new TaskDetailFinishedAdapter(this.getActivity(), taskId, approveList, roleList, statusList);
                 break;
             case MODE_CLOSED:
-                detailTaskAdapter = new DetailTaskClosedAdapter(this.getActivity(), taskId, approveList, roleList, statusList);
+                detailTaskAdapter = new TaskDetailClosedAdapter(this.getActivity(), taskId, approveList, roleList, statusList);
                 break;
         }
         recyclerView = rootView.findViewById(R.id.viewRecycler);
@@ -90,7 +90,7 @@ public class TaskDetailFragment extends Fragment {
                 Bitmap bitmapImage = null;
                 try {
                     bitmapImage = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), returnUri);
-                    ((DetailTaskTodoAdapter) detailTaskAdapter).setImageResolution(bitmapImage);
+                    ((TaskDetailTodoAdapter) detailTaskAdapter).setImageResolution(bitmapImage);
                     detailTaskAdapter.notifyDataSetChanged();
 
                 } catch (Exception e) {

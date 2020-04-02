@@ -1,15 +1,14 @@
 package app.com.taskmanagement.adapters;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -18,21 +17,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.gson.Gson;
 import com.warkiz.widget.IndicatorSeekBar;
 
-import java.io.ByteArrayOutputStream;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -43,10 +36,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import app.com.taskmanagement.R;
-import app.com.taskmanagement.TaskCreateFragment;
 import app.com.taskmanagement.model.AccountModel;
 import app.com.taskmanagement.model.TaskModel;
-import app.com.taskmanagement.model.request.TaskCreateRequest;
 import app.com.taskmanagement.model.response.LoginResponse;
 import app.com.taskmanagement.model.response.TaskResponse;
 import app.com.taskmanagement.util.GsonRequest;
@@ -54,7 +45,7 @@ import app.com.taskmanagement.util.PreferenceUtil;
 import app.com.taskmanagement.util.SingletonRequestQueue;
 import app.com.taskmanagement.util.TimeUtil;
 
-public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
+public class TaskDetailClosedAdapter extends RecyclerView.Adapter {
     private Context mContext;
     public static final int ROLE_USER = 0;
     public static final int ROLE_MANAGER = 1;
@@ -63,18 +54,19 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
 
 
     private static final Integer[] ID_NOT_SHOW_GENERAL = {
+            R.id.btnCreateTask,
+            R.id.btnClose,
+            R.id.btnUpdateTask,
+            R.id.btnCloneTask,
             R.id.btnApprove,
-            R.id.btnDecline,
-            R.id.btnCreateTask
+            R.id.btnDecline
     };
     private static final Integer[] ID_NOT_EDITABLE_GENERAL = {
             R.id.valueTaskName,
             R.id.valueDescription,
-    };
-    private static final Integer[] ID_NOT_SHOW_USER = {
-            R.id.btnUpdateTask,
-            R.id.btnClose,
-            R.id.btnCloneTask
+            R.id.btnImg,
+            R.id.valueResult,
+            R.id.valueReview
     };
 
 
@@ -95,7 +87,7 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
         this.imageResolution = imageResolution;
     }
 
-    public DetailTaskFinishedAdapter(Context context, Long taskId, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
+    public TaskDetailClosedAdapter(Context context, Long taskId, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
         this.mContext = context;
         this.taskModel = new TaskModel();
         this.currentAccount = PreferenceUtil.getAccountFromSharedPreferences(mContext);
@@ -167,32 +159,12 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_task, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_task_fragment, parent, false);
         for (int i = 0; i < ID_NOT_SHOW_GENERAL.length; i++) {
             view.findViewById(ID_NOT_SHOW_GENERAL[i]).setVisibility(View.GONE);
         }
         for (int i = 0; i < ID_NOT_EDITABLE_GENERAL.length; i++) {
             view.findViewById(ID_NOT_EDITABLE_GENERAL[i]).setEnabled(false);
-        }
-        switch (currentAccount.getRoleId().intValue()) {
-            case ROLE_USER:
-                for (int i = 0; i < ID_NOT_SHOW_USER.length; i++) {
-                    view.findViewById(ID_NOT_SHOW_USER[i]).setVisibility(View.GONE);
-                }
-                view.findViewById(R.id.valueMark).setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        return true;
-                    }
-                });
-                view.findViewById(R.id.valueReview).setEnabled(false);
-                break;
-            case ROLE_MANAGER:
-
-                break;
-            case ROLE_ADMIN:
-
-                break;
         }
         return new TaskFormHolder(view);
     }
@@ -205,6 +177,7 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
         if (dataLoaded) {
 
 //                  Set task name
+
             ((TaskFormHolder) holder).valueTaskName.setText(taskModel.getTaskName().toString());
             //      Set task id
             ((TaskFormHolder) holder).valueIDTask.setText(taskModel.getTaskId().toString());
@@ -215,55 +188,19 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
             final Button valueDeadline = ((TaskFormHolder) holder).valueDateDeadline;
             final Button valueTimeDeadline = ((TaskFormHolder) holder).valueTimeDeadline;
             //set deadline
-
             valueDeadline.setText(LocalDateTime.ofInstant(taskModel.getDeadline(), ZoneId.of("GMT")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             valueTimeDeadline.setText(LocalDateTime.ofInstant(taskModel.getDeadline(), ZoneId.of("GMT")).format(DateTimeFormatter.ofPattern("HH:mm")));
 //                  Set status
             HashMap<Long, String> temp = new HashMap<>(statusList);
-            temp.remove(Long.valueOf(0));
-            temp.remove(Long.valueOf(1));
-            if (taskModel.getStatus().equals(Long.valueOf(3)))
-                temp.remove(Long.valueOf(2));
-            if (taskModel.getStatus().equals(Long.valueOf(2)))
-                temp.remove(Long.valueOf(3));
             final Collection<String> statusValues = temp.values();
             ArrayList<String> listOfStatus = new ArrayList<String>(statusValues);
-            final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-            builder.setTitle("Choose status");
-            // add a radio button list
-
+            ArrayAdapter<String> statusAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, listOfStatus);
             final String[] dialogStatusItems = listOfStatus.toArray(new String[0]);
             int checkedItem = listOfStatus.indexOf(statusList.get(taskModel.getStatus()));
             ((TaskFormHolder) holder).valueStatus.setText(dialogStatusItems[checkedItem]);
             String value = dialogStatusItems[checkedItem];
             BiMap<Long, String> statusBiMap = HashBiMap.create(statusList);
             currentStatus = statusBiMap.inverse().get(value).intValue();
-            builder.setSingleChoiceItems(dialogStatusItems, checkedItem, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    String value = dialogStatusItems[which];
-                    BiMap<Long, String> statusBiMap = HashBiMap.create(statusList);
-                    currentStatus = statusBiMap.inverse().get(value).intValue();
-                    ((TaskFormHolder) holder).valueStatus.setText(value);
-                }
-            });
-
-            // add OK and Cancel buttons
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-                }
-            });
-            builder.setNegativeButton("Cancel", null);
-            ((TaskFormHolder) holder).valueStatus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // create and show the alert dialog
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
-            });
 //                  Set note
             String note = "";
             if (taskModel.getEndTime() == null) {
@@ -286,7 +223,6 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
             assigneeSpinnerItems.add("(" + assignee.getAccountId() + ")" + assignee.getFullName());
             final String[] dialogAssigneeItems = assigneeSpinnerItems.toArray(new String[0]);
             ((TaskFormHolder) holder).valueAssignee.setText(dialogAssigneeItems[0]);
-
 //                  Set Creator
             ((TaskFormHolder) holder).valueCreator.setText(creator.getFullName());
             //                  Set Description
@@ -295,25 +231,25 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
             ((TaskFormHolder) holder).valueDateStart.setText(taskModel.getStartTime() != null ? DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(taskModel.getStartTime().atZone(ZoneId.of("GMT"))) : "");
             ((TaskFormHolder) holder).valueDateEnd.setText(taskModel.getEndTime() != null ? DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(taskModel.getEndTime().atZone(ZoneId.of("GMT"))) : "");
 
-            //                  Set select img listener
-            if (currentAccount.getRoleId() > 0 && !taskModel.getAssignee().equals(currentAccount.getAccountId())) {
-                ((TaskFormHolder) holder).btnImg.setEnabled(false);
-            }
-
             //                  Set image to resolution image
             if (imageResolution != null) {
                 ((TaskFormHolder) holder).valueImgResolution.setImageBitmap(imageResolution);
             }
             //                  Result
-            ((TaskFormHolder) holder).valueResult.setEnabled(false);
             ((TaskFormHolder) holder).valueResult.setText(taskModel.getResult());
             //                  Reviewer
             ((TaskFormHolder) holder).valueReviewer.setText(reviewer != null ? reviewer.getFullName() : "");
             //                  Mark
 
             if (taskModel.getMark() != null) {
-                ((TaskFormHolder) holder).valueMark.setProgress(taskModel.getMark());
+                ((TaskFormHolder) holder).valueMark.setProgress(taskModel.getMark().intValue());
             }
+            ((TaskFormHolder) holder).valueMark.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
+                }
+            });
             //                  Date reviewed
             ((TaskFormHolder) holder).valueDateReview.setText(taskModel.getReviewTime() != null ? DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(taskModel.getReviewTime().atZone(ZoneId.of("GMT"))) : "");
             //                  Review content
@@ -321,79 +257,6 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
             //                  last modified
             ((TaskFormHolder) holder).valueModifiedBy.setText(lastModifiedName);
             ((TaskFormHolder) holder).valueModifiedAt.setText(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(taskModel.getEditedAt().atZone(ZoneId.of("GMT"))));
-            //                  button update
-            ((TaskFormHolder) holder).btnUpdate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    TaskModel taskUpdate = new TaskModel();
-                    taskUpdate.setTaskId(taskModel.getTaskId());
-                    taskUpdate.setStatus(Long.valueOf(currentStatus));
-                    taskUpdate.setMark(Long.valueOf(((TaskFormHolder) holder).valueMark.getProgress()));
-                    taskUpdate.setReviewerId(currentAccount.getAccountId());
-                    taskUpdate.setManagerComment(((TaskFormHolder) holder).valueReview.getText().toString());
-                    taskUpdate.setEditedBy(currentAccount.getAccountId());
-                    taskUpdate.setResult(((TaskFormHolder) holder).valueResult.getText().toString());
-                    if (imageResolution != null) {
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        imageResolution.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                        byte[] byteArray = byteArrayOutputStream.toByteArray();
-                        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                        taskUpdate.setImgResolutionUrl(encoded);
-                    }
-                    updateTask(taskUpdate, false);
-                }
-            });
-            if (!taskModel.getStatus().equals(Long.valueOf(3))) {
-                ((TaskFormHolder) holder).btnClone.setVisibility(View.GONE);
-            } else {
-                ((TaskFormHolder) holder).btnClone.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        TaskModel taskUpdate = new TaskModel();
-                        taskUpdate.setTaskId(taskModel.getTaskId());
-                        taskUpdate.setStatus(Long.valueOf(3));
-                        taskUpdate.setMark(Long.valueOf(((TaskFormHolder) holder).valueMark.getProgress()));
-                        taskUpdate.setReviewerId(currentAccount.getAccountId());
-                        taskUpdate.setManagerComment(((TaskFormHolder) holder).valueReview.getText().toString());
-                        taskUpdate.setEditedBy(currentAccount.getAccountId());
-                        taskUpdate.setResult(((TaskFormHolder) holder).valueResult.getText().toString());
-                        if (imageResolution != null) {
-                            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                            imageResolution.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                            byte[] byteArray = byteArrayOutputStream.toByteArray();
-                            String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                            taskUpdate.setImgResolutionUrl(encoded);
-                        }
-                        taskUpdate.setClosed(true);
-                        updateTask(taskUpdate, true);
-                        ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
-                        ((AppCompatActivity) mContext).getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, new TaskCreateFragment(approveList, roleList, statusList, taskModel)).commit();
-                        ((AppCompatActivity) mContext).setTitle("Clone task");
-                    }
-                });
-            }
-            ((TaskFormHolder) holder).btnClose.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    TaskModel taskUpdate = new TaskModel();
-                    taskUpdate.setTaskId(taskModel.getTaskId());
-                    taskUpdate.setStatus(Long.valueOf(currentStatus));
-                    taskUpdate.setMark(Long.valueOf(((TaskFormHolder) holder).valueMark.getProgress()));
-                    taskUpdate.setReviewerId(currentAccount.getAccountId());
-                    taskUpdate.setManagerComment(((TaskFormHolder) holder).valueReview.getText().toString());
-                    taskUpdate.setEditedBy(currentAccount.getAccountId());
-                    taskUpdate.setClosed(true);
-                    taskUpdate.setResult(((TaskFormHolder) holder).valueResult.getText().toString());
-                    if (imageResolution != null) {
-                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        imageResolution.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                        byte[] byteArray = byteArrayOutputStream.toByteArray();
-                        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-                        taskUpdate.setImgResolutionUrl(encoded);
-                    }
-                    updateTask(taskUpdate, false);
-                }
-            });
 
         }
 
@@ -512,38 +375,6 @@ public class DetailTaskFinishedAdapter extends RecyclerView.Adapter {
             }
         });
         requestQueue.add(gsonRequest);
-    }
-
-    public void updateTask(TaskModel taskModel, final boolean isClone) {
-        String url = String.format(mContext.getResources().getString(R.string.BASE_URL) + "/task");
-        HashMap<String, String> header = new HashMap<>();
-        header.put("Content-Type", "application/json");
-        RequestQueue requestQueue = Volley.newRequestQueue(mContext.getApplicationContext());
-        Gson gson = new Gson();
-        List<TaskModel> taskModels = new ArrayList<>();
-        taskModels.add(taskModel);
-        TaskCreateRequest taskCreateRequest = new TaskCreateRequest(taskModels);
-        String body = gson.toJson(taskCreateRequest);
-        GsonRequest<Integer> taskResponseCreateRequest = new GsonRequest<>(Request.Method.PUT, url, Integer.class, header, body, new Response.Listener<Integer>() {
-            @Override
-            public void onResponse(Integer response) {
-                if (response.intValue() > 0) {
-                    Toast.makeText(mContext.getApplicationContext(), "Update successfully!", Toast.LENGTH_LONG);
-                    if (!isClone) {
-                        ((AppCompatActivity) mContext).getSupportFragmentManager().popBackStack();
-                    }
-                } else if (response.intValue() == -2) {
-                    Toast.makeText(mContext, "Please fill in review content.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.println(Log.ERROR, "", "");
-                Toast.makeText(mContext.getApplicationContext(), "Update failed!", Toast.LENGTH_LONG);
-            }
-        });
-        requestQueue.add(taskResponseCreateRequest);
     }
 
 }

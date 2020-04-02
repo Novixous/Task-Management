@@ -28,7 +28,7 @@ public class GroupListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_list_group, container, false);
+        View rootView = inflater.inflate(R.layout.group_list_fragment, container, false);
         getActivity().setTitle("Group List");
 
         final GroupCardAdapter groupCardAdapter = new GroupCardAdapter(this.getActivity(), this);

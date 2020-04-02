@@ -50,7 +50,7 @@ import app.com.taskmanagement.util.GsonRequest;
 import app.com.taskmanagement.util.PreferenceUtil;
 import app.com.taskmanagement.util.SingletonRequestQueue;
 
-public class NewTaskAdapter extends RecyclerView.Adapter {
+public class TaskNewAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private TaskModel taskModel;
     private List<AccountModel> listMembers;
@@ -62,7 +62,7 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
     private HashMap<Long, String> roleList;
     private HashMap<Long, String> statusList;
 
-    public NewTaskAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
+    public TaskNewAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList) {
         this.approveList = approveList;
         this.roleList = roleList;
         this.statusList = statusList;
@@ -79,7 +79,7 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public NewTaskAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList, TaskModel taskModel) {
+    public TaskNewAdapter(Context context, HashMap<Long, String> approveList, HashMap<Long, String> roleList, HashMap<Long, String> statusList, TaskModel taskModel) {
         this.approveList = approveList;
         this.roleList = roleList;
         this.statusList = statusList;
@@ -171,7 +171,7 @@ public class NewTaskAdapter extends RecyclerView.Adapter {
 
         switch (viewType) {
             case TaskModel.SHOW_FORM_CREATE:
-                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_show_task, parent, false);
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.show_task_fragment, parent, false);
                 for (int i = 0; i < id_not_show_create_task.length; i++) {
                     view.findViewById(id_not_show_create_task[i]).setVisibility(View.GONE);
                 }

@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 currentFragment = new GroupListFragment();
                 break;
             case 6:
-                currentFragment = new FragmentAccountList(roleList);
+                currentFragment = new AccountListFragment(roleList);
                 break;
             case 7:
                 currentFragment = new TaskClosedListFragment("Archived tasks", approveList, roleList, statusList);
@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
-            return inflater.inflate(R.layout.fragment_show_task, container, false);
+            return inflater.inflate(R.layout.show_task_fragment, container, false);
         }
     }
 

@@ -67,7 +67,7 @@ public class AccountDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.detail_account_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.account_detail_fragment, container, false);
         if (accountModel == null) {
             this.accountModel = PreferenceUtil.getAccountFromSharedPreferences(getActivity().getApplicationContext());
         }

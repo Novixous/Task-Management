@@ -37,7 +37,7 @@ public class GroupDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.detail_group_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.group_detail_fragment, container, false);
         edtGroupId = rootView.findViewById(R.id.edtGroupId);
         edtGroupName = rootView.findViewById(R.id.edtGroupName);
         edtGroupName.setEnabled(false);

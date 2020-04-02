@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import java.util.HashMap;
 
-import app.com.taskmanagement.adapters.CardTaskFinishedAdapter;
-import app.com.taskmanagement.adapters.CardTaskTodoAdapter;
+import app.com.taskmanagement.adapters.TaskCardFinishedAdapter;
+import app.com.taskmanagement.adapters.TaskCardTodoAdapter;
 import app.com.taskmanagement.adapters.TaskCardPendingAdapter;
 
 /**
@@ -40,7 +40,7 @@ public class TaskTabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_my_task_tab, container, false);
+        View rootView = inflater.inflate(R.layout.tab_task_fragment, container, false);
         return rootView;
     }
 
@@ -50,7 +50,7 @@ public class TaskTabFragment extends Fragment {
         StaggeredGridLayoutManager lm;
         switch (tabTitle) {
             case "Ongoing":
-                cardTaskAdapter = new CardTaskTodoAdapter(this.getActivity(), approveList, roleList, statusList);
+                cardTaskAdapter = new TaskCardTodoAdapter(this.getActivity(), approveList, roleList, statusList);
                 recyclerView = view.findViewById(R.id.tabShowCard);
                 lm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(lm);
@@ -58,7 +58,7 @@ public class TaskTabFragment extends Fragment {
                 recyclerView.setAdapter(cardTaskAdapter);
                 break;
             case "Finishing":
-                cardTaskAdapter = new CardTaskFinishedAdapter(this.getActivity(), approveList, roleList, statusList);
+                cardTaskAdapter = new TaskCardFinishedAdapter(this.getActivity(), approveList, roleList, statusList);
                 recyclerView = view.findViewById(R.id.tabShowCard);
                 lm = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(lm);

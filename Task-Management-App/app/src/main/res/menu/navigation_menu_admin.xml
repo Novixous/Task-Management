@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/createtask"
+        android:icon="@drawable/ic_create_black_24dp"
+        android:title="Create New Task" />
+    <item
         android:id="@+id/mytask"
         android:icon="@drawable/ic_assignment_black_24dp"
         android:title="Tasks" />
@@ -8,10 +12,6 @@
         android:id="@+id/closedTask"
         android:icon="@drawable/ic_archive_black_24dp"
         android:title="Archived" />
-    <item
-        android:id="@+id/createtask"
-        android:icon="@drawable/ic_create_black_24dp"
-        android:title="Create New Task" />
     <item
         android:id="@+id/listgroup"
         android:title="Group List" />
@@ -23,10 +23,6 @@
         android:id="@+id/account"
         android:icon="@drawable/ic_person_black_24dp"
         android:title="My Account" />
-<!--    <item-->
-<!--        android:id="@+id/settings"-->
-<!--        android:icon="@drawable/ic_settings_black_24dp"-->
-<!--        android:title="Settings" />-->
     <item
         android:id="@+id/logout"
         android:icon="@drawable/ic_exit_to_app_black_24dp"
